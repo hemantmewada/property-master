@@ -41,15 +41,15 @@ class _ResaleDealDashboardState extends State<ResaleDealDashboard> {
               label: AppStrings.allProperty,
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/icons/my_team.svg',color: AppColors.white,width: 25.0,height: 25.0,),
+              icon: SvgPicture.asset('assets/icons/my-property.svg',color: AppColors.white,width: 25.0,height: 25.0,),
               label: AppStrings.myProperty,
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/icons/real_estate.svg',color: AppColors.white,width: 25.0,height: 25.0,),
+              icon: SvgPicture.asset('assets/icons/hot-property.svg',color: AppColors.white,width: 30.0,height: 30.0,),
               label: AppStrings.hotProperty,
             ),
             BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/icons/resale_deal.svg',color: AppColors.white,width: 25.0,height: 25.0,),
+              icon: SvgPicture.asset('assets/icons/sold-property.svg',color: AppColors.white,width: 30.0,height: 30.0,),
               label: AppStrings.soldProperty,
             ),
           ],

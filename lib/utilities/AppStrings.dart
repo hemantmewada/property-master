@@ -110,6 +110,7 @@ class AppStrings{
   static const String projectNameToast                = 'Please Enter Project Name';
   static const String locationNameToast               = 'Please Enter Location Name';
   static const String budgetInLakh                    = 'budget (In Lakh)';
+  static const String budget                          = 'Budget';
   static const String leadSource                      = 'Lead Source';
   static const String sizeInSqFt                      = 'Size In Sq Ft';
   static const String sellAmount                      = 'Sell Amount';
@@ -168,7 +169,8 @@ class AppStrings{
   static const String cityToast                       = 'Please Enter City Name';
   static const String leadSourceToast                 = 'Please Enter Lead Source';
   static const String sizeToast                       = 'Please Enter Size in SQFT';
-  static const String callForDetail                   = 'Call For Detail';
+  static const String callNow                         = 'Call Now';
+  static const String requestACallback                = 'Request a callback';
   static const String businessPartnerRegistration     = 'Business Partner Registration';
   static const String occupation                      = 'Occupation';
   static const String occupationToast                 = 'Please Select Occupation';
@@ -194,7 +196,11 @@ class AppStrings{
   static const String whatTypeProperty                = 'What type of property is it?';
   static const String plots                           = 'Plots';
   static const String commercialSpace                 = 'Commercial Space';
+  static const String office                          = 'Office';
+  static const String villas                          = 'Villa';
   static const String flatHouseVilla                  = 'Flat House, Villa';
+  static const String flat                            = 'Flat';
+  static const String houseVilla                      = 'House, Villa';
   static const String projectColonyName               = 'Project/Colony Name';
   static const String propertyAddress                 = 'Property Address';
   static const String width                           = 'Width';
@@ -224,4 +230,6 @@ class AppStrings{
   static const String pricePerSqFtValidToast          = 'Please Enter Valid Price Per SqFt';
   static const String superBuildupAreaValidToast      = 'Please Enter Valid Super Buildup Area';
   static const String totalNoOfFloorsValidToast       = 'Please Enter Valid Total No Of Floors';
+  static const String searchProperty                  = 'Search Property';
+  static const String propertyType                    = "Property Type";
 }

@@ -26,4 +26,6 @@ class Urls {
   static const mobileExistUrl = "${baseUrl}mobileno_exist";
   static const locationListPostPropertyUrl = "${baseUrl}get_location";
   static const postPropertyUrl = "${baseUrl}create_property";
+  static const postPropertyListUrl = "${baseUrl}post_list";
+  static const propertyEnquiryUrl = "${baseUrl}property_inquiry";
 }

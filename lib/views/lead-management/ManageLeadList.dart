@@ -124,14 +124,18 @@ class _ManageLeadListState extends State<ManageLeadList> {
                         flex: 1,
                         child: TextFormField(
                           onChanged: (val){
-                            print("val onChanged is ------------------$val");
-                            setState(() => searchParameter = val);
-                            realEstateDetailListingFirstLoadAPI(context,false);
+                            Future.delayed(const Duration(seconds: 1), (){
+                              print("val onChanged is ------------------$val");
+                              setState(() => searchParameter = val);
+                              realEstateDetailListingFirstLoadAPI(context,false);
+                            });
                           },
                           onFieldSubmitted: (val) {
-                            print("val onSubmitted is ------------------$val");
-                            setState(() => searchParameter = val);
-                            realEstateDetailListingFirstLoadAPI(context,false);
+                            Future.delayed(const Duration(seconds: 1), (){
+                              print("val onSubmitted is ------------------$val");
+                              setState(() => searchParameter = val);
+                              realEstateDetailListingFirstLoadAPI(context,false);
+                            });
                           },
                           controller: searchController,
                           autofocus: widget.page == 'all' ? onLoadFocusOnTextFormFieldForAll : onLoadFocusOnTextFormFieldForOthers,
@@ -168,10 +172,12 @@ class _ManageLeadListState extends State<ManageLeadList> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: leadList?.length ?? 0,
+                itemCount: leadList!.isEmpty ? 1 : leadList?.length,
                 controller: scrollController,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
+                  return leadList!.isEmpty ?
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.5,child: const Center(child: Text("No data found"),)) :
+                  Container(
                     width: MediaQuery.of(context).size.width * 1,
                     padding: const EdgeInsets.all(10.0),
                     margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
@@ -624,9 +630,9 @@ class _ManageLeadListState extends State<ManageLeadList> {
         phoneNumberController.clear();
         leadList = response.data!.listing;
         setState(() {});
-        if(leadList!.isEmpty){
-          Utilities().toast("No Data Found");
-        }
+        // if(leadList!.isEmpty){
+        //   Utilities().toast("No Data Found");
+        // }
       }
     } on DioError catch (error) {
 

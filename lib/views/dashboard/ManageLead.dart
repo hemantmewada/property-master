@@ -139,81 +139,92 @@ class _ManageLeadState extends State<ManageLead> {
           children: [
             Row(
               children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.rightToLeftWithFade,
-                            alignment: Alignment.topCenter,
-                            duration: const Duration(milliseconds: 750),
-                            isIos: true,
-                            child: ManageLeadList(title: AppStrings.totalLeads,page: 'totalleads',userID: widget.userID,role: widget.role,),
-                          )
-                      );
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 1,
-                          height: 90.0,
-                          padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,3.0,),
-                          decoration: const BoxDecoration(
-                            color: AppColors.colorSecondary,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5.0,),
-                              topRight: Radius.circular(5.0,),
-                              bottomLeft: Radius.circular(0.0,),
-                              bottomRight: Radius.circular(0.0,),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(FontAwesomeIcons.house,color: AppColors.white),
-                                  SizedBox(width: 5.0,),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      AppStrings.totalLeads,
-                                      style: TextStyle(color: AppColors.white,fontSize: 12.0,),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(realEstateCounts == null ? '${AppStrings.pending} : 0' : '${AppStrings.pending} : ${realEstateCounts!.otherlead!.pending.toString()}',
-                                style: const TextStyle(color: AppColors.white,fontSize: 12.0,),
-                              ),
-                              Text(realEstateCounts == null ? '0' : realEstateCounts!.totallead.toString(),
-                                style: const TextStyle(color: AppColors.white,fontSize: 24.0,),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.colorSecondaryDashboard,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(0.0,),
-                              topRight: Radius.circular(0.0,),
-                              bottomLeft: Radius.circular(5.0,),
-                              bottomRight: Radius.circular(5.0,),
-                            ),
-                          ),
-                          height: 15.0,
-                        ),
-                      ],
-                    ),
-                  ),
+                // Expanded(
+                //   child: InkWell(
+                //     onTap: () {
+                //       Navigator.push(
+                //           context,
+                //           PageTransition(
+                //             type: PageTransitionType.rightToLeftWithFade,
+                //             alignment: Alignment.topCenter,
+                //             duration: const Duration(milliseconds: 750),
+                //             isIos: true,
+                //             child: ManageLeadList(title: AppStrings.totalLeads,page: 'totalleads',userID: widget.userID,role: widget.role,),
+                //           )
+                //       );
+                //     },
+                //     child: Column(
+                //       children: [
+                //         Container(
+                //           width: MediaQuery.of(context).size.width * 1,
+                //           height: 90.0,
+                //           padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,3.0,),
+                //           decoration: const BoxDecoration(
+                //             color: AppColors.colorSecondary,
+                //             borderRadius: BorderRadius.only(
+                //               topLeft: Radius.circular(5.0,),
+                //               topRight: Radius.circular(5.0,),
+                //               bottomLeft: Radius.circular(0.0,),
+                //               bottomRight: Radius.circular(0.0,),
+                //             ),
+                //           ),
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: [
+                //               const Row(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Icon(FontAwesomeIcons.house,color: AppColors.white),
+                //                   SizedBox(width: 5.0,),
+                //                   Expanded(
+                //                     flex: 1,
+                //                     child: Text(
+                //                       AppStrings.totalLeads,
+                //                       style: TextStyle(color: AppColors.white,fontSize: 12.0,),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //               Text(realEstateCounts == null ? '${AppStrings.pending} : 0' : '${AppStrings.pending} : ${realEstateCounts!.otherlead!.pending.toString()}',
+                //                 style: const TextStyle(color: AppColors.white,fontSize: 12.0,),
+                //               ),
+                //               Text(realEstateCounts == null ? '0' : realEstateCounts!.totallead.toString(),
+                //                 style: const TextStyle(color: AppColors.white,fontSize: 24.0,),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //         Container(
+                //           decoration: const BoxDecoration(
+                //             color: AppColors.colorSecondaryDashboard,
+                //             borderRadius: BorderRadius.only(
+                //               topLeft: Radius.circular(0.0,),
+                //               topRight: Radius.circular(0.0,),
+                //               bottomLeft: Radius.circular(5.0,),
+                //               bottomRight: Radius.circular(5.0,),
+                //             ),
+                //           ),
+                //           height: 15.0,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                MyTeamLeadBox(
+                  count: realEstateCounts == null ? '0' : realEstateCounts!.totallead.toString(),
+                  pendingCount: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.pending.toString(),
+                  heading: AppStrings.totalLeads,
+                  primaryColor: AppColors.colorSecondary,
+                  secondaryColor: AppColors.colorSecondaryDashboard,
+                  isAvailable: true,
+                  icon: const Icon(FontAwesomeIcons.house,color: AppColors.white),
+                  pageLink: ManageLeadList(title: AppStrings.totalLeads,page: 'totalleads',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.todaylead.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.todayLeads,
                   primaryColor: AppColors.orange,
                   secondaryColor: AppColors.orangeLight,
@@ -222,8 +233,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.todayLeads,page: 'totaltodayleads',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.todaywork.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.todayWork,
                   primaryColor: AppColors.colorSecondary,
                   secondaryColor: AppColors.colorSecondaryDashboard,
@@ -236,8 +248,9 @@ class _ManageLeadState extends State<ManageLead> {
             const SizedBox(height: 10.0,),
             Row(
               children: [
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.hotlisted.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.hotListed,
                   primaryColor: AppColors.colorSecondaryDark,
                   secondaryColor: AppColors.colorSecondaryLight,
@@ -246,8 +259,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.hotListed,page: 'totalhotlisted',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.upcomingVisits.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.upcomingVisits,
                   primaryColor: AppColors.colorSecondary,
                   secondaryColor: AppColors.colorSecondaryDashboard,
@@ -256,8 +270,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.upcomingVisits,page: 'totalupcomingvisits',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.holdBeforeVisit.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.holdBeforeVisit,
                   primaryColor: AppColors.carrotColorDark,
                   secondaryColor: AppColors.carrotColorLight,
@@ -270,19 +285,20 @@ class _ManageLeadState extends State<ManageLead> {
             const SizedBox(height: 10.0,),
             Row(
               children: [
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.rejectBeforeVisit.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.rejectBeforeVisit,
                   primaryColor: AppColors.carrotColorDark,
                   secondaryColor: AppColors.carrotColorLight,
                   isAvailable: true,
-                  // icon: const Icon(FontAwesomeIcons.bolt,color: AppColors.white),
                   icon: const Icon(FontAwesomeIcons.ban,color: AppColors.white,),
                   pageLink: ManageLeadList(title: AppStrings.rejectBeforeVisit,page: 'totalrejectbeforevisit',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.visitDone.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.visitDone,
                   primaryColor: AppColors.orange,
                   secondaryColor: AppColors.orangeLight,
@@ -291,8 +307,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.visitDone,page: 'totalvisitdone',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.booked.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.booked,
                   primaryColor: AppColors.green,
                   secondaryColor: AppColors.greenLight,
@@ -305,8 +322,9 @@ class _ManageLeadState extends State<ManageLead> {
             const SizedBox(height: 10.0,),
             Row(
               children: [
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.hold.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.holdAfterVisit,
                   primaryColor: AppColors.carrotColorDark,
                   secondaryColor: AppColors.carrotColorLight,
@@ -315,8 +333,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.holdAfterVisit,page: 'totalhold',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.reject.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.reject,
                   primaryColor: AppColors.carrotColorDark,
                   secondaryColor: AppColors.carrotColorLight,
@@ -325,8 +344,9 @@ class _ManageLeadState extends State<ManageLead> {
                   pageLink: ManageLeadList(title: AppStrings.reject,page: 'totalreject',userID: widget.userID,role: widget.role,),
                 ),
                 const SizedBox(width: 10.0,),
-                LeadBoxes(
+                MyTeamLeadBox(
                   count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.registered.toString(),
+                  pendingCount: "0",
                   heading: AppStrings.registered,
                   primaryColor: AppColors.green,
                   secondaryColor: AppColors.greenLight,

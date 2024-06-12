@@ -155,7 +155,7 @@ class _TeamListState extends State<TeamList> {
                       const SizedBox(height: 5.0,),
                       InkWell(
                         onTap: () {
-                          Utilities().navigateTo(context, ManageLead(userID: employeeList![index].userId!, role: employeeList![index].role!));
+                          navigateTo(context, ManageLead(userID: employeeList![index].userId!, role: employeeList![index].role!));
                           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ManageLead()));
                         },
                         child: Row(

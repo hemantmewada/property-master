@@ -1,133 +1,54 @@
-class HomePageDataModel {
+class PostPropertyList {
   bool? status;
-  List<Listing>? listing;
-  UserData? userData;
-  int? todayWorkCount;
-  int? hotListedCount;
-  List<HotListedProperty>? hotListedProperty;
-  int? totalCount;
+  Data? data;
   String? message;
 
-  HomePageDataModel(
-      {this.status,
-        this.listing,
-        this.userData,
-        this.todayWorkCount,
-        this.hotListedCount,
-        this.hotListedProperty,
-        this.totalCount,
-        this.message});
+  PostPropertyList({this.status, this.data, this.message});
 
-  HomePageDataModel.fromJson(Map<String, dynamic> json) {
+  PostPropertyList.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['listing'] != null) {
-      listing = <Listing>[];
-      json['listing'].forEach((v) {
-        listing!.add(new Listing.fromJson(v));
-      });
-    }
-    userData = json['user_data'] != null
-        ? new UserData.fromJson(json['user_data'])
-        : null;
-    todayWorkCount = json['today_work_count'];
-    hotListedCount = json['hot_listed_count'];
-    if (json['hot_listed_property'] != null) {
-      hotListedProperty = <HotListedProperty>[];
-      json['hot_listed_property'].forEach((v) {
-        hotListedProperty!.add(new HotListedProperty.fromJson(v));
-      });
-    }
-    totalCount = json['total_count'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    if (this.listing != null) {
-      data['listing'] = this.listing!.map((v) => v.toJson()).toList();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
-    if (this.userData != null) {
-      data['user_data'] = this.userData!.toJson();
-    }
-    data['today_work_count'] = this.todayWorkCount;
-    data['hot_listed_count'] = this.hotListedCount;
-    if (this.hotListedProperty != null) {
-      data['hot_listed_property'] =
-          this.hotListedProperty!.map((v) => v.toJson()).toList();
-    }
-    data['total_count'] = this.totalCount;
     data['message'] = this.message;
     return data;
   }
 }
 
+class Data {
+  int? recordsFiltered;
+  List<Listing>? listing;
+
+  Data({this.recordsFiltered, this.listing});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    recordsFiltered = json['recordsFiltered'];
+    if (json['listing'] != null) {
+      listing = <Listing>[];
+      json['listing'].forEach((v) {
+        listing!.add(new Listing.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['recordsFiltered'] = this.recordsFiltered;
+    if (this.listing != null) {
+      data['listing'] = this.listing!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class Listing {
-  String? id;
-  String? propertyTitle;
-  String? about;
-  String? detail;
-  String? location;
-  String? images;
-  String? image;
-  String? insertTime;
-  String? status;
-
-  Listing(
-      {this.id,
-        this.propertyTitle,
-        this.about,
-        this.detail,
-        this.location,
-        this.images,
-        this.image,
-        this.insertTime,
-        this.status});
-
-  Listing.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    propertyTitle = json['property_title'];
-    about = json['about'];
-    detail = json['detail'];
-    location = json['location'];
-    images = json['images'];
-    image = json['image'];
-    insertTime = json['insert_time'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['property_title'] = this.propertyTitle;
-    data['about'] = this.about;
-    data['detail'] = this.detail;
-    data['location'] = this.location;
-    data['images'] = this.images;
-    data['image'] = this.image;
-    data['insert_time'] = this.insertTime;
-    data['status'] = this.status;
-    return data;
-  }
-}
-
-class UserData {
-  String? profileImg;
-
-  UserData({this.profileImg});
-
-  UserData.fromJson(Map<String, dynamic> json) {
-    profileImg = json['profile_img'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['profile_img'] = this.profileImg;
-    return data;
-  }
-}
-
-class HotListedProperty {
   String? id;
   String? propertyId;
   String? associativeType;
@@ -184,7 +105,7 @@ class HotListedProperty {
   String? statusDate;
   String? updatedAt;
 
-  HotListedProperty(
+  Listing(
       {this.id,
         this.propertyId,
         this.associativeType,
@@ -241,7 +162,7 @@ class HotListedProperty {
         this.statusDate,
         this.updatedAt});
 
-  HotListedProperty.fromJson(Map<String, dynamic> json) {
+  Listing.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     propertyId = json['property_id'];
     associativeType = json['associative_type'];

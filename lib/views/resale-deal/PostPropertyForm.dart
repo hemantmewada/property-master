@@ -80,24 +80,24 @@ const List<String> possessionStatusList = <String>[
   'Ready to move',
   'Under Development',
 ];
-const List<String> amenitiesList = <String>[
-  'Covered Campus',
-  'Semi Covered Campus',
-  'School in Campus',
-  'Underground light fitting ',
-  'Children Play Area',
-  'Common Water Supply',
-  'Swimming Pool',
-  'Clubhouse',
-  '24*7 Security',
+const List<KeyValueClass> amenitiesList = [
+  KeyValueClass(value: "covered_campus", name: "Covered Campus"),
+  KeyValueClass(value: "semi_covered_campus", name: "Semi Covered Campus"),
+  KeyValueClass(value: "school_campus", name: "School in Campus"),
+  KeyValueClass(value: "underground_light_fitting", name: "Underground light fitting "),
+  KeyValueClass(value: "children_play_area", name: "Children Play Area"),
+  KeyValueClass(value: "common_water_supply", name: "Common Water Supply"),
+  KeyValueClass(value: "swimming pool", name: "Swimming Pool"),
+  KeyValueClass(value: "club_house", name: "Clubhouse"),
+  KeyValueClass(value: "24X7 Security", name: "24*7 Security"),
 ];
-const List<String> otherAmenitiesList = <String>[
-  'Clubhouse',
-  'Swimming Pool',
-  'Gymnasium',
-  'CCTV Security',
-  'Conference Hall',
-  'Private Car Parking',
+const List<KeyValueClass> otherAmenitiesList = <KeyValueClass>[
+  KeyValueClass(value: "club_house", name: "Clubhouse"),
+  KeyValueClass(value: "swimming pool", name: "Swimming Pool"),
+  KeyValueClass(value: "Gymnasium", name: "Gymnasium"),
+  KeyValueClass(value: "CCTV Security", name: "CCTV Security"),
+  KeyValueClass(value: "Conference_Hal", name: "Conference Hall"),
+  KeyValueClass(value: "Private Car Parking", name: "Private Car Parking"),
 ];
 String location = "";
 class PostPropertyForm extends StatefulWidget {
@@ -157,27 +157,6 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
     setState(() {});
   }
 
-  static Decoration containerDecoration = BoxDecoration(
-    border: Border.all(
-        color: AppColors.colorSecondary,
-        width: 1.0,
-        style: BorderStyle.solid
-    ),
-    borderRadius: BorderRadius.circular(5.0),
-    color: Colors.white,
-  );
-  static InputDecoration inputDecoration(String hintText) {
-    return InputDecoration(
-      isDense: true,
-      hintText: hintText,
-      hintStyle: const TextStyle(
-        fontSize: 14.0,
-        color: AppColors.textColorGrey,
-        fontWeight: FontWeight.w500,
-      ),
-      border: InputBorder.none,
-    );
-  }
 
 @override
   Widget build(BuildContext context) {
@@ -336,7 +315,15 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                     return;
                                   }
                                   var length = lengthController.text;
-                                  totalAreaController.text = (int.parse(width) * int.parse(length)).toString();
+                                  if(length != "" && int.parse(length) > 0){
+                                    int totalArea = int.parse(width) * int.parse(length);
+                                    totalAreaController.text = totalArea.toString();
+                                    var expectedPrice = expectedPriceController.text;
+                                    if(totalArea > 0 && expectedPrice != "" && int.parse(expectedPrice) > 0){
+                                      int pricePerSqFt = int.parse(expectedPrice) ~/ totalArea;
+                                      pricePerSqFtController.text = pricePerSqFt.toString();
+                                    }
+                                  }
                                 },
                                 controller: widthController,
                                 textCapitalization: TextCapitalization.words,
@@ -366,7 +353,15 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                     return;
                                   }
                                   var width = widthController.text;
-                                  totalAreaController.text = (int.parse(width) * int.parse(length)).toString();
+                                  if(width != "" && int.parse(width) > 0){
+                                    int totalArea = int.parse(width) * int.parse(length);
+                                    totalAreaController.text = totalArea.toString();
+                                    var expectedPrice = expectedPriceController.text;
+                                    if(totalArea > 0 && expectedPrice != "" && int.parse(expectedPrice) > 0){
+                                      int pricePerSqFt = int.parse(expectedPrice) ~/ totalArea;
+                                      pricePerSqFtController.text = pricePerSqFt.toString();
+                                    }
+                                  }
                                 },
                                 controller: lengthController,
                                 textCapitalization: TextCapitalization.words,
@@ -463,6 +458,26 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                           decoration: containerDecoration,
                           child: TextFormField(
+                            onChanged: (superBuildupArea) {
+                              if(superBuildupArea == ""){
+                                Utilities().toast("Invalid width.");
+                                totalAreaController.text = "";
+                                pricePerSqFtController.text = "";
+                                superBuildupAreaController.text = "";
+                                return;
+                              } else if(int.parse(superBuildupArea) < 1){
+                                Utilities().toast("Invalid width.");
+                                totalAreaController.text = "";
+                                pricePerSqFtController.text = "";
+                                superBuildupAreaController.text = "";
+                                return;
+                              }
+                              var expectedPrice = expectedPriceController.text;
+                              if(expectedPrice != "" && int.parse(expectedPrice) > 0){
+                                int pricePerSqFt = int.parse(expectedPrice) ~/ int.parse(superBuildupArea);
+                                pricePerSqFtController.text = pricePerSqFt.toString();
+                              }
+                            },
                             controller: superBuildupAreaController,
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.number,
@@ -914,12 +929,38 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                       decoration: containerDecoration,
                       child: TextFormField(
-                        controller: expectedPriceController,
+                        onChanged: (pricePerSqFt) {
+                          if(pricePerSqFt == ""){
+                            Utilities().toast("Invalid length.");
+                            pricePerSqFtController.text = "";
+                            expectedPriceController.text = "";
+                            return;
+                          } else if(int.parse(pricePerSqFt) < 1){
+                            Utilities().toast("Invalid length.");
+                            pricePerSqFtController.text = "";
+                            expectedPriceController.text = "";
+                            return;
+                          }
+                          if(widget.type == AppStrings.plots){
+                            var totalArea = totalAreaController.text;
+                            if(totalArea != "" && int.parse(totalArea) > 0){
+                              int expectedPrice = int.parse(pricePerSqFt) * int.parse(totalArea);
+                              expectedPriceController.text = expectedPrice.toString();
+                            }
+                          }else{
+                            var superBuildupArea = superBuildupAreaController.text;
+                            if(superBuildupArea != "" && int.parse(superBuildupArea) > 0){
+                              int expectedPrice = int.parse(pricePerSqFt) * int.parse(superBuildupArea);
+                              expectedPriceController.text = expectedPrice.toString();
+                            }
+                          }
+                        },
+                        controller: pricePerSqFtController,
                         textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.number,
                         style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                         cursorColor: AppColors.textColorGrey,
-                        decoration: inputDecoration(AppStrings.expectedPrice),
+                        decoration: inputDecoration(AppStrings.pricePerSqFt),
                       ),
                     ),
                   ),
@@ -931,12 +972,13 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                       decoration: containerDecoration,
                       child: TextFormField(
-                        controller: pricePerSqFtController,
+                        readOnly: true,
+                        controller: expectedPriceController,
                         textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.number,
                         style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                         cursorColor: AppColors.textColorGrey,
-                        decoration: inputDecoration(AppStrings.pricePerSqFt),
+                        decoration: inputDecoration(AppStrings.expectedPrice),
                       ),
                     ),
                   ),
@@ -956,10 +998,10 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       children: [
                         InkWell(
                           onTap: () {
-                            if(selectedAmenitiesList.contains(amenitiesList[i])){
-                              selectedAmenitiesList.remove(amenitiesList[i]);
+                            if(selectedAmenitiesList.contains(amenitiesList[i].value)){
+                              selectedAmenitiesList.remove(amenitiesList[i].value);
                             }else{
-                              selectedAmenitiesList.add(amenitiesList[i]);
+                              selectedAmenitiesList.add(amenitiesList[i].value);
                             }
                             setState(() {});
                           },
@@ -972,13 +1014,13 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                   style: BorderStyle.solid
                               ),
                               borderRadius: BorderRadius.circular(5.0),
-                              color: selectedAmenitiesList.contains(amenitiesList[i]) ? AppColors.colorSecondary : Colors.white,
+                              color: selectedAmenitiesList.contains(amenitiesList[i].value) ? AppColors.colorSecondary : Colors.white,
                             ),
                             child: Center(
                               child: Text(
-                                amenitiesList[i],
+                                amenitiesList[i].name,
                                 style: TextStyle(
-                                  color: selectedAmenitiesList.contains(amenitiesList[i]) ? AppColors.white : AppColors.textColorGrey,
+                                  color: selectedAmenitiesList.contains(amenitiesList[i].value) ? AppColors.white : AppColors.textColorGrey,
                                 ),
                               ),
                             ),
@@ -998,10 +1040,10 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       children: [
                         InkWell(
                           onTap: () {
-                            if(selectedAmenitiesList.contains(otherAmenitiesList[i])){
-                              selectedAmenitiesList.remove(otherAmenitiesList[i]);
+                            if(selectedAmenitiesList.contains(otherAmenitiesList[i].value)){
+                              selectedAmenitiesList.remove(otherAmenitiesList[i].value);
                             }else{
-                              selectedAmenitiesList.add(otherAmenitiesList[i]);
+                              selectedAmenitiesList.add(otherAmenitiesList[i].value);
                             }
                             setState(() {});
                           },
@@ -1014,13 +1056,13 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                   style: BorderStyle.solid
                               ),
                               borderRadius: BorderRadius.circular(5.0),
-                              color: selectedAmenitiesList.contains(otherAmenitiesList[i]) ? AppColors.colorSecondary : Colors.white,
+                              color: selectedAmenitiesList.contains(otherAmenitiesList[i].value) ? AppColors.colorSecondary : Colors.white,
                             ),
                             child: Center(
                               child: Text(
-                                otherAmenitiesList[i],
+                                otherAmenitiesList[i].name,
                                 style: TextStyle(
-                                  color: selectedAmenitiesList.contains(otherAmenitiesList[i]) ? AppColors.white : AppColors.textColorGrey,
+                                  color: selectedAmenitiesList.contains(otherAmenitiesList[i].value) ? AppColors.white : AppColors.textColorGrey,
                                 ),
                               ),
                             ),
@@ -1163,7 +1205,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
         "transaction_type": transactionType,
         "possession_status": possessionStatus,
         "expected_price": expectedPriceController.text,
-        "price_per_square": pricePerSqFtController.text,
+        "net_price_per_square": pricePerSqFtController.text,
         // "aminities": selectedAmenitiesList,
         "description_details": descriptionController.text,
         "buildup_area": superBuildupAreaController.text,
@@ -1199,67 +1241,6 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
     return;
   }
 
-  Future<void> postPropertyAPI2(BuildContext context, String projectColonyName) async {
-    var typeOfProperty = "";
-    if(widget.type == AppStrings.plots){
-      typeOfProperty = plotTypeProperty;
-    }else if(widget.type == AppStrings.commercialSpace){
-      typeOfProperty = commercialTypeProperty;
-    }else if(widget.type == AppStrings.flatHouseVilla){
-      typeOfProperty = flatHouseTypeProperty;
-    }
-    Loader.ProgressloadingDialog(context, true);
-    List<String> locations = [];
-    locations.add(location);
-    try {
-      const url = Urls.postPropertyUrl;
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(url),
-      );
-      Map<String, String> header = {
-        "content-type": "application/json",
-        "accept": "application/json",
-        "x-api-key" : Utilities.xApiKey,
-      };
-      request.headers.addAll(header);
-      request.fields["user_id"] = userID;
-      request.fields["calony_name"] = projectColonyName;
-      request.fields["type_of_property"] = typeOfProperty;
-      request.fields["location"] = jsonEncode(locations);
-      request.fields["address"] = propertyAddressController.text;
-      request.fields["width"] = widthController.text;
-      request.fields["length"] = lengthController.text;
-      request.fields["totalarea"] = totalAreaController.text;
-      request.fields["facing"] = facing;
-      request.fields["open_side"] = openSide;
-      request.fields["transaction_type"] = transactionType;
-      request.fields["possession_status"] = possessionStatus;
-      request.fields["expected_price"] = expectedPriceController.text;
-      request.fields["price_per_square"] = pricePerSqFtController.text;
-      request.fields["aminities"] = jsonEncode(selectedAmenitiesList);
-      request.fields["description_details"] = descriptionController.text;
-      print(request.fields);
-      var response = await request.send();
-
-      Loader.ProgressloadingDialog(context, false);
-
-      response.stream.transform(convert.utf8.decoder).listen((event) async {
-        print(url);
-        Map<String, dynamic> map = convert.jsonDecode(event);
-        PostPropertyModel response = PostPropertyModel.fromJson(map);
-        if(response.status == true) {
-          Navigator.of(context).pop();
-          setState(() {});
-        }
-      });
-
-    } catch (e) {
-      Loader.ProgressloadingDialog(context, false);
-      Utilities().toast('error: $e');
-    }
-    return;
-  }
 }
 
 class PlotTypePropertyDropdown extends StatefulWidget {

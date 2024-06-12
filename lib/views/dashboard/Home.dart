@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:propertymaster/models/PostPropertyList.dart' as PostPropertyList;
 import 'package:propertymaster/models/PropertyDataModel.dart';
 import 'package:propertymaster/models/UpdateProfileImageModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
@@ -16,7 +17,6 @@ import 'package:propertymaster/views/home/home_slider.dart';
 import 'package:propertymaster/views/my-team/BusinessPartnerRegistration.dart';
 import 'package:propertymaster/views/resale-deal/PostProperty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:propertymaster/models/RealEstateModel.dart';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -37,17 +37,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-  var searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   late String userID;
   String role = '';
   String name = '';
   String empId = '';
   String type = "all";
   String profileImage = "";
-  Data? realEstateCounts;
+  int todayWorkCount = 0;
+  int hotListedCount = 0;
+  int totalPropertyCount = 0;
   List<Listing>? imgList = [];
   List<String> jobTypeList1 = ['Select Job Type','Sr Business Partner','Full Time Business Partner','Part Time Business Partner'];
   List<String> jobTypeList2 = ['Select Job Type','Full Time Business Partner','Part Time Business Partner'];
+  List<PostPropertyList.Listing>? postPropertyList = [];
 
   final ImagePicker imagePicker = ImagePicker();
   XFile? photoController;
@@ -72,7 +75,6 @@ class _HomeState extends State<Home> {
     print('my userID is >>>>> {$userID}');
     print('my empId is >>>>> {$empId}');
     print('my role is >>>>> {$role}');
-    realEstateAPI(context);
     propertyDataAPI(context);
     setState(() {});
   }
@@ -225,55 +227,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               const SizedBox(height: 20.0,),
-              Container(
-                height: 50.0,
-                width: MediaQuery.of(context).size.width * 1,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: AppColors.colorSecondary,
-                      width: 1.0,
-                      style: BorderStyle.solid
-                  ),
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: SvgPicture.asset(
-                        'assets/icons/search.svg',
-                        width: 23.0,
-                        color: AppColors.colorSecondary,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: TextFormField(
-                        controller: searchController,
-                        keyboardType: TextInputType.text,
-                        style: const TextStyle(
-                          fontSize: 14.0, color: AppColors.black,
-                        ),
-                        cursorColor: AppColors.textColorGrey,
-                        decoration: const InputDecoration(
-                          hintText: AppStrings.searchProperties,
-                          hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            color: AppColors.textColorGrey,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              searchContainer(context, totalPropertyCount, searchController, (value) => searchController.text = value, true),
             ],
           ),
         ),
@@ -296,7 +250,18 @@ class _HomeState extends State<Home> {
                   )
                 : HomeSlider(imgList: imgList),
             const SizedBox(height: 10.0,),
-            HomeDashboardPropertySlider(),
+            postPropertyList!.isNotEmpty ?
+            HomeDashboardPropertySlider(propertyList: postPropertyList!, userId: userID,) :
+            const SizedBox(
+              // height: 283.0,
+              height: 120.0,
+              child: Center(
+                child: Text(
+                  'No Hot Properties were found !',
+                  style: TextStyle(color: AppColors.colorSecondary),
+                ),
+              ),
+            ),
             // submit your lead button
             InkWell(
               highlightColor: AppColors.transparent,
@@ -453,13 +418,9 @@ class _HomeState extends State<Home> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text(AppStrings.todayWork,
-                                          style: TextStyle(color: AppColors.white,fontSize: 11.0,),
-                                        ),
+                                        const Text(AppStrings.todayWork,style: TextStyle(color: AppColors.white,fontSize: 11.0,),),
                                         const SizedBox(height: 5.0,),
-                                        Text(realEstateCounts == null ? '0' : realEstateCounts!.todaywork.toString(),
-                                          style: const TextStyle(color: AppColors.white,fontSize: 18.0,),
-                                        ),
+                                        Text(todayWorkCount.toString(),style: const TextStyle(color: AppColors.white,fontSize: 18.0,),                                        ),
                                       ],
                                     ),
                                   ],
@@ -502,13 +463,9 @@ class _HomeState extends State<Home> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text(AppStrings.hotListed,
-                                          style: TextStyle(color: AppColors.white,fontSize: 11.0,),
-                                        ),
+                                        const Text(AppStrings.hotListed,style: TextStyle(color: AppColors.white,fontSize: 11.0,),),
                                         const SizedBox(height: 5.0,),
-                                        Text(realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.hotlisted.toString(),
-                                          style: const TextStyle(color: AppColors.white,fontSize: 18.0,),
-                                        ),
+                                        Text(hotListedCount.toString(),style: const TextStyle(color: AppColors.white,fontSize: 18.0,),                                        ),
                                       ],
                                     ),
                                   ],
@@ -613,32 +570,6 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-  // real estate api
-  Future<void> realEstateAPI(BuildContext context) async {
-    try {
-      const url = Urls.realEstateUrl;
-      var formData = FormData.fromMap({
-        "user_id" :  userID,
-        "role" :  role,
-        "type" :  type,
-      });
-      final responseDio = await Dio().post(url,data: formData,);
-      if (responseDio.statusCode == 200) {
-        print("realEstateAPI ---- $url");
-        Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
-        RealEstateModel response = RealEstateModel.fromJson(map);
-        if(response.status == true){
-          realEstateCounts = response.data;
-          setState(() {});
-        }else{
-          Utilities().toast(response.message);
-        }
-      }
-    } catch (e) {
-      Utilities().toast('error: $e');
-    }
-  }
-  // real estate api
   // property data api
   // this api we have to change with dio
   Future<void> propertyDataAPI(BuildContext context) async {
@@ -649,10 +580,13 @@ class _HomeState extends State<Home> {
       if (responseDio.statusCode == 200) {
         print("propertyDataAPI ---- $url");
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
-        PropertyDataModel res = PropertyDataModel.fromJson(map);
+        HomePageDataModel res = HomePageDataModel.fromJson(map);
         if (res.status == true) {
           imgList = res.listing;
           profileImage = res.userData!.profileImg!;
+          todayWorkCount = res.todayWorkCount!;
+          hotListedCount = res.hotListedCount!;
+          totalPropertyCount = res.totalCount!;
           setState(() {});
         } else {
           Utilities().toast(res.message.toString());

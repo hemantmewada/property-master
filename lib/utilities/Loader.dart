@@ -10,8 +10,9 @@ class Loader {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.colorSecondary,),
+            return Center(
+              // child: CircularProgressIndicator(color: AppColors.colorSecondary,),
+              child: Image.asset('assets/icons/spinner.gif',width: 64.0,),
             );
           });
       // return pr.show();
