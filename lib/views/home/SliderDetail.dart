@@ -144,54 +144,54 @@ class _SliderDetailState extends State<SliderDetail> {
                 ],
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 1,
-              padding: const EdgeInsets.all(10.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: AppColors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Home Loan Offers for ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
-                  const SizedBox(height: 10.0,),
-                  Wrap(
-                    runSpacing: 5.0,
-                    spacing: 5.0,
-                    children: [
-                      for (var i = 0; i < amenitiesList.length; i++)
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColors.colorSecondary,
-                                    width: 1.0,
-                                    style: BorderStyle.solid
-                                ),
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  amenitiesList[i].name,
-                                  style: const TextStyle(
-                                    color: AppColors.textColorGrey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   width: MediaQuery.of(context).size.width * 1,
+            //   padding: const EdgeInsets.all(10.0),
+            //   margin: const EdgeInsets.all(8.0),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(5.0),
+            //     color: AppColors.white,
+            //   ),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text("Home Loan Offers for ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
+            //       const SizedBox(height: 10.0,),
+            //       Wrap(
+            //         runSpacing: 5.0,
+            //         spacing: 5.0,
+            //         children: [
+            //           for (var i = 0; i < amenitiesList.length; i++)
+            //             Row(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 Container(
+            //                   padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
+            //                   decoration: BoxDecoration(
+            //                     border: Border.all(
+            //                         color: AppColors.colorSecondary,
+            //                         width: 1.0,
+            //                         style: BorderStyle.solid
+            //                     ),
+            //                     borderRadius: BorderRadius.circular(5.0),
+            //                     color: Colors.white,
+            //                   ),
+            //                   child: Center(
+            //                     child: Text(
+            //                       amenitiesList[i].name,
+            //                       style: const TextStyle(
+            //                         color: AppColors.textColorGrey,
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             Container(
               width: MediaQuery.of(context).size.width * 1,
               padding: const EdgeInsets.all(10.0),
