@@ -92,7 +92,7 @@ class _MyPropertyState extends State<MyProperty> {
                 itemBuilder: (BuildContext context,int index) {
                   return postPropertyList!.isEmpty ?
                   SizedBox(height: MediaQuery.of(context).size.height * 0.5,child: const Center(child: Text("No data found"),)) :
-                  propertyContainer(context,postPropertyList![index], userID);
+                  propertyContainer(context,postPropertyList![index], userID, true);
                 },
               ),
             ),

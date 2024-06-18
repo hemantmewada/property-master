@@ -1,6 +1,7 @@
 class HomePageDataModel {
   bool? status;
   List<Listing>? listing;
+  List<ListingNew>? listingNew;
   UserData? userData;
   int? todayWorkCount;
   int? hotListedCount;
@@ -11,6 +12,7 @@ class HomePageDataModel {
   HomePageDataModel(
       {this.status,
         this.listing,
+        this.listingNew,
         this.userData,
         this.todayWorkCount,
         this.hotListedCount,
@@ -24,6 +26,12 @@ class HomePageDataModel {
       listing = <Listing>[];
       json['listing'].forEach((v) {
         listing!.add(new Listing.fromJson(v));
+      });
+    }
+    if (json['listing_new'] != null) {
+      listingNew = <ListingNew>[];
+      json['listing_new'].forEach((v) {
+        listingNew!.add(new ListingNew.fromJson(v));
       });
     }
     userData = json['user_data'] != null
@@ -46,6 +54,9 @@ class HomePageDataModel {
     data['status'] = this.status;
     if (this.listing != null) {
       data['listing'] = this.listing!.map((v) => v.toJson()).toList();
+    }
+    if (this.listingNew != null) {
+      data['listing_new'] = this.listingNew!.map((v) => v.toJson()).toList();
     }
     if (this.userData != null) {
       data['user_data'] = this.userData!.toJson();
@@ -107,6 +118,83 @@ class Listing {
     data['image'] = this.image;
     data['insert_time'] = this.insertTime;
     data['status'] = this.status;
+    return data;
+  }
+}
+
+class ListingNew {
+  String? id;
+  String? heading;
+  String? userId;
+  String? budget;
+  String? plotSize;
+  String? propertyStatus;
+  String? location;
+  String? registrationNumber;
+  String? singleImage;
+  List<String>? multipleImage;
+  List<String>? amenities;
+  String? loanOffer;
+  String? about;
+  String? builderName;
+  List<String>? certificateUpload;
+  String? username;
+
+  ListingNew(
+      {this.id,
+        this.heading,
+        this.userId,
+        this.budget,
+        this.plotSize,
+        this.propertyStatus,
+        this.location,
+        this.registrationNumber,
+        this.singleImage,
+        this.multipleImage,
+        this.amenities,
+        this.loanOffer,
+        this.about,
+        this.builderName,
+        this.certificateUpload,
+        this.username});
+
+  ListingNew.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    heading = json['heading'];
+    userId = json['user_id'];
+    budget = json['budget'];
+    plotSize = json['plot_size'];
+    propertyStatus = json['property_status'];
+    location = json['location'];
+    registrationNumber = json['registration_number'];
+    singleImage = json['single_image'];
+    multipleImage = json['multiple_image']?.cast<String>() ?? [];
+    amenities = json['amenities']?.cast<String>() ?? [];
+    loanOffer = json['loan_offer'];
+    about = json['about'];
+    builderName = json['builder_name'];
+    certificateUpload = json['certificate_upload']?.cast<String>() ?? [];
+    username = json['username'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['heading'] = this.heading;
+    data['user_id'] = this.userId;
+    data['budget'] = this.budget;
+    data['plot_size'] = this.plotSize;
+    data['property_status'] = this.propertyStatus;
+    data['location'] = this.location;
+    data['registration_number'] = this.registrationNumber;
+    data['single_image'] = this.singleImage;
+    data['multiple_image'] = this.multipleImage;
+    data['amenities'] = this.amenities;
+    data['loan_offer'] = this.loanOffer;
+    data['about'] = this.about;
+    data['builder_name'] = this.builderName;
+    data['certificate_upload'] = this.certificateUpload;
+    data['username'] = this.username;
     return data;
   }
 }

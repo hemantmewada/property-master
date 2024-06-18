@@ -3,14 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:propertymaster/models/PropertyDataModel.dart';
+import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
+import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/utilities/urls.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:propertymaster/views/home/PropertyDetail.dart';
+import 'package:propertymaster/views/home/SliderDetail.dart';
 
 class HomeSlider extends StatefulWidget {
-  List<Listing>? imgList;
+  List<ListingNew>? imgList;
 
   HomeSlider({required this.imgList});
 
@@ -27,16 +28,7 @@ class _HomeSliderState extends State<HomeSlider> {
         .map((item) {
           return InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeftWithFade,
-                    alignment: Alignment.topCenter,
-                    duration: const Duration(milliseconds: 750),
-                    isIos: true,
-                    child: PropertyDetail(propertyData: item),
-                  )
-              );
+              navigateTo(context, SliderDetail(propertyData: item,));
             },
             child: Stack(
                 children: [
@@ -47,7 +39,7 @@ class _HomeSliderState extends State<HomeSlider> {
                     height: 283.0,
                   ),*/
                   CachedNetworkImage(
-                    imageUrl: Urls.imageUrl + item.image.toString(),
+                    imageUrl: item.singleImage.toString(),
                     width: MediaQuery.of(context).size.width,
                     // height: 283.0,
                     height: 200.0,
@@ -92,22 +84,19 @@ class _HomeSliderState extends State<HomeSlider> {
 
     return Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 10.0),
-          child: CarouselSlider(
-            items: imageSliders,
-            options: CarouselOptions(
-                autoPlay: true,
-                pauseAutoPlayInFiniteScroll: true,
-                viewportFraction: 1.0,
-                enlargeCenterPage: true,
-                aspectRatio: 1.9,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                }),
-          ),
+        CarouselSlider(
+          items: imageSliders,
+          options: CarouselOptions(
+              autoPlay: true,
+              pauseAutoPlayInFiniteScroll: true,
+              viewportFraction: 1.0,
+              enlargeCenterPage: false,
+              aspectRatio: 1.9,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
         ),
         Positioned(
           left: 20.0,
@@ -130,15 +119,6 @@ class _HomeSliderState extends State<HomeSlider> {
                 ),
               );
             }).toList(),
-          ),
-        ),
-        Positioned(
-          left: 0.0,
-          bottom: 10.0,
-          child: Container(
-            width: MediaQuery.of(context).size.width * 1,
-            color: AppColors.light_grey,
-            height: 5.0,
           ),
         ),
       ],

@@ -58,12 +58,12 @@ class _ResaleDealDashboardState extends State<ResaleDealDashboard> {
           backgroundColor: AppColors.colorSecondaryLight,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: true,
-          showUnselectedLabels: false,
+          showUnselectedLabels: true,
           selectedItemColor: AppColors.white,
           unselectedItemColor: AppColors.white,
           onTap: onItemTapped,
           selectedFontSize: 12.0,
-          // unselectedFontSize: 10.0,
+          unselectedFontSize: 10.0,
         )
     );
   }

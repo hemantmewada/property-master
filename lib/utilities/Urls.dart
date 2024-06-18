@@ -28,4 +28,5 @@ class Urls {
   static const postPropertyUrl = "${baseUrl}create_property";
   static const postPropertyListUrl = "${baseUrl}post_list";
   static const propertyEnquiryUrl = "${baseUrl}property_inquiry";
+  static const switchSoldUrl = "${baseUrl}plot_for_other";
 }

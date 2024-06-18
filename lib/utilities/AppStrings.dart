@@ -106,6 +106,8 @@ class AppStrings{
   static const String requirement                     = 'Requirement';
   static const String requiredProperty                = 'Required Property';
   static const String locationName                    = 'Location Name';
+  static const String associativeName                 = 'Associative Name';
+  static const String associativeContact              = 'Associative Contact';
   static const String projectName                     = 'Project Name';
   static const String projectNameToast                = 'Please Enter Project Name';
   static const String locationNameToast               = 'Please Enter Location Name';
@@ -170,6 +172,7 @@ class AppStrings{
   static const String leadSourceToast                 = 'Please Enter Lead Source';
   static const String sizeToast                       = 'Please Enter Size in SQFT';
   static const String callNow                         = 'Call Now';
+  static const String sold                            = 'Sold';
   static const String requestACallback                = 'Request a callback';
   static const String businessPartnerRegistration     = 'Business Partner Registration';
   static const String occupation                      = 'Occupation';

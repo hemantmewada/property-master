@@ -152,7 +152,7 @@ class _AddLeadState extends State<AddLead> {
                     child: SvgPicture.asset('assets/icons/back2.svg',color: AppColors.white,width: 25.0,height: 25.0,),
                   ),
                   const SizedBox(width: 10.0,),
-                  const Text(AppStrings.realEstateEnquiry,style: TextStyle(fontSize: 22.0,color: AppColors.white,),),
+                  const Text(AppStrings.submitYourLead,style: TextStyle(fontSize: 22.0,color: AppColors.white,),),
                 ],
               ),
               const SizedBox(height: 20.0,),

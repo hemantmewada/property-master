@@ -112,6 +112,8 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
   var projectColonyNameController = TextEditingController();
   var locationNameController = TextEditingController();
   var propertyAddressController = TextEditingController();
+  var associativeNameController = TextEditingController();
+  var associativeContactController = TextEditingController();
   var widthController = TextEditingController();
   var lengthController = TextEditingController();
   var superBuildupAreaController = TextEditingController();
@@ -119,8 +121,8 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
   var totalAreaController = TextEditingController();
   var expectedPriceController = TextEditingController();
   var pricePerSqFtController = TextEditingController();
-  late String userID;
-  late String role;
+  String userID = "";
+  String role = "";
   String plotTypeProperty = plotTypePropertyList.first;
   String commercialTypeProperty = commercialTypePropertyList.first;
   String flatHouseTypeProperty = flatHouseTypePropertyList.first;
@@ -273,6 +275,50 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
+              if(role == "Sr Business Manager" || role == "Manager")
+              Column(
+                children: [
+                  const SizedBox(height: 15.0,),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                          decoration: containerDecoration,
+                          child: TextFormField(
+                            controller: associativeNameController,
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.name,
+                            style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
+                            cursorColor: AppColors.textColorGrey,
+                            decoration: inputDecoration(AppStrings.associativeName),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10.0,),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                          decoration: containerDecoration,
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: associativeContactController,
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.phone,
+                            style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
+                            cursorColor: AppColors.textColorGrey,
+                            decoration: inputDecoration(AppStrings.associativeContact),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -1205,7 +1251,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
         "transaction_type": transactionType,
         "possession_status": possessionStatus,
         "expected_price": expectedPriceController.text,
-        "net_price_per_square": pricePerSqFtController.text,
+        "price_pr_square": pricePerSqFtController.text,
         // "aminities": selectedAmenitiesList,
         "description_details": descriptionController.text,
         "buildup_area": superBuildupAreaController.text,

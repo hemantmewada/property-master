@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/utilities/API.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:intl/intl.dart';
@@ -166,7 +167,269 @@ void navigateTo(BuildContext context,Widget pageLink, [int duration = 750]){
       )
   );
 }
-Container propertyContainer(BuildContext context, PostPropertyList.Listing property, String userId){
+Container propertyContainer(BuildContext context, PostPropertyList.Listing property, String userId, [bool isMine = false]){
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Continue"),
+      onPressed:  () => propertyEnquiryAPI(context, userId, property.id!),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      insetPadding: const EdgeInsets.all(10.0,),
+      title: const Text("Request confirm"),
+      content: const Text("Are you sure do you want to request for a call?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showAlertDialogForMyProperty(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed:  () => Navigator.of(context).pop(),
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Continue"),
+      onPressed:  () => switchSoldAPI(context, property.id!),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      insetPadding: const EdgeInsets.all(10.0,),
+      title: const Text("Plot for other"),
+      content: const Text("Are you sure do you want to change the status?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  return Container(
+    width: MediaQuery.of(context).size.width * 1,
+    padding: const EdgeInsets.all(10.0),
+    margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
+    // margin: const EdgeInsets.only(bottom: 8.0,),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5.0),
+      color: AppColors.white,
+      // image: property.propertyStatus == "Complete Post" ? const DecorationImage(
+      //   scale: 5.0,
+      //   image: AssetImage("assets/images/verified-bg.png"),
+      //   alignment: Alignment.center,
+      //   opacity: 0.5,
+      // ) : null,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Wrap(
+                children: [
+                  Text(
+                    property.calonyName!,
+                    style: const TextStyle(fontWeight: FontWeight.w600,),
+                  ),
+                  if(property.propertyStatus == "Complete Post")
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0,),
+                      child: Image.asset("assets/icons/verified.png",width: 20.0,),
+                    ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.propertyId!,
+                style: const TextStyle(fontWeight: FontWeight.w600,),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!),
+                style: const TextStyle(fontWeight: FontWeight.w600,),
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(property.location!,),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                "₹ ${formatNumber(property.expectedPrice!)}",
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.typeOfProperty!,
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    property.transactionType!,
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  Text(
+                    property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    property.facing!,
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    property.possessionStatus!,
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.end,
+                  ),
+                  Text(
+                    property.openSide!,
+                    // style: const TextStyle(color: AppColors.textColorGrey,),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+        Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {
+                  showAlertDialog(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: AppColors.colorSecondary,
+                        width: 1.0,
+                        style: BorderStyle.solid
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: AppColors.transparent,
+                  ),
+                  child: const Center(child: Text(AppStrings.requestACallback),),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10.0,),
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {
+                  if(isMine){
+                    showAlertDialogForMyProperty(context);
+                  }else{
+                    _makePhoneCall("8819888835");
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: AppColors.colorSecondary,
+                        width: 1.0,
+                        style: BorderStyle.solid
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: AppColors.colorSecondary,
+                  ),
+                  child: Center(
+                    child: Text(isMine ? AppStrings.sold : AppStrings.callNow,style: const TextStyle(color: AppColors.white,),),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+      ],
+    ),
+  );
+}
+
+Container propertyContainerHotListed(BuildContext context, HotListedProperty property, String userId){
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -250,7 +513,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: Text(
-                formatNumber(property.expectedPrice!),
+                "₹ ${formatNumber(property.expectedPrice!)}",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -291,7 +554,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               child: Column(
                 children: [
                   Text(
-                    property.totalarea == "" ? property.buildupArea! : property.totalarea!,
+                    property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
                     style: const TextStyle(color: AppColors.textColorGrey,),
                     textAlign: TextAlign.center,
                   ),
@@ -509,3 +772,4 @@ class PropertyType {
   final String icon;
   const PropertyType({required this.value, required this.name,required this.icon,});
 }
+const videosUrl = "http://home.propertymaster.co.in/video";

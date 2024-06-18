@@ -6,16 +6,15 @@ import 'package:page_transition/page_transition.dart';
 import 'package:propertymaster/models/HomeDashboardPropertyListModel.dart';
 import 'package:propertymaster/models/HomeDashboardPropertyListModel.dart';
 import 'package:propertymaster/models/PostPropertyList.dart' as PostPropertyList;
-import 'package:propertymaster/models/PropertyDataModel.dart';
+import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/utilities/urls.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:propertymaster/views/home/PropertyDetail.dart';
 
 class HomeDashboardPropertySlider extends StatefulWidget {
-  List<PostPropertyList.Listing> propertyList;
+  List<HotListedProperty> propertyList;
   String userId;
   HomeDashboardPropertySlider({super.key, required this.propertyList, required this.userId});
 
@@ -30,7 +29,7 @@ class _HomeDashboardPropertySliderState extends State<HomeDashboardPropertySlide
   Widget build(BuildContext context) {
     final List<Widget> propertySliderData = widget.propertyList!
         .map((item) {
-          return propertyContainer(context,item, widget.userId);
+          return propertyContainerHotListed(context, item, widget.userId);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,45 +122,19 @@ class _HomeDashboardPropertySliderState extends State<HomeDashboardPropertySlide
           );
         }).toList();
 
-    return Stack(
-      children: [
-        CarouselSlider(
-          items: propertySliderData,
-          options: CarouselOptions(
-              autoPlay: true,
-              pauseAutoPlayInFiniteScroll: true,
-              viewportFraction: 1.0,
-              enlargeCenterPage: true,
-              aspectRatio: 2.2,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
-        ),
-        // Positioned(
-        //   left: 20.0,
-        //   bottom: 20.0,
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: propertyList!.map((url) {
-        //       int index = propertyList!.indexOf(url);
-        //       return Container(
-        //         width: 8,
-        //         height: 8,
-        //         margin: const EdgeInsets.symmetric(
-        //           vertical: 10,
-        //           horizontal: 3,
-        //         ),
-        //         decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           color: _current == index ? AppColors.colorSecondary : AppColors.colorSecondaryDashboard,
-        //         ),
-        //       );
-        //     }).toList(),
-        //   ),
-        // ),
-      ],
+    return CarouselSlider(
+      items: propertySliderData,
+      options: CarouselOptions(
+          autoPlay: true,
+          pauseAutoPlayInFiniteScroll: true,
+          viewportFraction: 1.0,
+          enlargeCenterPage: false,
+          aspectRatio: 2.4,
+          onPageChanged: (index, reason) {
+            setState(() {
+              _current = index;
+            });
+          }),
     );
   }
 }

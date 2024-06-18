@@ -5,15 +5,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:propertymaster/models/PostPropertyList.dart' as PostPropertyList;
-import 'package:propertymaster/models/PropertyDataModel.dart';
+import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/models/UpdateProfileImageModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
+import 'package:propertymaster/views/home/SliderDetail.dart';
 import 'package:propertymaster/views/lead-management/AddLead.dart';
 import 'package:propertymaster/views/home/HomeDashboardPropertySlider.dart';
 import 'package:propertymaster/views/lead-management/ManageLeadList.dart';
 import 'package:propertymaster/views/authentication/loginRegisteredUser.dart';
-import 'package:propertymaster/views/home/home_slider.dart';
+import 'package:propertymaster/views/home/HomeSlider.dart';
 import 'package:propertymaster/views/my-team/BusinessPartnerRegistration.dart';
 import 'package:propertymaster/views/resale-deal/PostProperty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,7 @@ import 'dart:async';
 import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/utilities/Urls.dart' ;
 import 'package:dio/dio.dart';
+import 'package:url_launcher/url_launcher.dart';
 // apis
 
 class Home extends StatefulWidget {
@@ -47,10 +49,10 @@ class _HomeState extends State<Home> {
   int todayWorkCount = 0;
   int hotListedCount = 0;
   int totalPropertyCount = 0;
-  List<Listing>? imgList = [];
+  List<ListingNew>? imgList = [];
   List<String> jobTypeList1 = ['Select Job Type','Sr Business Partner','Full Time Business Partner','Part Time Business Partner'];
   List<String> jobTypeList2 = ['Select Job Type','Full Time Business Partner','Part Time Business Partner'];
-  List<PostPropertyList.Listing>? postPropertyList = [];
+  List<HotListedProperty>? postPropertyList = [];
 
   final ImagePicker imagePicker = ImagePicker();
   XFile? photoController;
@@ -82,6 +84,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.whitish,
       key: _scaffoldkey,
       drawer: Drawer(
         child: ListView(
@@ -142,21 +145,9 @@ class _HomeState extends State<Home> {
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.account_box),
-              title: const Text("About"),
-              onTap: () {
-                print("photoController!.path----------${photoController!.path}");
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.grid_3x3_outlined),
-              title: const Text("Products"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.contact_mail),
-              title: const Text("Contact"),
-              onTap: () {},
+              leading: const Icon(Icons.video_settings_sharp),
+              title: const Text("Videos"),
+              onTap: () => openVideoPage(),
             ),
             ListTile(
               leading: const Icon(Icons.logout),
@@ -249,7 +240,7 @@ class _HomeState extends State<Home> {
                     ),
                   )
                 : HomeSlider(imgList: imgList),
-            const SizedBox(height: 10.0,),
+            // const SizedBox(height: 10.0,),
             postPropertyList!.isNotEmpty ?
             HomeDashboardPropertySlider(propertyList: postPropertyList!, userId: userID,) :
             const SizedBox(
@@ -281,6 +272,7 @@ class _HomeState extends State<Home> {
               child: Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0,),
+                // margin: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 10.0),
                 width: MediaQuery.of(context).size.width * 1,
                 height: 45.0,
                 decoration: BoxDecoration(
@@ -582,11 +574,12 @@ class _HomeState extends State<Home> {
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
         HomePageDataModel res = HomePageDataModel.fromJson(map);
         if (res.status == true) {
-          imgList = res.listing;
+          imgList = res.listingNew;
           profileImage = res.userData!.profileImg!;
           todayWorkCount = res.todayWorkCount!;
           hotListedCount = res.hotListedCount!;
           totalPropertyCount = res.totalCount!;
+          postPropertyList = res.hotListedProperty!;
           setState(() {});
         } else {
           Utilities().toast(res.message.toString());
@@ -595,6 +588,7 @@ class _HomeState extends State<Home> {
       }
       return;
     } catch (e) {
+      print('error: $e');
       Utilities().toast('error: $e');
     }
   }
@@ -630,16 +624,16 @@ class _HomeState extends State<Home> {
         builder: (context) {
           return Wrap(children: [
             ListTile(
-              leading: Icon(Icons.camera_alt),
-              title: Text('Camera'),
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
               onTap: () {
                 //Navigator.pop(context);
                 pickImage(context,ImageSource.camera);
               },
             ),
             ListTile(
-              leading: Icon(Icons.photo_album),
-              title: Text('Gallery'),
+              leading: const Icon(Icons.photo_album),
+              title: const Text('Gallery'),
               onTap: () {
                 // Navigator.pop(context);
                 pickImage(context,ImageSource.gallery);
@@ -678,5 +672,10 @@ class _HomeState extends State<Home> {
       setState((){});
       print('image path is ${bytes}');
     }
+  }
+  Future<void> openVideoPage() async {
+    const url = videosUrl;
+    final Uri _url = Uri.parse(url);
+    await launchUrl(_url,mode: LaunchMode.externalApplication);
   }
 }
