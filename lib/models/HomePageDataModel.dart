@@ -137,8 +137,9 @@ class ListingNew {
   String? loanOffer;
   String? about;
   String? builderName;
-  List<String>? certificateUpload;
+  String? certificateUpload;
   String? username;
+  List<LoanProvider>? loanProvider;
 
   ListingNew(
       {this.id,
@@ -156,7 +157,8 @@ class ListingNew {
         this.about,
         this.builderName,
         this.certificateUpload,
-        this.username});
+        this.username,
+        this.loanProvider});
 
   ListingNew.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -168,13 +170,19 @@ class ListingNew {
     location = json['location'];
     registrationNumber = json['registration_number'];
     singleImage = json['single_image'];
-    multipleImage = json['multiple_image']?.cast<String>() ?? [];
-    amenities = json['amenities']?.cast<String>() ?? [];
+    multipleImage = json['multiple_image'].cast<String>();
+    amenities = json['amenities'].cast<String>();
     loanOffer = json['loan_offer'];
     about = json['about'];
     builderName = json['builder_name'];
-    certificateUpload = json['certificate_upload']?.cast<String>() ?? [];
+    certificateUpload = json['certificate_upload'];
     username = json['username'];
+    if (json['loan_provider'] != null) {
+      loanProvider = <LoanProvider>[];
+      json['loan_provider'].forEach((v) {
+        loanProvider!.add(new LoanProvider.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -195,6 +203,29 @@ class ListingNew {
     data['builder_name'] = this.builderName;
     data['certificate_upload'] = this.certificateUpload;
     data['username'] = this.username;
+    if (this.loanProvider != null) {
+      data['loan_provider'] =
+          this.loanProvider!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class LoanProvider {
+  String? name;
+  String? image;
+
+  LoanProvider({this.name, this.image});
+
+  LoanProvider.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['image'] = this.image;
     return data;
   }
 }

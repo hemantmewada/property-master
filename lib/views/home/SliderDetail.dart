@@ -1,11 +1,15 @@
 // ignore_for_file: use_build_context_synchronously, sort_child_properties_last
 
+
 import 'package:flutter/material.dart';
 import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/views/home/SliderDetailCarousel.dart';
+import 'package:dio/dio.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 const List<KeyValueClass> amenitiesList = [
   KeyValueClass(value: "covered_campus", name: "Covered Campus"),
@@ -86,12 +90,62 @@ class _SliderDetailState extends State<SliderDetail> {
                   const SizedBox(height: 10.0,),
                   Row(
                     children: [
-                      const Icon(Icons.edit_location,color: AppColors.colorSecondary),
+                      const Icon(Icons.location_on,color: AppColors.colorSecondary),
                       Text(widget.propertyData!.location!,),
                     ],
                   ),
                   const SizedBox(height: 5.0,),
-                  Text("RERA Registered No: ${widget.propertyData!.registrationNumber!}",),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text("RERA Registered No: ${widget.propertyData!.registrationNumber!}",),
+                        flex: 1,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage,
+                            //add more permission to request here.
+                          ].request();
+
+                          if(statuses[Permission.storage]!.isGranted){
+                            var dir = await DownloadsPathProvider.downloadsDirectory;
+                            if(dir != null){
+                              String savename = "${widget.propertyData!.heading!}-${new DateTime.timestamp()}.pdf";
+                              String savePath = "${dir.path}/$savename";
+                              print(savePath);
+                              //output:  /storage/emulated/0/Download/banner.png
+
+                              try {
+                                await Dio().download(
+                                    widget.propertyData!.certificateUpload!,
+                                    savePath,
+                                    onReceiveProgress: (received, total) {
+                                      if (total != -1) {
+                                        print("${(received / total * 100).toStringAsFixed(0)}%");
+                                        //you can build progressbar feature too
+                                      }
+                                    });
+                                print("File is saved to download folder.");
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                  content: Text("File Downloaded"),
+                                ));
+                              } on DioError catch (e) {
+                                print(e.message);
+                              }
+                            }
+                          }else{
+                            print("No permission to read and write.");
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text("Permission Denied !"),
+                            ));
+                          }
+                        },
+                        child: const Icon(Icons.file_download_outlined,color: AppColors.colorSecondary,),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -144,54 +198,38 @@ class _SliderDetailState extends State<SliderDetail> {
                 ],
               ),
             ),
-            // Container(
-            //   width: MediaQuery.of(context).size.width * 1,
-            //   padding: const EdgeInsets.all(10.0),
-            //   margin: const EdgeInsets.all(8.0),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(5.0),
-            //     color: AppColors.white,
-            //   ),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Text("Home Loan Offers for ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
-            //       const SizedBox(height: 10.0,),
-            //       Wrap(
-            //         runSpacing: 5.0,
-            //         spacing: 5.0,
-            //         children: [
-            //           for (var i = 0; i < amenitiesList.length; i++)
-            //             Row(
-            //               mainAxisSize: MainAxisSize.min,
-            //               children: [
-            //                 Container(
-            //                   padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
-            //                   decoration: BoxDecoration(
-            //                     border: Border.all(
-            //                         color: AppColors.colorSecondary,
-            //                         width: 1.0,
-            //                         style: BorderStyle.solid
-            //                     ),
-            //                     borderRadius: BorderRadius.circular(5.0),
-            //                     color: Colors.white,
-            //                   ),
-            //                   child: Center(
-            //                     child: Text(
-            //                       amenitiesList[i].name,
-            //                       style: const TextStyle(
-            //                         color: AppColors.textColorGrey,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //         ],
-            //       )
-            //     ],
-            //   ),
-            // ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                color: AppColors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Home Loan Offers for ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
+                  const SizedBox(height: 10.0,),
+                  SizedBox(
+                    height: 100.0,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.propertyData!.loanProvider!.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              Image.network(widget.propertyData!.loanProvider![index].image!,height: 80.0,),
+                              Text(widget.propertyData!.loanProvider![index].name!,),
+                            ],
+                          );
+                        }
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Container(
               width: MediaQuery.of(context).size.width * 1,
               padding: const EdgeInsets.all(10.0),
