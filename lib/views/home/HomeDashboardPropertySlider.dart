@@ -16,7 +16,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 class HomeDashboardPropertySlider extends StatefulWidget {
   List<HotListedProperty> propertyList;
   String userId;
-  HomeDashboardPropertySlider({super.key, required this.propertyList, required this.userId});
+  String role;
+  HomeDashboardPropertySlider({super.key, required this.propertyList, required this.userId, required this.role});
 
   @override
   _HomeDashboardPropertySliderState createState() => _HomeDashboardPropertySliderState();
@@ -29,7 +30,7 @@ class _HomeDashboardPropertySliderState extends State<HomeDashboardPropertySlide
   Widget build(BuildContext context) {
     final List<Widget> propertySliderData = widget.propertyList!
         .map((item) {
-          return propertyContainerHotListed(context, item, widget.userId);
+          return propertyContainerHotListed(context, item, widget.userId, widget.role);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,12 +130,8 @@ class _HomeDashboardPropertySliderState extends State<HomeDashboardPropertySlide
           pauseAutoPlayInFiniteScroll: true,
           viewportFraction: 1.0,
           enlargeCenterPage: false,
-          aspectRatio: 2.4,
-          onPageChanged: (index, reason) {
-            setState(() {
-              _current = index;
-            });
-          }),
+          aspectRatio: 1.9,
+          onPageChanged: (index, reason) => setState(() => _current = index)),
     );
   }
 }

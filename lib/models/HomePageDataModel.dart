@@ -7,6 +7,8 @@ class HomePageDataModel {
   int? hotListedCount;
   List<HotListedProperty>? hotListedProperty;
   int? totalCount;
+  int? daysDifference;
+  String? alertmassage;
   String? message;
 
   HomePageDataModel(
@@ -18,6 +20,8 @@ class HomePageDataModel {
         this.hotListedCount,
         this.hotListedProperty,
         this.totalCount,
+        this.daysDifference,
+        this.alertmassage,
         this.message});
 
   HomePageDataModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +50,8 @@ class HomePageDataModel {
       });
     }
     totalCount = json['total_count'];
+    daysDifference = json['days_difference'];
+    alertmassage = json['alertmassage'];
     message = json['message'];
   }
 
@@ -68,6 +74,8 @@ class HomePageDataModel {
           this.hotListedProperty!.map((v) => v.toJson()).toList();
     }
     data['total_count'] = this.totalCount;
+    data['days_difference'] = this.daysDifference;
+    data['alertmassage'] = this.alertmassage;
     data['message'] = this.message;
     return data;
   }
@@ -132,12 +140,15 @@ class ListingNew {
   String? location;
   String? registrationNumber;
   String? singleImage;
+  String? map;
   List<String>? multipleImage;
   List<String>? amenities;
   String? loanOffer;
   String? about;
   String? builderName;
   String? certificateUpload;
+  String? createdAt;
+  String? updatedAt;
   String? username;
   List<LoanProvider>? loanProvider;
 
@@ -151,12 +162,15 @@ class ListingNew {
         this.location,
         this.registrationNumber,
         this.singleImage,
+        this.map,
         this.multipleImage,
         this.amenities,
         this.loanOffer,
         this.about,
         this.builderName,
         this.certificateUpload,
+        this.createdAt,
+        this.updatedAt,
         this.username,
         this.loanProvider});
 
@@ -170,12 +184,15 @@ class ListingNew {
     location = json['location'];
     registrationNumber = json['registration_number'];
     singleImage = json['single_image'];
+    map = json['map'];
     multipleImage = json['multiple_image'].cast<String>();
     amenities = json['amenities'].cast<String>();
     loanOffer = json['loan_offer'];
     about = json['about'];
     builderName = json['builder_name'];
     certificateUpload = json['certificate_upload'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     username = json['username'];
     if (json['loan_provider'] != null) {
       loanProvider = <LoanProvider>[];
@@ -196,12 +213,15 @@ class ListingNew {
     data['location'] = this.location;
     data['registration_number'] = this.registrationNumber;
     data['single_image'] = this.singleImage;
+    data['map'] = this.map;
     data['multiple_image'] = this.multipleImage;
     data['amenities'] = this.amenities;
     data['loan_offer'] = this.loanOffer;
     data['about'] = this.about;
     data['builder_name'] = this.builderName;
     data['certificate_upload'] = this.certificateUpload;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     data['username'] = this.username;
     if (this.loanProvider != null) {
       data['loan_provider'] =
@@ -213,7 +233,7 @@ class ListingNew {
 
 class LoanProvider {
   String? name;
-  String? image;
+  Null? image;
 
   LoanProvider({this.name, this.image});
 
@@ -285,14 +305,14 @@ class HotListedProperty {
   String? buildupArea;
   String? empId;
   String? empCode;
-  String? homeType;
+  Null? homeType;
   String? empName;
   String? soldBy;
   String? sellingRate;
   String? sellingDate;
   String? cilentName;
   String? cilentContact;
-  String? verified;
+  Null? verified;
   String? brokerName;
   String? brokerContact;
   String? soldEmployeeName;
@@ -302,6 +322,8 @@ class HotListedProperty {
   String? statusDescription;
   String? statusDate;
   String? updatedAt;
+  String? statusComplete;
+  String? reason;
 
   HotListedProperty(
       {this.id,
@@ -358,7 +380,9 @@ class HotListedProperty {
         this.deleteStatus,
         this.statusDescription,
         this.statusDate,
-        this.updatedAt});
+        this.updatedAt,
+        this.statusComplete,
+        this.reason});
 
   HotListedProperty.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -416,6 +440,8 @@ class HotListedProperty {
     statusDescription = json['status_description'];
     statusDate = json['status_date'];
     updatedAt = json['updated_at'];
+    statusComplete = json['status_complete'];
+    reason = json['reason'];
   }
 
   Map<String, dynamic> toJson() {
@@ -475,6 +501,8 @@ class HotListedProperty {
     data['status_description'] = this.statusDescription;
     data['status_date'] = this.statusDate;
     data['updated_at'] = this.updatedAt;
+    data['status_complete'] = this.statusComplete;
+    data['reason'] = this.reason;
     return data;
   }
 }

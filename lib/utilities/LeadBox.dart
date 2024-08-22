@@ -149,13 +149,14 @@ class _MyTeamLeadBoxState extends State<MyTeamLeadBox> {
                     widget.heading!,
                     style: const TextStyle(color: AppColors.white,fontSize: 12.0,),
                   ),
-                  widget.heading == "Total User" ?
+                  widget.heading == "Total Leads" ?
                   Text('${AppStrings.pending} : ${widget.pendingCount!}',
                     style: const TextStyle(color: AppColors.white,fontSize: 12.0,),
                   ) : int.parse(widget.pendingCount!) > 0 ?
                   Text('${AppStrings.pending} : ${widget.pendingCount!}',
                     style: const TextStyle(color: AppColors.white,fontSize: 12.0,),
                   ) : const SizedBox(height: 15.0,),
+                  const SizedBox(height: 15.0,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

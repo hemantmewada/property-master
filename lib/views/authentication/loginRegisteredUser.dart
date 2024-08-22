@@ -449,6 +449,7 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
           prefs.setString("role", response.data!.role!);
           prefs.setString("name", response.data!.name!);
           prefs.setString("empId", response.data!.empId!);
+          prefs.setString("email", response.data!.email!);
           Navigator.pushAndRemoveUntil(
             context,
             PageTransition(
@@ -462,9 +463,15 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
           );
         }
       }
+    } on DioError catch (error) {
+      Loader.ProgressloadingDialog(context, false);
+      String errorMessage = error.response?.data['message'] ?? 'An error occurred';
+      Utilities().toast(errorMessage);
+      // print("error.message-------${error.response}");
     } catch (e) {
       Loader.ProgressloadingDialog(context, false);
       Utilities().toast('error: $e');
+      print('error: $e');
     }
   }
   // login api

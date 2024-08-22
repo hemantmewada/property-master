@@ -69,6 +69,10 @@ const List<KeyValueClass> budgetToList = <KeyValueClass>[
   KeyValueClass(value: "200000000", name: '20 cr'),
 ];
 
+const List<String> areaFromList = <String>['Min','600','1000','1500','2000','3000','4000','5000','10000','25000'];
+const List<String> areaToList = <String>['Max','1000','1500','2000','3000','4000','5000','10000','25000','50000'];
+
+
 class SearchProperty extends StatefulWidget {
   const SearchProperty({super.key});
 
@@ -83,6 +87,8 @@ class _SearchPropertyState extends State<SearchProperty> {
   String typeOfProperty = "";
   String budgetFrom = budgetFromList.first.value;
   String budgetTo = budgetToList.first.value;
+  String areaFrom = areaFromList.first;
+  String areaTo = areaToList.first;
 
   @override
   Widget build(BuildContext context) {
@@ -336,18 +342,61 @@ class _SearchPropertyState extends State<SearchProperty> {
                 ],
               ),
               const SizedBox(height: 15.0,),
+              const Text(AppStrings.areaSqFt,style: TextStyle(fontWeight: FontWeight.bold,),),
+              const SizedBox(height: 5.0,),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                      ),
+                      child: AreaFromDropdown(
+                        value: areaFrom,
+                        onChange: (newValue)=> setState(()=> areaFrom = newValue),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 5.0,),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                      ),
+                      child: AreaToDropdown(
+                        value: areaTo,
+                        onChange: (newValue)=> setState(()=> areaTo = newValue),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15.0,),
               InkWell(
                 onTap: () {
                   // print("propertyType--------$propertyType");
                   // print("typeOfProperty--------$typeOfProperty");
                   // print("budgetFrom--------$budgetFrom");
                   // print("budgetTo--------$budgetTo");
+                  // print("areaFrom--------$areaFrom");
+                  // print("areaTo--------$areaTo");
+                  // return;
                   navigateTo(context, SearchedPropertyList(
                     search: localityProjectLandmarkController.text,
                     propertyType: propertyType,
                     typeOfProperty: typeOfProperty,
                     budgetFrom: budgetFrom,
                     budgetTo: budgetTo,
+                    areaFrom: areaFrom,
+                    areaTo: areaTo,
                   ));
                 },
                 child: Container(
@@ -434,7 +483,7 @@ class _BudgetFromDropdownState extends State<BudgetFromDropdown> {
       isExpanded: true,
       value: dropdownValue,
       elevation: 16,
-      style: const TextStyle(fontSize: 15.0,color: AppColors.black,),
+      style: const TextStyle(fontSize: 15.0,color: AppColors.black,fontFamily: 'poppins'),
       underline: Container(color: AppColors.transparent,),
       onChanged: (String? value) {
         // This is called when the user selects an item.
@@ -472,7 +521,7 @@ class _BudgetToDropdownState extends State<BudgetToDropdown> {
       isExpanded: true,
       value: dropdownValue,
       elevation: 16,
-      style: const TextStyle(fontSize: 15.0,color: AppColors.black,),
+      style: const TextStyle(fontSize: 15.0,color: AppColors.black,fontFamily: 'poppins'),
       underline: Container(color: AppColors.transparent,),
       onChanged: (String? value) {
         // This is called when the user selects an item.
@@ -485,6 +534,82 @@ class _BudgetToDropdownState extends State<BudgetToDropdown> {
         return DropdownMenuItem<String>(
           value: item.value,
           child: Text(item.name),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class AreaFromDropdown extends StatefulWidget {
+  String value;
+  final Function(String) onChange; // Callback function
+  AreaFromDropdown({super.key,required this.value,required this.onChange});
+
+  @override
+  State<AreaFromDropdown> createState() => _AreaFromDropdownState();
+}
+class _AreaFromDropdownState extends State<AreaFromDropdown> {
+  String dropdownValue = areaFromList.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      isExpanded: true,
+      isDense: true,
+      value: dropdownValue,
+      padding: const EdgeInsets.symmetric(vertical: 5.0,),
+      elevation: 16,
+      style: const TextStyle(fontSize: 15.0,color: AppColors.black,fontFamily: "poppins"),
+      underline: Container(color: AppColors.transparent,),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+          widget.onChange(value);
+        });
+      },
+      items: areaFromList.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}
+
+class AreaToDropdown extends StatefulWidget {
+  String value;
+  final Function(String) onChange; // Callback function
+  AreaToDropdown({super.key,required this.value,required this.onChange});
+
+  @override
+  State<AreaToDropdown> createState() => _AreaToDropdownState();
+}
+class _AreaToDropdownState extends State<AreaToDropdown> {
+  String dropdownValue = areaToList.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      isExpanded: true,
+      isDense: true,
+      value: dropdownValue,
+      padding: const EdgeInsets.symmetric(vertical: 5.0,),
+      elevation: 16,
+      style: const TextStyle(fontSize: 15.0,color: AppColors.black,fontFamily: "poppins"),
+      underline: Container(color: AppColors.transparent,),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+          widget.onChange(value);
+        });
+      },
+      items: areaToList.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
         );
       }).toList(),
     );

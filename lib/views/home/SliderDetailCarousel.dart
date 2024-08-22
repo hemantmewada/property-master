@@ -37,7 +37,7 @@ class _SliderDetailCarouselState extends State<SliderDetailCarousel> {
         CarouselSlider(
           items: imageSliders,
           options: CarouselOptions(
-              autoPlay: true,
+              autoPlay: false,
               pauseAutoPlayInFiniteScroll: true,
               viewportFraction: 1.0,
               enlargeCenterPage: false,

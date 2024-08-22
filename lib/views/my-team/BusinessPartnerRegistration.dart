@@ -703,7 +703,7 @@ class _BusinessPartnerRegistrationState extends State<BusinessPartnerRegistratio
                   }else if(natureOfWork.isEmpty){
                     Utilities().toast(AppStrings.natureOfWorkToast);
                   }else if(email.isEmpty){
-                    Utilities().toast(AppStrings.natureOfWorkToast);
+                    Utilities().toast(AppStrings.emailToast);
                   }else if(!email.contains("@gmail.com")){
                     Utilities().toast(AppStrings.emailValidToast);
                   }else if(pincode.isEmpty){

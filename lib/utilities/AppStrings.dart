@@ -17,6 +17,8 @@ class AppStrings{
   static const String searchProperties                = 'Search Properties';
   static const String searchLeads                     = 'Search Leads';
   static const String fullName                        = 'Full Name';
+  static const String fatherName                      = 'Father Name';
+  static const String fatherNameToast                 = 'Please Enter Father Name';
   static const String password                        = 'Password';
   static const String confirmPassword                 = 'Confirm Password';
   static const String back                            = 'Back';
@@ -134,7 +136,7 @@ class AppStrings{
   static const String comment                         = 'Comment';
   static const String userIDToast                     = 'Please Enter User ID';
   static const String statusToast                     = 'Please Select Status';
-  static const String reasonToast                     = 'Please Enter Reason';
+  static const String reasonToast                     = 'Please Select Reason';
   static const String dateToast                       = 'Please Select Date';
   static const String timeToast                       = 'Please Select Time';
   static const String plotNoToast                     = 'Please Enter Plot No.';
@@ -148,6 +150,8 @@ class AppStrings{
   static const String nameOfBookingToast              = 'Please Enter Name of Booking';
   static const String bookingDateToast                = 'Please Select Booking Date';
   static const String dobToast                        = 'Please Select DOB';
+  static const String doaToast                        = 'Please Select DOA';
+  static const String dojToast                        = 'Please Select DOJ';
   static const String remarkToast                     = 'Please Enter Remark';
   static const String aadharCardNoToast               = 'Please Enter Aadhar No.';
   static const String aadharCardNoValidToast          = 'Please Enter Valid Aadhar No.';
@@ -173,7 +177,7 @@ class AppStrings{
   static const String sizeToast                       = 'Please Enter Size in SQFT';
   static const String callNow                         = 'Call Now';
   static const String sold                            = 'Sold';
-  static const String requestACallback                = 'Request a callback';
+  static const String callback                        = 'Callback';
   static const String businessPartnerRegistration     = 'Business Partner Registration';
   static const String occupation                      = 'Occupation';
   static const String occupationToast                 = 'Please Select Occupation';
@@ -182,6 +186,7 @@ class AppStrings{
   static const String natureOfWork                    = 'Nature Of Work';
   static const String natureOfWorkToast               = 'Please Enter Nature Of Work';
   static const String designation                     = 'Designation';
+  static const String designationToast                = 'Please Enter Designation';
   static const String email                           = 'Email';
   static const String emailToast                      = 'Email Can\'t be empty';
   static const String emailValidToast                 = 'Please enter Valid Email';
@@ -213,6 +218,7 @@ class AppStrings{
   static const String totalNoOfFloors                 = 'Total No Of Floors';
   static const String expectedPrice                   = 'Expected Price';
   static const String pricePerSqFt                    = 'Price Per SqFt';
+  static const String netPricePerSqFt                 = 'Net Price Per SqFt';
   static const String transactionType                 = 'Transaction Type';
   static const String possessionStatus                = 'Possession Status';
   static const String facing                          = 'Facing';
@@ -235,4 +241,24 @@ class AppStrings{
   static const String totalNoOfFloorsValidToast       = 'Please Enter Valid Total No Of Floors';
   static const String searchProperty                  = 'Search Property';
   static const String propertyType                    = "Property Type";
+  static const String contactUs                       = "Contact Us";
+  static const String myAccount                       = "My Account";
+  static const String profileAndKyc                   = "Profile & KYC";
+  static const String dobShort                        = "DOB";
+  static const String doa                             = "DOA";
+  static const String doj                             = "DOJ";
+  static const String idNo                            = "ID No";
+  static const String idNoToast                       = "Please Enter ID No";
+  static const String currentResidenceAddress         = "Current Residence Address";
+  static const String currentResidenceAddressToast    = "Please Enter Current Residence Address";
+  static const String totalExperienceInYears          = "Total Experience In Years";
+  static const String companyName                     = "Company Name";
+  static const String companyDesignation              = "Company Designation";
+  static const String bankName                        = "Bank Name";
+  static const String accountNo                       = "Account No";
+  static const String branchName                      = "Branch Name";
+  static const String ifscCode                        = "IFSC Code";
+  static const String share                           = "Share";
+  static const String areaSqFt                        = "Area (SqFt)";
+  static const String searchLayoutMap                 = "Search Layout Map";
 }

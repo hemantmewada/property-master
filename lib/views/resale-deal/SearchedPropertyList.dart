@@ -18,7 +18,9 @@ class SearchedPropertyList extends StatefulWidget {
   final String typeOfProperty;
   final String budgetFrom;
   final String budgetTo;
-  const SearchedPropertyList({super.key, required this.search, required this.propertyType, required this.typeOfProperty, required this.budgetFrom, required this.budgetTo});
+  final String areaFrom;
+  final String areaTo;
+  const SearchedPropertyList({super.key, required this.search, required this.propertyType, required this.typeOfProperty, required this.budgetFrom, required this.budgetTo, required this.areaFrom, required this.areaTo});
 
   @override
   State<SearchedPropertyList> createState() => _SearchedPropertyListState();
@@ -70,7 +72,7 @@ class _SearchedPropertyListState extends State<SearchedPropertyList> {
               itemBuilder: (BuildContext context,int index) {
                 return postPropertyList!.isEmpty ?
                 SizedBox(height: MediaQuery.of(context).size.height * 0.5,child: const Center(child: Text("No data found"),)) :
-                propertyContainer(context,postPropertyList![index], userID);
+                propertyContainer(context,postPropertyList![index], userID, role, "searched-property");
               },
             ),
           ),
@@ -93,6 +95,8 @@ class _SearchedPropertyListState extends State<SearchedPropertyList> {
         "category": widget.typeOfProperty,
         "budget_from": widget.budgetFrom,
         "budget_to": widget.budgetTo,
+        "area_from": widget.areaFrom,
+        "area_to": widget.areaTo,
       });
       print(formData.fields);
       final responseDio = await Dio().post(url,data: formData,);

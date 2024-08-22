@@ -29,11 +29,11 @@ Future<void> propertyEnquiryAPI(BuildContext context, String userId, String prop
   return;
 }
 
-Future<void> switchSoldAPI(BuildContext context, String propertyId) async {
+Future<void> switchSoldAPI(BuildContext context, String propertyId, String reason) async {
   const url = Urls.switchSoldUrl;
   try {
     Loader.ProgressloadingDialog(context, true);
-    var formData = FormData.fromMap({"property_id" :  propertyId, "property_status" :  "plot for other"});
+    var formData = FormData.fromMap({"property_id" :  propertyId, "property_status" :  "plot for other", 'reason': reason});
     print(formData.fields);
     final responseDio = await Dio().post(url,data: formData,);
     Loader.ProgressloadingDialog(context, false);

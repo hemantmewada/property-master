@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:propertymaster/models/PostPropertyList.dart' as PostPropertyList;
 import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/models/UpdateProfileImageModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
-import 'package:propertymaster/views/home/SliderDetail.dart';
+import 'package:propertymaster/utilities/Loader.dart';
+import 'package:propertymaster/views/home/ContactUs.dart';
+import 'package:propertymaster/views/home/LayoutMap.dart';
+import 'package:propertymaster/views/my-account/MyAccount.dart';
 import 'package:propertymaster/views/lead-management/AddLead.dart';
 import 'package:propertymaster/views/home/HomeDashboardPropertySlider.dart';
 import 'package:propertymaster/views/lead-management/ManageLeadList.dart';
 import 'package:propertymaster/views/authentication/loginRegisteredUser.dart';
 import 'package:propertymaster/views/home/HomeSlider.dart';
+import 'package:propertymaster/views/my-account/ProfileAndKyc.dart';
 import 'package:propertymaster/views/my-team/BusinessPartnerRegistration.dart';
 import 'package:propertymaster/views/resale-deal/PostProperty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,9 +57,12 @@ class _HomeState extends State<Home> {
   List<String> jobTypeList2 = ['Select Job Type','Full Time Business Partner','Part Time Business Partner'];
   List<HotListedProperty>? postPropertyList = [];
 
+  int daysLeft = 0;
+  String daysLeftMessage = "";
+
+
   final ImagePicker imagePicker = ImagePicker();
   XFile? photoController;
-  XFile? imageFile;
   var bytes;
 
   @override
@@ -87,87 +93,135 @@ class _HomeState extends State<Home> {
       backgroundColor: AppColors.whitish,
       key: _scaffoldkey,
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            // UserAccountsDrawerHeader(
-            //   accountName: Text(name),
-            //   accountEmail: Text(role == "Business Partner" ? "Sr Business Partner" : role),
-            //   decoration: const BoxDecoration(color: AppColors.colorSecondaryLight,),
-            //   currentAccountPicture: const CircleAvatar(
-            //     backgroundImage: AssetImage("assets/images/user.png"),
-            //   ),
-            // ),
-            Container(
-              color: AppColors.colorSecondaryLight,
-              width: MediaQuery.of(context).size.width * 1,
-              padding: const EdgeInsets.fromLTRB(10.0, 70.0, 10.0, 20.0,),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      bottoms_Profileimage(context);
-                      // print("fsdfjsdfk");
-                    },
-                    child: CircleAvatar(
-                      radius: 40,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(60.0),
-                        // radius: 48,
-                        child: photoController != null ?
-                        Image.file(
-                          File(photoController!.path),
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          fit: BoxFit.cover,
-                        ) :
-                        Image.network(
-                          profileImage,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          fit: BoxFit.cover,
+                  Container(
+                    color: AppColors.colorSecondaryLight,
+                    width: MediaQuery.of(context).size.width * 1,
+                    padding: const EdgeInsets.fromLTRB(10.0, 70.0, 10.0, 20.0,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () => bottoms_Profileimage(context),
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(60.0),
+                              // radius: 48,
+                              child: photoController != null ?
+                              Image.file(
+                                File(photoController!.path),
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                fit: BoxFit.cover,
+                              ) :
+                              Image.network(
+                                profileImage,
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                        // const Image(image: AssetImage("assets/images/user.png"),width: 50.0,),
+                        const SizedBox(height: 5.0,),
+                        Text(name,style: const TextStyle(color: AppColors.white)),
+                        Text(empId,style: const TextStyle(color: AppColors.white)),
+                        Text(role == "Business Partner" ? "Sr Business Partner" : role,style: const TextStyle(color: AppColors.white)),
+                      ],
                     ),
                   ),
-                  // const Image(image: AssetImage("assets/images/user.png"),width: 50.0,),
-                  const SizedBox(height: 5.0,),
-                  Text(name,style: const TextStyle(color: AppColors.white)),
-                  Text(empId,style: const TextStyle(color: AppColors.white)),
-                  Text(role == "Business Partner" ? "Sr Business Partner" : role,style: const TextStyle(color: AppColors.white)),
+                  ListTile(
+                    leading: const Icon(Icons.home_outlined),
+                    title: const Text("Home"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.account_circle_outlined),
+                    title: const Text("My Profile"),
+                    onTap: () => navigateTo(context, const MyAccount()),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.video_settings_sharp),
+                    title: const Text("Videos"),
+                    onTap: () => openPage(videoUrl),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: const Text("About Us"),
+                    onTap: () => openPage(aboutUsUrl),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.phone),
+                    title: const Text("Contact Us"),
+                    onTap: () => navigateTo(context, const ContactUs()),
+                    // onTap: () => contactUsShowAlertDialog(context),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.image_search),
+                    title: const Text(AppStrings.searchLayoutMap),
+                    onTap: () => navigateTo(context, const LayoutMap()),
+                    // onTap: () => contactUsShowAlertDialog(context),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Logout'),
+                    onTap: () async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setBool("isLogin", false);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          alignment: Alignment.topCenter,
+                          duration: const Duration(milliseconds: 750),
+                          isIos: true,
+                          child: const LoginRegisteredUser(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.video_settings_sharp),
-              title: const Text("Videos"),
-              onTap: () => openVideoPage(),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool("isLogin", false);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeftWithFade,
-                    alignment: Alignment.topCenter,
-                    duration: const Duration(milliseconds: 750),
-                    isIos: true,
-                    child: const LoginRegisteredUser(),
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: Column(
+                    children: <Widget>[
+                      const Divider(),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () => openPage(facebookUrl),
+                            child: SvgPicture.asset('assets/icons/facebook.svg', width: 30.0,),
+                          ),
+                          InkWell(
+                            onTap: () => openPage(instagramUrl),
+                            child: SvgPicture.asset('assets/icons/instagram.svg', width: 30.0,),
+                          ),
+                          InkWell(
+                            onTap: () => openPage(linkedinUrl),
+                            child: SvgPicture.asset('assets/icons/linkedin.svg', width: 30.0,),
+                          ),
+                          InkWell(
+                            onTap: () => openPage(youtubeUrl),
+                            child: SvgPicture.asset('assets/icons/youtube.svg', width: 30.0,),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                      (route) => false,
-                );
-              },
-            ),
+                )
+            )
           ],
         ),
       ),
@@ -242,10 +296,9 @@ class _HomeState extends State<Home> {
                 : HomeSlider(imgList: imgList),
             // const SizedBox(height: 10.0,),
             postPropertyList!.isNotEmpty ?
-            HomeDashboardPropertySlider(propertyList: postPropertyList!, userId: userID,) :
+            HomeDashboardPropertySlider(propertyList: postPropertyList!, userId: userID, role: role,) :
             const SizedBox(
-              // height: 283.0,
-              height: 120.0,
+              height: 214.0,
               child: Center(
                 child: Text(
                   'No Hot Properties were found !',
@@ -537,23 +590,12 @@ class _HomeState extends State<Home> {
                 },
                 highlightColor: AppColors.transparent,
                 splashColor: AppColors.transparent,
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 8.0,),
-                  width: MediaQuery.of(context).size.width * 1,
-                  height: 45.0,
-                  decoration: BoxDecoration(
-                    color: AppColors.colorSecondary,
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  child: const BlinkText(
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0,),
+                  child: BlinkText(
                     AppStrings.createABusinessPartner,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyle(fontSize: 14.0,color: AppColors.colorSecondaryDark,fontWeight: FontWeight.w700,),
                   ),
                 ),
               ),
@@ -566,9 +608,11 @@ class _HomeState extends State<Home> {
   // this api we have to change with dio
   Future<void> propertyDataAPI(BuildContext context) async {
     try{
+      Loader.ProgressloadingDialog(context, true);
       var url = '${Urls.propertyDataUrl}?user_id=$userID';
       var formData = FormData.fromMap({});
       final responseDio = await Dio().get(url,data: formData,);
+      Loader.ProgressloadingDialog(context, false);
       if (responseDio.statusCode == 200) {
         print("propertyDataAPI ---- $url");
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
@@ -580,12 +624,20 @@ class _HomeState extends State<Home> {
           hotListedCount = res.hotListedCount!;
           totalPropertyCount = res.totalCount!;
           postPropertyList = res.hotListedProperty!;
+          daysLeft = res.daysDifference!;
+          daysLeftMessage = res.alertmassage!;
           setState(() {});
         } else {
           Utilities().toast(res.message.toString());
           setState(() {});
         }
+        Future.delayed(const Duration(seconds: 1),(){
+          if(res.daysDifference! > 0) {
+            homeAlertDialog(context);
+          }
+        });
       }
+
       return;
     } catch (e) {
       print('error: $e');
@@ -642,7 +694,6 @@ class _HomeState extends State<Home> {
           ]);
         });
   }
-
   ///Image picker...............
   Future pickImage(BuildContext context,imageSource) async {
     if(!kIsWeb){
@@ -673,9 +724,112 @@ class _HomeState extends State<Home> {
       print('image path is ${bytes}');
     }
   }
-  Future<void> openVideoPage() async {
-    const url = videosUrl;
+  Future<void> openPage(url) async {
     final Uri _url = Uri.parse(url);
     await launchUrl(_url,mode: LaunchMode.externalApplication);
+  }
+  homeAlertDialog(BuildContext context) {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      insetPadding: const EdgeInsets.all(10.0,),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0),),),
+      alignment: Alignment.center,
+      content: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        height: 400.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SvgPicture.asset('assets/images/warning.svg', height: 250.0,),
+            Text("$daysLeft Days left.", textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600),),
+            Text(daysLeftMessage, textAlign: TextAlign.center,),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: AppColors.transparent,
+                      ),
+                      child: const Center(child: Text("Back"),),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10.0,),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          alignment: Alignment.topCenter,
+                          duration: const Duration(milliseconds: 750),
+                          isIos: true,
+                          child: const ProfileAndKyc(),
+                        )
+                    ).then((value) => Navigator.of(context).pop()),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid),
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: AppColors.colorSecondary,
+                      ),
+                      child: const Center(
+                        child: Text("Upload KYC",style: TextStyle(color: AppColors.white,),),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    print('phoneNumber is ------------------------$phoneNumber');
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
+  Future<void> sendMessage(String phoneNumber,String message) async {
+    // await launch("https://wa.me/${phoneNumber}?text=Hello");
+    String appUrl;
+    if (Platform.isAndroid) {
+      appUrl = "whatsapp://send?phone=$phoneNumber&text=${Uri.parse(message)}";
+    } else {
+      appUrl = "https://api.whatsapp.com/send?phone=$phoneNumber&text=${Uri.parse(message)}";
+    }
+
+    await launch(appUrl);
+  }
+  Future<void> sendMailto(email) async {
+    final String emailSubject = "Subject here";
+    final Uri parsedMailto = Uri.parse("mailto:<$email>?subject=$emailSubject");
+
+    if (!await launchUrl(
+      parsedMailto,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw "error";
+    }
   }
 }

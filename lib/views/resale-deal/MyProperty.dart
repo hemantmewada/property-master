@@ -11,6 +11,7 @@ import "package:propertymaster/utilities/Urls.dart";
 import "package:propertymaster/utilities/Utility.dart";
 import "package:propertymaster/views/dashboard/dashboard.dart";
 import "package:shared_preferences/shared_preferences.dart";
+import 'dart:async';
 
 class MyProperty extends StatefulWidget {
   const MyProperty({super.key});
@@ -29,12 +30,24 @@ class _MyPropertyState extends State<MyProperty> {
   List<Listing>? postPropertyList = [];
   int totalPropertyCount = 0;
   String searchproperty = "";
+  // Define a Timer variable
+  Timer? _debounce;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero,(){
       allProcess();
+    });
+  }
+  void _onSearchChanged(BuildContext context, String value) {
+    // Cancel the previous debounce timer if it exists and is active
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    // Create a new debounce timer
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      searchController.text = value;
+      postPropertyListFirstLoadAPI(context, false);
     });
   }
 
@@ -46,6 +59,12 @@ class _MyPropertyState extends State<MyProperty> {
     print('my role is >>>>> {$role}');
     postPropertyListFirstLoadAPI(context, true);
     setState(() {});
+  }
+  // Cancel the debounce timer in the dispose method to prevent memory leaks
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -76,12 +95,7 @@ class _MyPropertyState extends State<MyProperty> {
         //     },
         //   ),
         // ),
-        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) {
-          searchController.text = value;
-          Future.delayed(const Duration(seconds: 1), (){
-            postPropertyListFirstLoadAPI(context, false);
-          });
-        }),
+        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value)),
         backgroundColor: AppColors.whitish,
         body: Column(
           children: [
@@ -92,7 +106,7 @@ class _MyPropertyState extends State<MyProperty> {
                 itemBuilder: (BuildContext context,int index) {
                   return postPropertyList!.isEmpty ?
                   SizedBox(height: MediaQuery.of(context).size.height * 0.5,child: const Center(child: Text("No data found"),)) :
-                  propertyContainer(context,postPropertyList![index], userID, true);
+                  propertyContainer(context,postPropertyList![index], userID, role, "my-property", true);
                 },
               ),
             ),

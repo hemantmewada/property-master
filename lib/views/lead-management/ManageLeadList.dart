@@ -39,13 +39,12 @@ class ManageLeadList extends StatefulWidget {
 class _ManageLeadListState extends State<ManageLeadList> {
   var phoneNumberController = TextEditingController();
   int _page = 0;
-  final int _limit = 10;
+  final int _limit = 100;
   bool _isFirstLoadRunning = false;
-  bool _hasNextPage = true;
-  bool _isLoadMoreRunning = false;
   List<Listing>? leadList = [];
   ScrollController scrollController = ScrollController();
   var searchController = TextEditingController();
+  Timer? _debounce;
   String searchParameter = '';
   bool onLoadFocusOnTextFormFieldForAll = true;
   bool onLoadFocusOnTextFormFieldForOthers = false;
@@ -60,9 +59,31 @@ class _ManageLeadListState extends State<ManageLeadList> {
     print("widget.userID--------{${widget.userID}}");
     print("widget.role--------{${widget.role}}");
     print("widget.page--------{${widget.page}}");
-    _firstLoad();
-    scrollController = ScrollController()..addListener(_loadMore);
+    realEstateDetailListingFirstLoadAPI(context,true);
     setState(() {});
+  }
+  void _onSearchChanged(String val) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      print("val onChanged is ------------------$val");
+      setState(() => searchParameter = val);
+      realEstateDetailListingFirstLoadAPI(context, false);
+    });
+  }
+
+  void _onFieldSubmitted(String val) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      print("val onSubmitted is ------------------$val");
+      setState(() => searchParameter = val);
+      realEstateDetailListingFirstLoadAPI(context, false);
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -123,20 +144,8 @@ class _ManageLeadListState extends State<ManageLeadList> {
                       Expanded(
                         flex: 1,
                         child: TextFormField(
-                          onChanged: (val){
-                            Future.delayed(const Duration(seconds: 1), (){
-                              print("val onChanged is ------------------$val");
-                              setState(() => searchParameter = val);
-                              realEstateDetailListingFirstLoadAPI(context,false);
-                            });
-                          },
-                          onFieldSubmitted: (val) {
-                            Future.delayed(const Duration(seconds: 1), (){
-                              print("val onSubmitted is ------------------$val");
-                              setState(() => searchParameter = val);
-                              realEstateDetailListingFirstLoadAPI(context,false);
-                            });
-                          },
+                          onChanged: _onSearchChanged,
+                          onFieldSubmitted: _onFieldSubmitted,
                           controller: searchController,
                           autofocus: widget.page == 'all' ? onLoadFocusOnTextFormFieldForAll : onLoadFocusOnTextFormFieldForOthers,
                           keyboardType: TextInputType.text,
@@ -222,7 +231,7 @@ class _ManageLeadListState extends State<ManageLeadList> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    sendMessage(leadList![index].contact!,'Hi, How can i help you.');
+                                    sendMessage('+91${leadList![index].contact!}','Hi, How can i help you.');
                                   },
                                   child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
                                 ),
@@ -267,7 +276,7 @@ class _ManageLeadListState extends State<ManageLeadList> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        sendMessage(leadList![index].contact2!,'Hi, How can i help you.');
+                                        sendMessage('+91${leadList![index].contact2!}','Hi, How can i help you.');
                                       },
                                       child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
                                     ),
@@ -435,12 +444,6 @@ class _ManageLeadListState extends State<ManageLeadList> {
                 },
               ),
             ),
-            if (_isLoadMoreRunning == true) const Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 40),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
             // if (_hasNextPage == false) Container(
             //     padding: const EdgeInsets.only(top: 30, bottom: 40),
             //     color: Colors.amber,
@@ -451,35 +454,6 @@ class _ManageLeadListState extends State<ManageLeadList> {
           ],
         )
     );
-  }
-
-  Future<void> _loadMore() async {
-    if (_hasNextPage == true && _isFirstLoadRunning == false && _isLoadMoreRunning == false && scrollController.position.extentAfter < 300 ) {
-    // if (scrollController.position.maxScrollExtent == scrollController.position.pixels) {
-      setState(() {
-        _isLoadMoreRunning = true; // Display a progress indicator at the bottom
-      });
-
-      _page += 10; // Increase _page by 10
-
-      realEstateDetailListingLoadMoreAPI(context);
-
-
-      setState(() {
-        _isLoadMoreRunning = false;
-      });
-    }
-  }
-
-  Future<void> _firstLoad() async {
-    setState(() {
-      _isFirstLoadRunning = true;
-    });
-    realEstateDetailListingFirstLoadAPI(context,true);
-
-    setState(() {
-      _isFirstLoadRunning = false;
-    });
   }
   // addContactNumberModal dialog
   Future addContactNumberModal(String? leadId) {
@@ -641,45 +615,6 @@ class _ManageLeadListState extends State<ManageLeadList> {
     }
   }
   // real estate api
-  // real estate load more api
-  Future<void> realEstateDetailListingLoadMoreAPI(BuildContext context) async {
-    try {
-      const url = Urls.leadsListUrl;
-      var formData = FormData.fromMap({
-        "user_id" :  widget.userID,
-        "role" :  widget.role,
-        "page" :  widget.page,
-        "length" :  _limit.toString(),
-        "start" :  _page.toString(),
-        "searchParameter" : searchParameter,
-      });
-      final responseDio = await Dio().post(url,data: formData,);
-      if (responseDio.statusCode == 200) {
-        print(Urls.leadsListUrl);
-        Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
-        RealEstateListModel response = RealEstateListModel.fromJson(map);
-        if (response.status == true) {
-          final List<Listing> fetchedPosts = List<Listing>.from(
-              response.data!.listing!);
-          if (fetchedPosts.isNotEmpty) {
-            setState(() {
-              leadList!.addAll(fetchedPosts);
-            });
-          } else {
-            setState(() {
-              _hasNextPage = false;
-            });
-          }
-        } else {
-          Utilities().toast(response.message);
-        }
-      }
-    } catch (e) {
-      Utilities().toast('error: $e');
-    }
-    return;
-  }
-  // real estate load more api
   // real estate api
   Future<void> addContactAPI(BuildContext context, String? leadId) async {
     Loader.ProgressloadingDialog(context, true);

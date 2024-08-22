@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +11,8 @@ import 'package:propertymaster/views/dashboard/dashboard.dart';
 import 'package:propertymaster/views/resale-deal/SearchProperty.dart';
 import 'package:propertymaster/models/PostPropertyList.dart' as PostPropertyList;
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
+
 
 import 'AppStrings.dart';
 
@@ -167,7 +170,10 @@ void navigateTo(BuildContext context,Widget pageLink, [int duration = 750]){
       )
   );
 }
-Container propertyContainer(BuildContext context, PostPropertyList.Listing property, String userId, [bool isMine = false]){
+
+List<String> list = ['Select Status','Sold By Owner','Sold From Any Other Sources','Plan Changed','Any Other Reason'];
+
+Container propertyContainer(BuildContext context, PostPropertyList.Listing property, String userId, String role, String propertyType, [bool isMine = false]){
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -198,6 +204,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       },
     );
   }
+  String reason = "";
   showAlertDialogForMyProperty(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -206,36 +213,111 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
     );
     Widget continueButton = TextButton(
       child: const Text("Continue"),
-      onPressed:  () => switchSoldAPI(context, property.id!),
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      insetPadding: const EdgeInsets.all(10.0,),
-      title: const Text("Plot for other"),
-      content: const Text("Are you sure do you want to change the status?"),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
+      onPressed:  () {
+        if(reason.isEmpty){
+          Utilities().toast(AppStrings.reasonToast);
+          return;
+        }else{
+          switchSoldAPI(context, property.id!, reason);
+        }
+      },
     );
 
     // show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        return StatefulBuilder(
+          builder: (context, setState){
+            return AlertDialog(
+              insetPadding: const EdgeInsets.all(10.0,),
+              title: const Text("Plot for other"),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              content: Container(
+                width: double.maxFinite,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const Text("Select Reason",style: TextStyle(fontSize: 16.0,),),
+                    const SizedBox(height: 5.0,),
+                    Container(
+                      height: 40.0,
+                      margin: const EdgeInsets.only(bottom: 10.0,),
+                      width: MediaQuery.of(context).size.width * 1,
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid,),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: DropdownButtonExample(
+                              reason: reason,
+                              onChange: (newValue){
+                                // print("newValue-----$newValue");
+                                setState((){
+                                  if(newValue == "Select Status"){
+                                    reason = "";
+                                  }else{
+                                    reason = newValue;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              actions: [cancelButton,continueButton,],
+            );
+          }
+        );
       },
     );
   }
+  String message1 = "*Project Name:* ${property.calonyName!}\n"
+      "*Property ID:* ${property.propertyId!}\n"
+      "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
+      "*Location:* ${property.location!}\n"
+      // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
+      "*Property Type:* ${property.typeOfProperty!}\n"
+      "*Buildup Area:* ${property.buildupArea!}\n"
+      "*Transaction Type:* ${property.transactionType!}\n"
+      "*Facing:* ${property.facing!}\n"
+      "*Possession Status:* ${property.possessionStatus!}\n"
+      "*Plot No.:* ${property.numberId!}\n"
+      "*Price/SqFt:* ${property.pricePerSquare!}\n"
+      "*Open Side:* ${property.openSide!}";
+  // print(message1);
+
+  String message2 = "*Project Name:* ${property.calonyName!}\n"
+      "*Property ID:* ${property.propertyId!}\n"
+      "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
+      "*Location:* ${property.location!}\n"
+      // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
+      "*Property Type:* ${property.typeOfProperty!}\n"
+      "*Total Area:* ${property.totalarea!}\n"
+      "*Dimension:* ${property.width} X ${property.length}\n"
+      "*Transaction Type:* ${property.transactionType!}\n"
+      "*Facing:* ${property.facing!}\n"
+      "*Possession Status:* ${property.possessionStatus!}\n"
+      "*Plot No.:* ${property.numberId!}\n"
+      "*Price/SqFt:* ${property.pricePerSquare!}\n"
+      "*Open Side:* ${property.openSide!}";
+  // print(message2);
   return Container(
     width: MediaQuery.of(context).size.width * 1,
     padding: const EdgeInsets.all(10.0),
     margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
-    // margin: const EdgeInsets.only(bottom: 8.0,),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5.0),
-      color: AppColors.white,
+      color: propertyType == "sold-property" ? Colors.red[400] : propertyType == "my-property" ? Colors.green[600] : AppColors.white,
       // image: property.propertyStatus == "Complete Post" ? const DecorationImage(
       //   scale: 5.0,
       //   image: AssetImage("assets/images/verified-bg.png"),
@@ -252,25 +334,30 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           children: [
             Expanded(
               flex: 1,
-              child: Wrap(
-                children: [
-                  Text(
-                    property.calonyName!,
-                    style: const TextStyle(fontWeight: FontWeight.w600,),
-                  ),
-                  if(property.propertyStatus == "Complete Post")
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5.0,),
-                      child: Image.asset("assets/icons/verified.png",width: 20.0,),
-                    ),
-                ],
+              // child: Wrap(
+              //   children: [
+              //     Text(property.calonyName!,style: const TextStyle(fontWeight: FontWeight.w600,),),
+              //     if(property.propertyStatus == "Complete Post")
+              //       Padding(padding: const EdgeInsets.only(left: 5.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),
+              //   ],
+              // ),
+              child:
+              property.statusComplete == "1" ?
+              Text(property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),) :
+              RichText(
+                text: TextSpan(
+                    children: [
+                      TextSpan(text: property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black,fontFamily: "Poppins"),),
+                      WidgetSpan(child: Padding(padding: const EdgeInsets.only(left: 2.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),),
+                    ]
+                ),
               ),
             ),
             Expanded(
               flex: 1,
               child: Text(
                 property.propertyId!,
-                style: const TextStyle(fontWeight: FontWeight.w600,),
+                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -278,7 +365,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!),
-                style: const TextStyle(fontWeight: FontWeight.w600,),
+                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -291,19 +378,90 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           children: [
             Expanded(
               flex: 1,
-              child: Text(property.location!,),
+              child: Text(property.location!, style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),),
             ),
             Expanded(
               flex: 1,
               child: Text(
                 "₹ ${formatNumber(property.expectedPrice!)}",
                 textAlign: TextAlign.center,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
               ),
             ),
             Expanded(
               flex: 1,
               child: Text(
-                property.typeOfProperty!,
+                "${property.pricePerSquare!}/SqFt",
+                textAlign: TextAlign.end,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0,),
+          decoration: const BoxDecoration(
+            color: Color(0xffa3c6e3),
+            borderRadius: BorderRadius.all(Radius.circular(2.0,),),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5.0,),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.transactionType!,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.facing!,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.openSide!,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -316,55 +474,16 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           children: [
             Expanded(
               flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    property.transactionType!,
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              child: Text(
+                property.typeOfProperty!,
+                textAlign: TextAlign.left,
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                children: [
-                  Text(
-                    property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    property.facing!,
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    property.possessionStatus!,
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.end,
-                  ),
-                  Text(
-                    property.openSide!,
-                    // style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.end,
-                  ),
-                ],
+              child: Text(
+                property.possessionStatus!,
+                textAlign: TextAlign.end,
               ),
             ),
           ],
@@ -375,8 +494,32 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: InkWell(
+                onTap: () => showAlertDialog(context),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: AppColors.colorSecondary,
+                        width: 1.0,
+                        style: BorderStyle.solid
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: AppColors.colorSecondary,
+                  ),
+                  child: const Center(child: Text(AppStrings.callback,style: TextStyle(color: AppColors.white,),),),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10.0,),
+            Expanded(
+              flex: 1,
+              child: InkWell(
                 onTap: () {
-                  showAlertDialog(context);
+                  if(property.totalarea == ""){
+                    sendMessage(message1);
+                  }else{
+                    sendMessage(message2);
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5.0,),
@@ -387,9 +530,18 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
                         style: BorderStyle.solid
                     ),
                     borderRadius: BorderRadius.circular(5.0),
-                    color: AppColors.transparent,
+                    color: AppColors.colorSecondary,
                   ),
-                  child: const Center(child: Text(AppStrings.requestACallback),),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.share, size: 16.0, color: AppColors.white,),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                        const Text(AppStrings.share,style: TextStyle(color: AppColors.white,),),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -429,7 +581,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
   );
 }
 
-Container propertyContainerHotListed(BuildContext context, HotListedProperty property, String userId){
+Container propertyContainerHotListed(BuildContext context, HotListedProperty property, String userId, String role){
   showAlertDialog(BuildContext context) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -460,15 +612,41 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       },
     );
   }
+  String message1 = "*Project Name:* ${property.calonyName!}\n"
+      "*Property ID:* ${property.propertyId!}\n"
+      "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
+      "*Location:* ${property.location!}\n"
+      // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
+      "*Property Type:* ${property.typeOfProperty!}\n"
+      "*Buildup Area:* ${property.buildupArea!}\n"
+      "*Transaction Type:* ${property.transactionType!}\n"
+      "*Facing:* ${property.facing!}\n"
+      "*Possession Status:* ${property.possessionStatus!}\n"
+      "*Plot No.:* ${property.numberId!}\n"
+      "*Price/SqFt:* ${property.pricePerSquare!}\n"
+      "*Open Side:* ${property.openSide!}";
+  // print(message1);
+
+  String message2 = "*Project Name:* ${property.calonyName!}\n"
+      "*Property ID:* ${property.propertyId!}\n"
+      "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
+      "*Location:* ${property.location!}\n"
+      // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
+      "*Property Type:* ${property.typeOfProperty!}\n"
+      "*Total Area:* ${property.totalarea!}\n"
+      "*Dimension:* ${property.width} X ${property.length}\n"
+      "*Transaction Type:* ${property.transactionType!}\n"
+      "*Facing:* ${property.facing!}\n"
+      "*Possession Status:* ${property.possessionStatus!}\n"
+      "*Plot No.:* ${property.numberId!}\n"
+      "*Price/SqFt:* ${property.pricePerSquare!}\n"
+      "*Open Side:* ${property.openSide!}";
+  // print(message2);
   return Container(
     width: MediaQuery.of(context).size.width * 1,
     padding: const EdgeInsets.all(10.0),
     margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
-    // margin: const EdgeInsets.only(bottom: 8.0,),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5.0),
-      color: AppColors.white,
-    ),
+    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -478,9 +656,24 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
           children: [
             Expanded(
               flex: 1,
-              child: Text(
-                property.calonyName!,
-                style: const TextStyle(fontWeight: FontWeight.w600,),
+              // child: Wrap(
+              //   children: [
+              //     Text(property.calonyName!,style: const TextStyle(fontWeight: FontWeight.w600,),),
+              //     if(property.propertyStatus == "Complete Post")
+              //       Padding(padding: const EdgeInsets.only(left: 5.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),
+              //   ],
+              // ),
+              child:
+              property.statusComplete == "1" ?
+              Text(property.calonyName!,style: const TextStyle(fontWeight: FontWeight.w600,overflow: TextOverflow.ellipsis,),) :
+              RichText(
+                text: TextSpan(
+                    children: [
+                      TextSpan(text: property.calonyName!,style: const TextStyle(fontWeight: FontWeight.w600,color: AppColors.black,fontFamily: "Poppins",),),
+                      WidgetSpan(child: Padding(padding: const EdgeInsets.only(left: 2.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),),
+                    ]
+                ),
+                // overflow: TextOverflow.ellipsis,
               ),
             ),
             Expanded(
@@ -520,7 +713,73 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: Text(
-                property.typeOfProperty!,
+                "${property.pricePerSquare!}/SqFt",
+                textAlign: TextAlign.end,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0,),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0,),
+          decoration: const BoxDecoration(
+            color: Color(0xffa3c6e3),
+            borderRadius: BorderRadius.all(Radius.circular(2.0,),),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text(
+                  role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
+                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 5.0,),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.transactionType!,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.facing!,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.openSide!,
                 textAlign: TextAlign.end,
               ),
             ),
@@ -533,55 +792,16 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
           children: [
             Expanded(
               flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    property.transactionType!,
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              child: Text(
+                property.typeOfProperty!,
+                textAlign: TextAlign.left,
               ),
             ),
             Expanded(
               flex: 1,
-              child: Column(
-                children: [
-                  Text(
-                    property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    property.facing!,
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    property.possessionStatus!,
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.end,
-                  ),
-                  Text(
-                    property.openSide!,
-                    style: const TextStyle(color: AppColors.textColorGrey,),
-                    textAlign: TextAlign.end,
-                  ),
-                ],
+              child: Text(
+                property.possessionStatus!,
+                textAlign: TextAlign.end,
               ),
             ),
           ],
@@ -592,8 +812,32 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: InkWell(
+                onTap: () => showAlertDialog(context),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0,),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: AppColors.colorSecondary,
+                        width: 1.0,
+                        style: BorderStyle.solid
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: AppColors.colorSecondary,
+                  ),
+                  child: const Center(child: Text(AppStrings.callback,style: TextStyle(color: AppColors.white,),),),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10.0,),
+            Expanded(
+              flex: 1,
+              child: InkWell(
                 onTap: () {
-                  showAlertDialog(context);
+                  if(property.totalarea == ""){
+                    sendMessage(message1);
+                  }else{
+                    sendMessage(message2);
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5.0,),
@@ -604,9 +848,18 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
                         style: BorderStyle.solid
                     ),
                     borderRadius: BorderRadius.circular(5.0),
-                    color: AppColors.transparent,
+                    color: AppColors.colorSecondary,
                   ),
-                  child: const Center(child: Text(AppStrings.requestACallback),),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.share, size: 16.0, color: AppColors.white,),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                        const Text(AppStrings.share,style: TextStyle(color: AppColors.white,),),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -614,9 +867,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: () {
-                  _makePhoneCall("8819888835");
-                },
+                onTap: () => _makePhoneCall("8819888835"),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5.0,),
                   decoration: BoxDecoration(
@@ -642,13 +893,29 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
   );
 }
 
+Future<void> sendMessage(String message) async {
+  // await launch("https://wa.me/${phoneNumber}?text=Hello");
+  String appUrl;
+  if (Platform.isAndroid) {
+    appUrl = "whatsapp://send?text=${Uri.encodeComponent(message)}";
+  } else {
+    appUrl = "https://api.whatsapp.com/send?text=${Uri.encodeComponent(message)}";
+  }
+
+  // if (await launch(appUrl)) {
+  await launch(appUrl);
+  // } else {
+  //   throw 'Could not launch $appUrl';
+  // }
+}
+
 String formatNumber(int number) {
   if (number >= 10000000) {
-    return '${(number / 10000000).toStringAsFixed(1)} Crore';
+    return '${(number / 10000000).toStringAsFixed(2)} Crore';
   } else if (number >= 100000) {
-    return '${(number / 100000).toStringAsFixed(1)} Lakh';
+    return '${(number / 100000).toStringAsFixed(2)} Lakh';
   } else if (number >= 1000) {
-    return '${(number / 1000).toStringAsFixed(1)} Thousand';
+    return '${(number / 1000).toStringAsFixed(2)} Thousand';
   } else {
     return number.toString();
   }
@@ -772,4 +1039,45 @@ class PropertyType {
   final String icon;
   const PropertyType({required this.value, required this.name,required this.icon,});
 }
-const videosUrl = "http://home.propertymaster.co.in/video";
+const videoUrl = "http://home.propertymaster.co.in/video";
+const aboutUsUrl = "https://home.propertymaster.co.in/about-us";
+const facebookUrl = "https://www.facebook.com/PropertyMasterIndore";
+const instagramUrl = "https://www.instagram.com/property_master_indore_";
+const linkedinUrl = "https://www.linkedin.com/company/property-master-official";
+const youtubeUrl = "https://www.youtube.com/@propertymaster6063/featured";
+
+class DropdownButtonExample extends StatefulWidget {
+  String reason;
+  final Function(String) onChange; // Callback function
+  DropdownButtonExample({super.key,required this.reason,required this.onChange});
+
+  @override
+  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+}
+class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+  String dropdownValue = list.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      isExpanded: true,
+      value: dropdownValue,
+      padding: const EdgeInsets.symmetric(vertical: 5.0,),
+      elevation: 16,
+      underline: Container(color: AppColors.transparent,),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+          widget.onChange(value);
+        });
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}

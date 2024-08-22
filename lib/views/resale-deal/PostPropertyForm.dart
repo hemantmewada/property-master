@@ -121,6 +121,8 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
   var totalAreaController = TextEditingController();
   var expectedPriceController = TextEditingController();
   var pricePerSqFtController = TextEditingController();
+  var netPricePerSqFtController = TextEditingController();
+  var plotNoController = TextEditingController();
   String userID = "";
   String role = "";
   String plotTypeProperty = plotTypePropertyList.first;
@@ -308,7 +310,6 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                           padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                           decoration: containerDecoration,
                           child: TextFormField(
-                            readOnly: true,
                             controller: associativeContactController,
                             textCapitalization: TextCapitalization.words,
                             keyboardType: TextInputType.phone,
@@ -355,19 +356,23 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                     Utilities().toast("Invalid width.");
                                     totalAreaController.text = "";
                                     return;
-                                  } else if(int.parse(width) < 1){
+                                  } else if(double.parse(width) < 0){
                                     Utilities().toast("Invalid width.");
                                     totalAreaController.text = "";
                                     return;
                                   }
                                   var length = lengthController.text;
-                                  if(length != "" && int.parse(length) > 0){
-                                    int totalArea = int.parse(width) * int.parse(length);
-                                    totalAreaController.text = totalArea.toString();
+                                  if(length != "" && double.parse(length) > 0){
+                                    double totalArea = double.parse(width) * double.parse(length);
+                                    lengthController.text = double.parse(length).toStringAsFixed(2);
+                                    String formattedTotalArea = totalArea.toStringAsFixed(2);
+                                    // print("totalArea--width--------${totalArea.toStringAsFixed(2)}");
+                                    totalAreaController.text = formattedTotalArea;
                                     var expectedPrice = expectedPriceController.text;
-                                    if(totalArea > 0 && expectedPrice != "" && int.parse(expectedPrice) > 0){
-                                      int pricePerSqFt = int.parse(expectedPrice) ~/ totalArea;
-                                      pricePerSqFtController.text = pricePerSqFt.toString();
+                                    if(totalArea > 0 && expectedPrice != "" && double.parse(expectedPrice) > 0){
+                                      double pricePerSqFt = double.parse(expectedPrice) / double.parse(formattedTotalArea);
+                                      String formattedPricePerSqFt = pricePerSqFt.toStringAsFixed(2);
+                                      pricePerSqFtController.text = formattedPricePerSqFt;
                                     }
                                   }
                                 },
@@ -393,19 +398,23 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                     Utilities().toast("Invalid length.");
                                     totalAreaController.text = "";
                                     return;
-                                  } else if(int.parse(length) < 1){
+                                  } else if(double.parse(length) < 0){
                                     Utilities().toast("Invalid length.");
                                     totalAreaController.text = "";
                                     return;
                                   }
                                   var width = widthController.text;
-                                  if(width != "" && int.parse(width) > 0){
-                                    int totalArea = int.parse(width) * int.parse(length);
-                                    totalAreaController.text = totalArea.toString();
+                                  if(width != "" && double.parse(width) > 0){
+                                    double totalArea = double.parse(width) * double.parse(length);
+                                    widthController.text = double.parse(width).toStringAsFixed(2);
+                                    String formattedTotalArea = totalArea.toStringAsFixed(2);
+                                    // print("totalArea--length--------${totalArea.toStringAsFixed(2)}");
+                                    totalAreaController.text = formattedTotalArea;
                                     var expectedPrice = expectedPriceController.text;
-                                    if(totalArea > 0 && expectedPrice != "" && int.parse(expectedPrice) > 0){
-                                      int pricePerSqFt = int.parse(expectedPrice) ~/ totalArea;
-                                      pricePerSqFtController.text = pricePerSqFt.toString();
+                                    if(totalArea > 0 && expectedPrice != "" && double.parse(expectedPrice) > 0){
+                                      double pricePerSqFt = double.parse(expectedPrice) / double.parse(formattedTotalArea);
+                                      String formattedPricePerSqFt = pricePerSqFt.toStringAsFixed(2);
+                                      pricePerSqFtController.text = formattedPricePerSqFt;
                                     }
                                   }
                                 },
@@ -454,11 +463,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                   decoration: containerDecoration,
                                   child: FacingDropdown(
                                     value: facing,
-                                    onChange: (newValue){
-                                      setState((){
-                                        facing = newValue;
-                                      });
-                                    },
+                                    onChange: (newValue)=> setState(()=> facing = newValue),
                                   ),
                                 ),
                               ],
@@ -478,11 +483,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                                   decoration: containerDecoration,
                                   child: OpenSideDropdown(
                                     value: openSide,
-                                    onChange: (newValue){
-                                      setState((){
-                                        openSide = newValue;
-                                      });
-                                    },
+                                    onChange: (newValue)=> setState(()=> openSide = newValue),
                                   ),
                                 ),
                               ],
@@ -506,22 +507,23 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                           child: TextFormField(
                             onChanged: (superBuildupArea) {
                               if(superBuildupArea == ""){
-                                Utilities().toast("Invalid width.");
+                                Utilities().toast("Invalid super buildup area.");
                                 totalAreaController.text = "";
                                 pricePerSqFtController.text = "";
                                 superBuildupAreaController.text = "";
                                 return;
-                              } else if(int.parse(superBuildupArea) < 1){
-                                Utilities().toast("Invalid width.");
+                              } else if(double.parse(superBuildupArea) < 1){
+                                Utilities().toast("Invalid super buildup area.");
                                 totalAreaController.text = "";
                                 pricePerSqFtController.text = "";
                                 superBuildupAreaController.text = "";
                                 return;
                               }
                               var expectedPrice = expectedPriceController.text;
-                              if(expectedPrice != "" && int.parse(expectedPrice) > 0){
-                                int pricePerSqFt = int.parse(expectedPrice) ~/ int.parse(superBuildupArea);
-                                pricePerSqFtController.text = pricePerSqFt.toString();
+                              if(expectedPrice != "" && double.parse(expectedPrice) > 0){
+                                double pricePerSqFt = double.parse(expectedPrice) / double.parse(superBuildupArea);
+                                String formattedPricePerSqFt = pricePerSqFt.toStringAsFixed(2);
+                                pricePerSqFtController.text = formattedPricePerSqFt;
                               }
                             },
                             controller: superBuildupAreaController,
@@ -570,11 +572,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FloorDropdown(
                                 value: floor,
-                                onChange: (newValue){
-                                  setState((){
-                                    floor = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> floor = newValue),
                               ),
                             ),
                           ],
@@ -593,11 +591,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FlatSizeDropdown(
                                 value: flatSize,
-                                onChange: (newValue){
-                                  setState((){
-                                    flatSize = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> flatSize = newValue),
                               ),
                             ),
                           ],
@@ -617,11 +611,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FurnishedDropdown(
                                 value: furnished,
-                                onChange: (newValue){
-                                  setState((){
-                                    furnished = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> furnished = newValue),
                               ),
                             ),
                           ],
@@ -644,11 +634,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: NoOfFloorDropdown(
                                 value: noOfFloor,
-                                onChange: (newValue){
-                                  setState((){
-                                    noOfFloor = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> noOfFloor = newValue),
                               ),
                             ),
                           ],
@@ -668,11 +654,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FurnishedDropdown(
                                 value: furnished,
-                                onChange: (newValue){
-                                  setState((){
-                                    furnished = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> furnished = newValue),
                               ),
                             ),
                           ],
@@ -692,11 +674,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FacingDropdown(
                                 value: facing,
-                                onChange: (newValue){
-                                  setState((){
-                                    facing = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> facing = newValue),
                               ),
                             ),
                           ],
@@ -720,11 +698,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: NoOfFloorDropdown(
                                 value: noOfFloor,
-                                onChange: (newValue){
-                                  setState((){
-                                    noOfFloor = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> noOfFloor = newValue),
                               ),
                             ),
                           ],
@@ -744,11 +718,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FurnishedDropdown(
                                 value: furnished,
-                                onChange: (newValue){
-                                  setState((){
-                                    furnished = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> furnished = newValue),
                               ),
                             ),
                           ],
@@ -768,11 +738,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FacingDropdown(
                                 value: facing,
-                                onChange: (newValue){
-                                  setState((){
-                                    facing = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> facing = newValue),
                               ),
                             ),
                           ],
@@ -796,11 +762,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FloorDropdown(
                                 value: floor,
-                                onChange: (newValue){
-                                  setState((){
-                                    floor = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> floor = newValue),
                               ),
                             ),
                           ],
@@ -819,11 +781,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FlatSizeDropdown(
                                 value: flatSize,
-                                onChange: (newValue){
-                                  setState((){
-                                    flatSize = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> flatSize = newValue),
                               ),
                             ),
                           ],
@@ -843,11 +801,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                               decoration: containerDecoration,
                               child: FurnishedDropdown(
                                 value: furnished,
-                                onChange: (newValue){
-                                  setState((){
-                                    furnished = newValue;
-                                  });
-                                },
+                                onChange: (newValue)=> setState(()=> furnished = newValue),
                               ),
                             ),
                           ],
@@ -977,27 +931,29 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       child: TextFormField(
                         onChanged: (pricePerSqFt) {
                           if(pricePerSqFt == ""){
-                            Utilities().toast("Invalid length.");
+                            Utilities().toast("Invalid pricePerSqFt.");
                             pricePerSqFtController.text = "";
                             expectedPriceController.text = "";
                             return;
-                          } else if(int.parse(pricePerSqFt) < 1){
-                            Utilities().toast("Invalid length.");
+                          } else if(double.parse(pricePerSqFt) < 0){
+                            Utilities().toast("Invalid pricePerSqFt.");
                             pricePerSqFtController.text = "";
                             expectedPriceController.text = "";
                             return;
                           }
                           if(widget.type == AppStrings.plots){
                             var totalArea = totalAreaController.text;
-                            if(totalArea != "" && int.parse(totalArea) > 0){
-                              int expectedPrice = int.parse(pricePerSqFt) * int.parse(totalArea);
-                              expectedPriceController.text = expectedPrice.toString();
+                            if(totalArea != "" && double.parse(totalArea) > 0){
+                              double expectedPrice = double.parse(pricePerSqFt) * double.parse(totalArea);
+                              String formattedExpectedPrice = expectedPrice.toStringAsFixed(2);
+                              expectedPriceController.text = formattedExpectedPrice;
                             }
                           }else{
                             var superBuildupArea = superBuildupAreaController.text;
-                            if(superBuildupArea != "" && int.parse(superBuildupArea) > 0){
-                              int expectedPrice = int.parse(pricePerSqFt) * int.parse(superBuildupArea);
-                              expectedPriceController.text = expectedPrice.toString();
+                            if(superBuildupArea != "" && double.parse(superBuildupArea) > 0){
+                              double expectedPrice = double.parse(pricePerSqFt) * double.parse(superBuildupArea);
+                              String formattedExpectedPrice = expectedPrice.toStringAsFixed(2);
+                              expectedPriceController.text = formattedExpectedPrice;
                             }
                           }
                         },
@@ -1018,7 +974,35 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                       padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                       decoration: containerDecoration,
                       child: TextFormField(
-                        readOnly: true,
+                        // readOnly: true,
+                        onChanged: (expectedPrice){
+                          if(expectedPrice == ""){
+                            Utilities().toast("Invalid expectedPrice.");
+                            pricePerSqFtController.text = "";
+                            expectedPriceController.text = "";
+                            return;
+                          } else if(double.parse(expectedPrice) < 0){
+                            Utilities().toast("Invalid expectedPrice.");
+                            pricePerSqFtController.text = "";
+                            expectedPriceController.text = "";
+                            return;
+                          }
+                          if(widget.type == AppStrings.plots){
+                            var totalArea = totalAreaController.text;
+                            if(totalArea != "" && double.parse(totalArea) > 0){
+                              double pricePerSqFt =  double.parse(expectedPrice) / double.parse(totalArea);
+                              String formattedPricePerSqFt = pricePerSqFt.toStringAsFixed(2);
+                              pricePerSqFtController.text = formattedPricePerSqFt;
+                            }
+                          }else{
+                            var superBuildupArea = superBuildupAreaController.text;
+                            if(superBuildupArea != "" && double.parse(superBuildupArea) > 0){
+                              double pricePerSqFt =  double.parse(expectedPrice) / double.parse(superBuildupArea);
+                              String formattedPricePerSqFt = pricePerSqFt.toStringAsFixed(2);
+                              pricePerSqFtController.text = formattedPricePerSqFt;
+                            }
+                          }
+                        },
                         controller: expectedPriceController,
                         textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.number,
@@ -1027,6 +1011,48 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                         decoration: inputDecoration(AppStrings.expectedPrice),
                       ),
                     ),
+                  ),
+                ],
+              ),
+              if(role == "Sr Business Manager" || role == "Manager")
+              Column(
+                children: [
+                  const SizedBox(height: 15.0,),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                          decoration: containerDecoration,
+                          child: TextFormField(
+                            controller: netPricePerSqFtController,
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.number,
+                            style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
+                            cursorColor: AppColors.textColorGrey,
+                            decoration: inputDecoration(AppStrings.netPricePerSqFt),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10.0,),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0,),
+                          decoration: containerDecoration,
+                          child: TextFormField(
+                            controller: plotNoController,
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
+                            cursorColor: AppColors.textColorGrey,
+                            decoration: inputDecoration(AppStrings.plotNo),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -1251,15 +1277,19 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
         "transaction_type": transactionType,
         "possession_status": possessionStatus,
         "expected_price": expectedPriceController.text,
-        "price_pr_square": pricePerSqFtController.text,
+        "price_per_square": pricePerSqFtController.text,
+        "net_price_per_square": netPricePerSqFtController.text,
+        "plot_no": plotNoController.text,
         // "aminities": selectedAmenitiesList,
         "description_details": descriptionController.text,
         "buildup_area": superBuildupAreaController.text,
         "floor_no": totalNoOfFloorsController.text,
         "your_space_in_which_floor": floor,
         "furnished_status": furnished,
-        "floor_no": noOfFloor,
+        "number_of_floor": noOfFloor,
         "flat_size": flatSize,
+        "associative_name": associativeNameController.text,
+        "associative_contact": associativeContactController.text,
       });
       formData.fields.add(MapEntry("location[]", location));
       selectedAmenitiesList.forEach((amenity) {

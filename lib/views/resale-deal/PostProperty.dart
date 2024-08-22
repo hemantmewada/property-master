@@ -119,20 +119,20 @@ class _PostPropertyState extends State<PostProperty> {
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Container(),
                   ),
                   const Expanded(
-                    flex: 1,
+                    flex: 3,
                     child: PlotType(
                         icon: Icons.maps_home_work_outlined,
                         heading: AppStrings.plots,
-                        desc: "Residential Plots, Flat, Bungalows",
+                        desc: "Residential Plot, Commercial Plot, Industrial Plot, Farmhouse Plot, Agriculture Plot",
                         goTo: PostPropertyForm(type: AppStrings.plots),
                       ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Container(),
                   ),
                 ],
@@ -142,11 +142,11 @@ class _PostPropertyState extends State<PostProperty> {
                 children: [
                   const SizedBox(width: 20.0),
                   const Expanded(
-                    flex: 3,
+                    flex: 5,
                     child: PlotType(
                         icon: Icons.add_home_work_outlined,
                         heading: AppStrings.commercialSpace,
-                        desc: "Commercial plot, Office space, Showroom",
+                        desc: "Office Space, Commercial, Showroom, Godown, Warehouse",
                         goTo: PostPropertyForm(type: AppStrings.commercialSpace),
                       )
                   ),
@@ -155,11 +155,11 @@ class _PostPropertyState extends State<PostProperty> {
                     child: Container(),
                   ),
                   const Expanded(
-                    flex: 3,
+                    flex: 5,
                     child: PlotType(
                         icon: Icons.warehouse_outlined,
                         heading: AppStrings.flatHouseVilla,
-                        desc: "Farmhouse plots, Agriculture land, Villas",
+                        desc: "\nFlat,\nRow house, Bungalows,\nVillas",
                         goTo: PostPropertyForm(type: AppStrings.flatHouseVilla),
                       ),
                   ),

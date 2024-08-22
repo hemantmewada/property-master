@@ -104,6 +104,7 @@ class Listing {
   String? statusDescription;
   String? statusDate;
   String? updatedAt;
+  String? statusComplete;
 
   Listing(
       {this.id,
@@ -160,7 +161,8 @@ class Listing {
         this.deleteStatus,
         this.statusDescription,
         this.statusDate,
-        this.updatedAt});
+        this.updatedAt,
+        this.statusComplete});
 
   Listing.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -218,6 +220,7 @@ class Listing {
     statusDescription = json['status_description'];
     statusDate = json['status_date'];
     updatedAt = json['updated_at'];
+    statusComplete = json['status_complete'];
   }
 
   Map<String, dynamic> toJson() {
@@ -277,6 +280,7 @@ class Listing {
     data['status_description'] = this.statusDescription;
     data['status_date'] = this.statusDate;
     data['updated_at'] = this.updatedAt;
+    data['status_complete'] = this.statusComplete;
     return data;
   }
 }

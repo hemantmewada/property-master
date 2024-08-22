@@ -10,12 +10,13 @@ import 'package:propertymaster/views/home/SliderDetailCarousel.dart';
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const List<KeyValueClass> amenitiesList = [
   KeyValueClass(value: "covered_campus", name: "Covered Campus"),
   KeyValueClass(value: "semi_covered_campus", name: "Semi Covered Campus"),
   KeyValueClass(value: "school_campus", name: "School in Campus"),
-  KeyValueClass(value: "underground_light_fitting", name: "Underground light fitting "),
+  KeyValueClass(value: "underground_light_fitting", name: "Underground light"),
   KeyValueClass(value: "children_play_area", name: "Children Play Area"),
   KeyValueClass(value: "common_water_supply", name: "Common Water Supply"),
   KeyValueClass(value: "swimming pool", name: "Swimming Pool"),
@@ -58,97 +59,6 @@ class _SliderDetailState extends State<SliderDetail> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 1,
-              padding: const EdgeInsets.all(10.0),
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: AppColors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.propertyData!.heading!,style: const TextStyle(fontSize: 20.0,),),
-                  Row(
-                    children: [
-                      const Text("By "),
-                      Text(
-                        widget.propertyData!.builderName!,
-                        style: const TextStyle(color: AppColors.colorSecondaryDark),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10.0,),
-                  Text(
-                    widget.propertyData!.budget!,
-                    style: const TextStyle(fontSize: 16.0,color: AppColors.colorSecondaryDark,fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 5.0,),
-                  Text("Plot Sizes - ${widget.propertyData!.plotSize!}",),
-                  Text("Project Status - ${widget.propertyData!.propertyStatus!}",),
-                  const SizedBox(height: 10.0,),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on,color: AppColors.colorSecondary),
-                      Text(widget.propertyData!.location!,),
-                    ],
-                  ),
-                  const SizedBox(height: 5.0,),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text("RERA Registered No: ${widget.propertyData!.registrationNumber!}",),
-                        flex: 1,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          Map<Permission, PermissionStatus> statuses = await [
-                            Permission.storage,
-                            //add more permission to request here.
-                          ].request();
-
-                          if(statuses[Permission.storage]!.isGranted){
-                            var dir = await DownloadsPathProvider.downloadsDirectory;
-                            if(dir != null){
-                              String savename = "${widget.propertyData!.heading!}-${new DateTime.timestamp()}.pdf";
-                              String savePath = "${dir.path}/$savename";
-                              print(savePath);
-                              //output:  /storage/emulated/0/Download/banner.png
-
-                              try {
-                                await Dio().download(
-                                    widget.propertyData!.certificateUpload!,
-                                    savePath,
-                                    onReceiveProgress: (received, total) {
-                                      if (total != -1) {
-                                        print("${(received / total * 100).toStringAsFixed(0)}%");
-                                        //you can build progressbar feature too
-                                      }
-                                    });
-                                print("File is saved to download folder.");
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                  content: Text("File Downloaded"),
-                                ));
-                              } on DioError catch (e) {
-                                print(e.message);
-                              }
-                            }
-                          }else{
-                            print("No permission to read and write.");
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text("Permission Denied !"),
-                            ));
-                          }
-                        },
-                        child: const Icon(Icons.file_download_outlined,color: AppColors.colorSecondary,),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             SliderDetailCarousel(imgList: widget.propertyData!.multipleImage!),
             Container(
               width: MediaQuery.of(context).size.width * 1,
@@ -161,36 +71,179 @@ class _SliderDetailState extends State<SliderDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Amenities at ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Project Name: ",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.propertyData!.heading!,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            color: AppColors.colorSecondaryDark,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Text(
+                  //   widget.propertyData!.heading!,
+                  //   style: const TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),
+                  // ),
+                  Row(
+                    children: [
+                      const Text("By "),
+                      Text(
+                        widget.propertyData!.builderName!,
+                        style: const TextStyle(color: AppColors.colorSecondaryDark),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0,),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Price Starts From: ",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.propertyData!.budget!,
+                          style: const TextStyle(
+                            color: AppColors.colorSecondaryDark,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Text(
+                  //   widget.propertyData!.budget!,
+                  //   style: const TextStyle(fontSize: 16.0,color: AppColors.colorSecondaryDark,fontWeight: FontWeight.bold),
+                  // ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Size Starts From: ",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.propertyData!.plotSize!,
+                          style: const TextStyle(
+                            color: AppColors.colorSecondaryDark,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Project Status: ",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.propertyData!.propertyStatus!,
+                          style: const TextStyle(
+                            color: AppColors.colorSecondaryDark,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Location And Address: ",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.black,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.propertyData!.location!,
+                          style: const TextStyle(
+                            color: AppColors.colorSecondaryDark,
+                            fontFamily: "Poppins"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text(
+                        "Layout Map: ",
+                        style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w800,color: AppColors.black,),
+                      ),
+                      InkWell(
+                        onTap: () => openPdf(widget.propertyData!.map!),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.open_in_new_outlined, size: 16.0, color: AppColors.colorSecondary,),
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                            const Text("Click to Open",style: TextStyle(color: AppColors.colorSecondary,),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                color: AppColors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Amenities",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
                   const SizedBox(height: 10.0,),
                   Wrap(
                     runSpacing: 5.0,
                     spacing: 5.0,
                     children: [
-                      for (var amenity in widget.propertyData!.amenities!)
+                      for (var entry in widget.propertyData!.amenities!.asMap().entries)
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColors.colorSecondary,
-                                    width: 1.0,
-                                    style: BorderStyle.solid
-                                ),
-                                borderRadius: BorderRadius.circular(5.0),
-                                color: Colors.white,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  amenitiesList.firstWhere((element) => element.value == amenity, orElse: () => const KeyValueClass(value: '', name: '')).name,
-                                  style: const TextStyle(
-                                    color: AppColors.textColorGrey,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            Text('${entry.key + 1}. ${amenitiesList.firstWhere((element) => element.value == entry.value, orElse: () => const KeyValueClass(value: '', name: '')).name} ',),
                           ],
                         ),
                     ],
@@ -209,24 +262,9 @@ class _SliderDetailState extends State<SliderDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Home Loan Offers for ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
+                  const Text("About",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
                   const SizedBox(height: 10.0,),
-                  SizedBox(
-                    height: 100.0,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.propertyData!.loanProvider!.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Image.network(widget.propertyData!.loanProvider![index].image!,height: 80.0,),
-                              Text(widget.propertyData!.loanProvider![index].name!,),
-                            ],
-                          );
-                        }
-                    ),
-                  ),
+                  Text(widget.propertyData!.about!),
                 ],
               ),
             ),
@@ -241,9 +279,14 @@ class _SliderDetailState extends State<SliderDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("About ${widget.propertyData!.heading}",style: const TextStyle(fontSize: 20.0,),),
+                  const Text("Home Loan Providers",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
                   const SizedBox(height: 10.0,),
-                  Text(widget.propertyData!.about!),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: widget.propertyData!.loanProvider!.length,
+                      itemBuilder: (BuildContext context, int index) => Text('${index+1}. ${widget.propertyData!.loanProvider![index].name!}',)
+                  ),
                 ],
               ),
             ),
@@ -251,5 +294,9 @@ class _SliderDetailState extends State<SliderDetail> {
         ),
       ),
     );
+  }
+  Future<void> openPdf(String url) async {
+    final Uri _url = Uri.parse(url);
+    await launchUrl(_url,mode: LaunchMode.externalApplication);
   }
 }

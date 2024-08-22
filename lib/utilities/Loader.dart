@@ -44,3 +44,4 @@ class Loader {
     FocusManager.instance.primaryFocus?.unfocus();
   }
 }
+Widget loaderGIF = Image.asset('assets/icons/spinner.gif',width: 50.0,);

@@ -68,10 +68,11 @@ class _HomeSliderState extends State<HomeSlider> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            item.location!,
+                            item.heading!,
                             maxLines: 2,
                             style: TextStyle(color: AppColors.white,fontSize: 20.0,fontWeight: FontWeight.w700,),
                           ),
+                          Text(item.location!, style: TextStyle(color: AppColors.white,fontSize: 12.0,),),
                         ],
                       ),
                     ),

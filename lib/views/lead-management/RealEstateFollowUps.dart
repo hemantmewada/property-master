@@ -250,7 +250,7 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
                           ),
                           InkWell(
                             onTap: () {
-                              sendMessage(widget.contact!,'Hi, How can i help you.');
+                              sendMessage('+91${widget.contact!}','Hi, How can i help you.');
                             },
                             child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
                           ),
@@ -285,7 +285,7 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    sendMessage(widget.contact2!,'Hi, How can i help you.');
+                                    sendMessage('+91${widget.contact2!}','Hi, How can i help you.');
                                   },
                                   child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
                                 ),
