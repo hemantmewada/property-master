@@ -41,14 +41,11 @@ class _ContactUsState extends State<ContactUs> {
               width: MediaQuery.of(context).size.width * 1,
               padding: const EdgeInsets.all(10.0),
               margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: AppColors.white,
-              ),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Support :",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
+                  const Text("Admin Support :",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
                   const SizedBox(height: 10.0,),
                   InkWell(
                     onTap: () => _makePhoneCall("+918819888032"),
@@ -57,13 +54,32 @@ class _ContactUsState extends State<ContactUs> {
                         color: CupertinoColors.extraLightBackgroundGray,
                         borderRadius: BorderRadius.all(Radius.circular(5.0,),),
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Icons.call,color: AppColors.colorSecondaryDark,),
                           SizedBox(width: 5.0,),
                           Expanded(child: Text("+91 8819888032",),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0,),
+                  InkWell(
+                    onTap: () => _makePhoneCall("07314681395"),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.extraLightBackgroundGray,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call,color: AppColors.colorSecondaryDark,),
+                          SizedBox(width: 5.0,),
+                          Expanded(child: Text("07314681395",),),
                         ],
                       ),
                     ),
@@ -76,13 +92,101 @@ class _ContactUsState extends State<ContactUs> {
                         color: CupertinoColors.extraLightBackgroundGray,
                         borderRadius: BorderRadius.all(Radius.circular(5.0,),),
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SvgPicture.asset("assets/icons/whatsapp.svg",width: 22.0,),
                           const SizedBox(width: 5.0,),
                           const Expanded(child: Text("+91 8819888032",),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0,),
+                  InkWell(
+                    onTap: () => sendMailto("indore.propertymaster@gmail.com"),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.extraLightBackgroundGray,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.mail,color: AppColors.colorSecondaryDark,),
+                          SizedBox(width: 5.0,),
+                          Expanded(child: Text("indore.propertymaster@gmail.com",),),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Sales Support :",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
+                  const SizedBox(height: 10.0,),
+                  InkWell(
+                    onTap: () => _makePhoneCall("+919644888813"),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.extraLightBackgroundGray,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call,color: AppColors.colorSecondaryDark,),
+                          SizedBox(width: 5.0,),
+                          Expanded(child: Text("+91 9644888813",),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0,),
+                  InkWell(
+                    onTap: () => _makePhoneCall("07314681395"),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.extraLightBackgroundGray,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call,color: AppColors.colorSecondaryDark,),
+                          SizedBox(width: 5.0,),
+                          Expanded(child: Text("07314681395",),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10.0,),
+                  InkWell(
+                    onTap: () => sendMessage("+919644888813",""),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: CupertinoColors.extraLightBackgroundGray,
+                        borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset("assets/icons/whatsapp.svg",width: 22.0,),
+                          const SizedBox(width: 5.0,),
+                          const Expanded(child: Text("+91 9644888813",),),
                         ],
                       ),
                     ),
@@ -95,9 +199,9 @@ class _ContactUsState extends State<ContactUs> {
                         color: CupertinoColors.extraLightBackgroundGray,
                         borderRadius: BorderRadius.all(Radius.circular(5.0,),),
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Icons.mail,color: AppColors.colorSecondaryDark,),
                           SizedBox(width: 5.0,),
@@ -106,6 +210,18 @@ class _ContactUsState extends State<ContactUs> {
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Registered Address :",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
                   const SizedBox(height: 10.0,),
                   InkWell(
                     onTap: () => openMaps(),
@@ -114,9 +230,9 @@ class _ContactUsState extends State<ContactUs> {
                         color: CupertinoColors.extraLightBackgroundGray,
                         borderRadius: BorderRadius.all(Radius.circular(5.0,),),
                       ),
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Icons.location_on,color: AppColors.colorSecondaryDark,),
                           SizedBox(width: 5.0,),

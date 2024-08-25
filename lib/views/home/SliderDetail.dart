@@ -211,9 +211,9 @@ class _SliderDetailState extends State<SliderDetail> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.open_in_new_outlined, size: 16.0, color: AppColors.colorSecondary,),
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
                             const Text("Click to Open",style: TextStyle(color: AppColors.colorSecondary,),),
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                            const Icon(Icons.download_rounded, size: 16.0, color: AppColors.colorSecondary,),
                           ],
                         ),
                       ),

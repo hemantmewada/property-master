@@ -53,6 +53,7 @@ class AppStrings{
   static const String postProperty                    = 'Post Property';
   static const String teamDashboard                   = 'Team Dashboard';
   static const String totalUser                       = 'Total User';
+  static const String totalBP                         = 'Total Business Partner';
   static const String totalBP2                        = 'Total BP';
   static const String todayUser                       = 'Today User';
   static const String activeUser                      = 'Active User';

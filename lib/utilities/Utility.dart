@@ -399,42 +399,35 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           ],
         ),
         const SizedBox(height: 5.0,),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0,),
-          decoration: const BoxDecoration(
-            color: Color(0xffa3c6e3),
-            borderRadius: BorderRadius.all(Radius.circular(2.0,),),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.left,
-                ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.left,
               ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.center,
-                ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.end,
-                ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.end,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(height: 5.0,),
         Row(
@@ -622,7 +615,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "*Plot No.:* ${property.numberId!}\n"
+      "${role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : "" }"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -638,7 +631,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "*Plot No.:* ${property.numberId!}\n"
+      "${role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : "" }"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -720,42 +713,35 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
           ],
         ),
         const SizedBox(height: 5.0,),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0,),
-          decoration: const BoxDecoration(
-            color: Color(0xffa3c6e3),
-            borderRadius: BorderRadius.all(Radius.circular(2.0,),),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.left,
-                ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Text(
+                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.left,
               ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.center,
-                ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                flex: 1,
-                child: Text(
-                  role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
-                  style: const TextStyle(color: AppColors.colorSecondaryDark,),
-                  textAlign: TextAlign.end,
-                ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Text(
+                property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                textAlign: TextAlign.end,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(height: 5.0,),
         Row(
@@ -1039,8 +1025,8 @@ class PropertyType {
   final String icon;
   const PropertyType({required this.value, required this.name,required this.icon,});
 }
-const videoUrl = "http://home.propertymaster.co.in/video";
-const aboutUsUrl = "https://home.propertymaster.co.in/about-us";
+const videoUrl = "http://m.propertymaster.co.in/video/";
+const aboutUsUrl = "https://m.propertymaster.co.in/about-us/";
 const facebookUrl = "https://www.facebook.com/PropertyMasterIndore";
 const instagramUrl = "https://www.instagram.com/property_master_indore_";
 const linkedinUrl = "https://www.linkedin.com/company/property-master-official";

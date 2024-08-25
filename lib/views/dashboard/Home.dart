@@ -19,6 +19,7 @@ import 'package:propertymaster/views/authentication/loginRegisteredUser.dart';
 import 'package:propertymaster/views/home/HomeSlider.dart';
 import 'package:propertymaster/views/my-account/ProfileAndKyc.dart';
 import 'package:propertymaster/views/my-team/BusinessPartnerRegistration.dart';
+import 'package:propertymaster/views/my-team/TeamList.dart';
 import 'package:propertymaster/views/resale-deal/PostProperty.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:blinking_text/blinking_text.dart';
@@ -50,6 +51,7 @@ class _HomeState extends State<Home> {
   String type = "all";
   String profileImage = "";
   int todayWorkCount = 0;
+  int totalBP = 0;
   int hotListedCount = 0;
   int totalPropertyCount = 0;
   List<ListingNew>? imgList = [];
@@ -194,27 +196,58 @@ class _HomeState extends State<Home> {
             Align(
               alignment: FractionalOffset.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.fromLTRB(18.0, 0.0, 18.0, 8.0),
                   child: Column(
                     children: <Widget>[
                       const Divider(),
                       Row(
                         children: [
-                          InkWell(
-                            onTap: () => openPage(facebookUrl),
-                            child: SvgPicture.asset('assets/icons/facebook.svg', width: 30.0,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue[100],
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0,),),
+                            ),
+                            padding: const EdgeInsets.all(2.0),
+                            child: InkWell(
+                              onTap: () => openPage(facebookUrl),
+                              child: SvgPicture.asset('assets/icons/facebook.svg', width: 30.0,),
+                            ),
                           ),
-                          InkWell(
-                            onTap: () => openPage(instagramUrl),
-                            child: SvgPicture.asset('assets/icons/instagram.svg', width: 30.0,),
+                          const SizedBox(width: 5.0,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.pink[100],
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0,),),
+                            ),
+                            padding: const EdgeInsets.all(2.0),
+                            child: InkWell(
+                              onTap: () => openPage(instagramUrl),
+                              child: SvgPicture.asset('assets/icons/instagram.svg', width: 30.0,),
+                            ),
                           ),
-                          InkWell(
-                            onTap: () => openPage(linkedinUrl),
-                            child: SvgPicture.asset('assets/icons/linkedin.svg', width: 30.0,),
+                          const SizedBox(width: 5.0,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlueAccent[100],
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0,),),
+                            ),
+                            padding: const EdgeInsets.all(2.0),
+                            child: InkWell(
+                              onTap: () => openPage(linkedinUrl),
+                              child: SvgPicture.asset('assets/icons/linkedin.svg', width: 30.0,),
+                            ),
                           ),
-                          InkWell(
-                            onTap: () => openPage(youtubeUrl),
-                            child: SvgPicture.asset('assets/icons/youtube.svg', width: 30.0,),
+                          const SizedBox(width: 5.0,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red[100],
+                              borderRadius: const BorderRadius.all(Radius.circular(5.0,),),
+                            ),
+                            padding: const EdgeInsets.all(2.0),
+                            child: InkWell(
+                              onTap: () => openPage(youtubeUrl),
+                              child: SvgPicture.asset('assets/icons/youtube.svg', width: 30.0,),
+                            ),
                           ),
                         ],
                       ),
@@ -522,19 +555,9 @@ class _HomeState extends State<Home> {
                       ),
                       const SizedBox(width: 5.0,),
                       Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            // Navigator.push(
-                            //     context,
-                            //     PageTransition(
-                            //       type: PageTransitionType.rightToLeftWithFade,
-                            //       alignment: Alignment.topCenter,
-                            //       duration: const Duration(milliseconds: 750),
-                            //       isIos: true,
-                            //       child: const HomeScreen(),
-                            //     )
-                            // );
-                          },
+                        child: totalBP > 0 ?
+                        InkWell(
+                          onTap: () => navigateTo(context, TeamList(heading: AppStrings.totalBP,type: "total_partner"),),
                           child: Column(
                             children: [
                               Container(
@@ -549,16 +572,15 @@ class _HomeState extends State<Home> {
                                   children: [
                                     Image.asset('assets/icons/users-alt.png',width: 20.0,color: AppColors.white,),
                                     const SizedBox(width: 5.0,),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(AppStrings.totalBP2,
+                                        const Text(AppStrings.totalBP2,
                                           style: TextStyle(color: AppColors.white,fontSize: 11.0,),
                                         ),
-                                        SizedBox(height: 5.0,),
-                                        Text('0',
-                                          style: TextStyle(color: AppColors.white,fontSize: 18.0,),
+                                        const SizedBox(height: 5.0,),
+                                        Text(totalBP.toString(),style: const TextStyle(color: AppColors.white,fontSize: 18.0,),
                                         ),
                                       ],
                                     ),
@@ -567,7 +589,8 @@ class _HomeState extends State<Home> {
                               ),
                             ],
                           ),
-                        ),
+                        ) :
+                        const Center(),
                       ),
                     ],
                   ),
@@ -621,6 +644,7 @@ class _HomeState extends State<Home> {
           imgList = res.listingNew;
           profileImage = res.userData!.profileImg!;
           todayWorkCount = res.todayWorkCount!;
+          totalBP = res.totalBusinessPartners!;
           hotListedCount = res.hotListedCount!;
           totalPropertyCount = res.totalCount!;
           postPropertyList = res.hotListedProperty!;

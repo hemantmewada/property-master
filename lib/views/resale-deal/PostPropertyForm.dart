@@ -1046,6 +1046,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                           child: TextFormField(
                             controller: plotNoController,
                             keyboardType: TextInputType.text,
+                            textCapitalization: TextCapitalization.characters,
                             style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                             cursorColor: AppColors.textColorGrey,
                             decoration: inputDecoration(AppStrings.plotNo),
@@ -1172,23 +1173,23 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                     Utilities().toast(AppStrings.projectColonyToast);
                   }else if(location.isEmpty){
                     Utilities().toast(AppStrings.locationNameToast);
-                  }else if(expectedPrice.isEmpty || int.parse(expectedPrice) < 1){
+                  }else if(expectedPrice.isEmpty || double.parse(expectedPrice) < 1){
                     Utilities().toast(AppStrings.expectedPriceValidToast);
-                  }else if(pricePerSqFt.isEmpty || int.parse(pricePerSqFt) < 1){
+                  }else if(pricePerSqFt.isEmpty || double.parse(pricePerSqFt) < 1){
                     Utilities().toast(AppStrings.pricePerSqFtValidToast);
                   }else if(widget.type == AppStrings.plots){
-                    if(width.isEmpty || int.parse(width) < 1) {
+                    if(width.isEmpty || double.parse(width) < 1) {
                       Utilities().toast(AppStrings.widthValidToast);
-                    }else if(length.isEmpty || int.parse(length) < 1){
+                    }else if(length.isEmpty || double.parse(length) < 1){
                       Utilities().toast(AppStrings.lengthValidToast);
                     }else {
                       // Utilities().toast("all validation done --${widget.type}");
                       postPropertyAPI(context, projectColonyName);
                     }
                   }else if(widget.type == AppStrings.commercialSpace || widget.type == AppStrings.flatHouseVilla){
-                    if(superBuildupArea.isEmpty || int.parse(superBuildupArea) < 1) {
+                    if(superBuildupArea.isEmpty || double.parse(superBuildupArea) < 1) {
                       Utilities().toast(AppStrings.superBuildupAreaValidToast);
-                    }else if(totalNoOfFloors.isEmpty || int.parse(totalNoOfFloors) < 1){
+                    }else if(totalNoOfFloors.isEmpty || double.parse(totalNoOfFloors) < 1){
                       Utilities().toast(AppStrings.totalNoOfFloorsValidToast);
                     }else {
                       postPropertyAPI(context, projectColonyName);

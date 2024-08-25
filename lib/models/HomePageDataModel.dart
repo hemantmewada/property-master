@@ -1,10 +1,10 @@
 class HomePageDataModel {
   bool? status;
-  List<Listing>? listing;
   List<ListingNew>? listingNew;
   UserData? userData;
   int? todayWorkCount;
   int? hotListedCount;
+  int? totalBusinessPartners;
   List<HotListedProperty>? hotListedProperty;
   int? totalCount;
   int? daysDifference;
@@ -13,11 +13,11 @@ class HomePageDataModel {
 
   HomePageDataModel(
       {this.status,
-        this.listing,
         this.listingNew,
         this.userData,
         this.todayWorkCount,
         this.hotListedCount,
+        this.totalBusinessPartners,
         this.hotListedProperty,
         this.totalCount,
         this.daysDifference,
@@ -26,12 +26,6 @@ class HomePageDataModel {
 
   HomePageDataModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['listing'] != null) {
-      listing = <Listing>[];
-      json['listing'].forEach((v) {
-        listing!.add(new Listing.fromJson(v));
-      });
-    }
     if (json['listing_new'] != null) {
       listingNew = <ListingNew>[];
       json['listing_new'].forEach((v) {
@@ -43,6 +37,7 @@ class HomePageDataModel {
         : null;
     todayWorkCount = json['today_work_count'];
     hotListedCount = json['hot_listed_count'];
+    totalBusinessPartners = json['totalBusinessPartners'];
     if (json['hot_listed_property'] != null) {
       hotListedProperty = <HotListedProperty>[];
       json['hot_listed_property'].forEach((v) {
@@ -58,9 +53,6 @@ class HomePageDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    if (this.listing != null) {
-      data['listing'] = this.listing!.map((v) => v.toJson()).toList();
-    }
     if (this.listingNew != null) {
       data['listing_new'] = this.listingNew!.map((v) => v.toJson()).toList();
     }
@@ -69,6 +61,7 @@ class HomePageDataModel {
     }
     data['today_work_count'] = this.todayWorkCount;
     data['hot_listed_count'] = this.hotListedCount;
+    data['totalBusinessPartners'] = this.totalBusinessPartners;
     if (this.hotListedProperty != null) {
       data['hot_listed_property'] =
           this.hotListedProperty!.map((v) => v.toJson()).toList();
@@ -77,55 +70,6 @@ class HomePageDataModel {
     data['days_difference'] = this.daysDifference;
     data['alertmassage'] = this.alertmassage;
     data['message'] = this.message;
-    return data;
-  }
-}
-
-class Listing {
-  String? id;
-  String? propertyTitle;
-  String? about;
-  String? detail;
-  String? location;
-  String? images;
-  String? image;
-  String? insertTime;
-  String? status;
-
-  Listing(
-      {this.id,
-        this.propertyTitle,
-        this.about,
-        this.detail,
-        this.location,
-        this.images,
-        this.image,
-        this.insertTime,
-        this.status});
-
-  Listing.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    propertyTitle = json['property_title'];
-    about = json['about'];
-    detail = json['detail'];
-    location = json['location'];
-    images = json['images'];
-    image = json['image'];
-    insertTime = json['insert_time'];
-    status = json['status'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['property_title'] = this.propertyTitle;
-    data['about'] = this.about;
-    data['detail'] = this.detail;
-    data['location'] = this.location;
-    data['images'] = this.images;
-    data['image'] = this.image;
-    data['insert_time'] = this.insertTime;
-    data['status'] = this.status;
     return data;
   }
 }
@@ -233,7 +177,7 @@ class ListingNew {
 
 class LoanProvider {
   String? name;
-  Null? image;
+  String? image;
 
   LoanProvider({this.name, this.image});
 
@@ -305,14 +249,14 @@ class HotListedProperty {
   String? buildupArea;
   String? empId;
   String? empCode;
-  Null? homeType;
+  String? homeType;
   String? empName;
   String? soldBy;
   String? sellingRate;
   String? sellingDate;
   String? cilentName;
   String? cilentContact;
-  Null? verified;
+  String? verified;
   String? brokerName;
   String? brokerContact;
   String? soldEmployeeName;

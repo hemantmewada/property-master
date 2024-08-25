@@ -230,7 +230,6 @@ class _TeamListState extends State<TeamList> {
       final responseDio = await Dio().post(url,data: formData,);
       Loader.ProgressloadingDialog(context, false);
       if (responseDio.statusCode == 200) {
-        print(url);
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
         EmployeeListModel response = EmployeeListModel.fromJson(map);
         employeeList!.clear();
