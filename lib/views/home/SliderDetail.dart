@@ -7,9 +7,6 @@ import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/views/home/SliderDetailCarousel.dart';
-import 'package:dio/dio.dart';
-import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const List<KeyValueClass> amenitiesList = [

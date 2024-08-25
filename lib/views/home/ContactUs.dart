@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
+import 'package:propertymaster/views/home/OurWorkspace.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 
@@ -241,6 +242,20 @@ class _ContactUsState extends State<ContactUs> {
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Our Workspace :",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),),
+                  SizedBox(height: 10.0,),
+                  OurWorkspace(),
                 ],
               ),
             ),

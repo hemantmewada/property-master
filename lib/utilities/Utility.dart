@@ -1019,6 +1019,11 @@ class KeyValueClass {
   final String name;
   const KeyValueClass({required this.value, required this.name,});
 }
+class SliderClass {
+  final String name;
+  final String image;
+  const SliderClass({required this.name,required this.image,});
+}
 class PropertyType {
   final String value;
   final String name;
