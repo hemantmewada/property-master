@@ -291,7 +291,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "*Plot No.:* ${property.numberId!}\n"
+      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -307,7 +307,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "*Plot No.:* ${property.numberId!}\n"
+      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -406,7 +406,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: Text(
-                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
+                property.numberId == "" ? "NA" : role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
                 style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
@@ -617,7 +617,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : "" }"
+      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -633,7 +633,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : "" }"
+      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -722,7 +722,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: Text(
-                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
+                property.numberId == "" ? "NA" : role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
                 textAlign: TextAlign.left,
               ),
             ),
