@@ -68,28 +68,40 @@ class _SliderDetailState extends State<SliderDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: "Project Name: ",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.black,
-                            fontFamily: "Poppins"
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "Project Name: ",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.black,
+                                  fontFamily: "Poppins"
+                                ),
+                              ),
+                              TextSpan(
+                                text: widget.propertyData!.heading!,
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: AppColors.colorSecondaryDark,
+                                  fontFamily: "Poppins"
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        TextSpan(
-                          text: widget.propertyData!.heading!,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: AppColors.colorSecondaryDark,
-                            fontFamily: "Poppins"
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      InkWell(
+                        onTap: () => openPdf(widget.propertyData!.map!),
+                        child: const Icon(Icons.open_in_new,color: AppColors.colorSecondaryDark,),
+                      ),
+                    ],
                   ),
                   // Text(
                   //   widget.propertyData!.heading!,
@@ -197,25 +209,25 @@ class _SliderDetailState extends State<SliderDetail> {
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Layout Map: ",
-                        style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w800,color: AppColors.black,),
-                      ),
-                      InkWell(
-                        onTap: () => openPdf(widget.propertyData!.map!),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Click to Open",style: TextStyle(color: AppColors.colorSecondary,),),
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-                            const Icon(Icons.download_rounded, size: 16.0, color: AppColors.colorSecondary,),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const Text(
+                  //       "Layout Map: ",
+                  //       style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.w800,color: AppColors.black,),
+                  //     ),
+                  //     InkWell(
+                  //       onTap: () => openPdf(widget.propertyData!.map!),
+                  //       child: Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           const Text("Click to Open",style: TextStyle(color: AppColors.colorSecondary,),),
+                  //           SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                  //           const Icon(Icons.download_rounded, size: 16.0, color: AppColors.colorSecondary,),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),

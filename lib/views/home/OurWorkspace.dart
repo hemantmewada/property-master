@@ -37,7 +37,7 @@ class _OurWorkspaceState extends State<OurWorkspace> {
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),*/
                 Positioned(
-                  bottom: 40.0,
+                  bottom: 20.0,
                   left: 15.0,
                   right: 0.0,
                   child: Container(
@@ -85,8 +85,8 @@ class _OurWorkspaceState extends State<OurWorkspace> {
               }),
         ),
         Positioned(
-          left: 20.0,
-          bottom: 20.0,
+          left: 15.0,
+          bottom: 0.0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: ourWorkSpaceList!.map((url) {

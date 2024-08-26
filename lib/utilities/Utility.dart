@@ -406,8 +406,8 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: Text(
-                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -415,7 +415,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -423,7 +423,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -469,6 +469,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.typeOfProperty!,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -476,6 +477,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.possessionStatus!,
+                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -720,8 +722,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: Text(
-                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
+                role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
                 textAlign: TextAlign.left,
               ),
             ),
@@ -729,7 +730,6 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
               flex: 1,
               child: Text(
                 property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -737,7 +737,6 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
               flex: 1,
               child: Text(
                 property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                style: const TextStyle(color: AppColors.colorSecondaryDark,),
                 textAlign: TextAlign.end,
               ),
             ),
