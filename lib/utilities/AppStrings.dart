@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppStrings{
-  static const String page1Paragraph                  = 'India’s No 1 Finance, Investment and Real Estate Counselor\n\nWe are educating over 2000 people per day and helping over 200 professional Backed by Veterans.';
-  static const String page2Paragraph                  = 'Most Advanced and Simple to use Lead Referral Technology Platform\n\nWorld No 1 Part Time and Full Time Business Opportunity';
-  static const String page3Paragraph                  = 'Genius Business Manager to Serve Your Customer.';
+  static const String page1Paragraph                  = 'India’s No 1 Real Estate Investment Consultant\n\nWe are educating over 2000 people per day and helping over 200 professional Backed by Veterans.';
+  static const String page2Paragraph                  = 'Most Advanced and Easy to use Real Estate Platform\n\nWorld No 1 Part Time and Full Time Business Opportunity';
+  static const String page3Paragraph                  = 'Genius Business Managers to Resolve your Queries and Serve Your Customer.';
   static const String registeredUser                  = 'Registered User';
   static const String freeUser                        = 'Free User';
   static const String pleaseSelectTypeToLogin         = 'Please select type to login.';
