@@ -231,7 +231,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           builder: (context, setState){
             return AlertDialog(
               insetPadding: const EdgeInsets.all(10.0,),
-              title: const Text("Plot for other"),
+              title: const Text("Sold Reason"),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               content: Container(
                 width: double.maxFinite,
@@ -281,6 +281,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       },
     );
   }
+  // for commercial space & flat, house and villas
   String message1 = "*Project Name:* ${property.calonyName!}\n"
       "*Property ID:* ${property.propertyId!}\n"
       "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
@@ -288,6 +289,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
       "*Property Type:* ${property.typeOfProperty!}\n"
       "*Buildup Area:* ${property.buildupArea!}\n"
+      "${property.typeOfProperty == "Flat" ? "*Flat Size:* ${property.flatSize!}\n" : "*Furnished Status:* ${property.furnishedStatus!}\n"}"
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
@@ -296,6 +298,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Open Side:* ${property.openSide!}";
   // print(message1);
 
+  // for all the plots
   String message2 = "*Project Name:* ${property.calonyName!}\n"
       "*Property ID:* ${property.propertyId!}\n"
       "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
@@ -414,7 +417,8 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: Text(
-                property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                property.propertyType == "Plots" ? "${property.width} X ${property.length}" : property.typeOfProperty == "Flat" ? property.flatSize! : property.furnishedStatus!,
+                // property.totalarea == "" ? "" : "${property.width} X ${property.length}",
                 style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
@@ -422,7 +426,8 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
             Expanded(
               flex: 1,
               child: Text(
-                property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                property.propertyType == "Plots" ? "${property.totalarea!} Sqft" : "${property.buildupArea!} Sqft",
+                // property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
                 style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
@@ -510,10 +515,10 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  if(property.totalarea == ""){
-                    sendMessage(message1);
-                  }else{
+                  if(property.propertyType == "Plots"){
                     sendMessage(message2);
+                  }else{
+                    sendMessage(message1);
                   }
                 },
                 child: Container(
@@ -607,6 +612,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       },
     );
   }
+  // for commercial space & flat, house and villas
   String message1 = "*Project Name:* ${property.calonyName!}\n"
       "*Property ID:* ${property.propertyId!}\n"
       "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
@@ -614,6 +620,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       // "*Price:* ₹ ${formatNumber(property.expectedPrice!)}\n"
       "*Property Type:* ${property.typeOfProperty!}\n"
       "*Buildup Area:* ${property.buildupArea!}\n"
+      "${property.typeOfProperty == "Flat" ? "*Flat Size:* ${property.flatSize!}\n" : "*Furnished Status:* ${property.furnishedStatus!}\n"}"
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
@@ -622,6 +629,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Open Side:* ${property.openSide!}";
   // print(message1);
 
+  // for all the plots
   String message2 = "*Project Name:* ${property.calonyName!}\n"
       "*Property ID:* ${property.propertyId!}\n"
       "*Property Date:* ${Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!)}\n"
@@ -729,14 +737,16 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: Text(
-                property.totalarea == "" ? "" : "${property.width} X ${property.length}",
+                property.propertyType == "Plots" ? "${property.width} X ${property.length}" : property.typeOfProperty == "Flat" ? property.flatSize! : property.furnishedStatus!,
+                // property.totalarea == "" ? "" : "${property.width} X ${property.length}",
                 textAlign: TextAlign.center,
               ),
             ),
             Expanded(
               flex: 1,
               child: Text(
-                property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
+                property.propertyType == "Plots" ? "${property.totalarea!} Sqft" : "${property.buildupArea!} Sqft",
+                // property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
                 textAlign: TextAlign.end,
               ),
             ),
@@ -818,10 +828,10 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  if(property.totalarea == ""){
-                    sendMessage(message1);
-                  }else{
+                  if(property.propertyType == "Plots"){
                     sendMessage(message2);
+                  }else{
+                    sendMessage(message1);
                   }
                 },
                 child: Container(
