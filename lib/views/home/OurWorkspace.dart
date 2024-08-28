@@ -22,20 +22,20 @@ class _OurWorkspaceState extends State<OurWorkspace> {
         .map((item) {
           return Stack(
               children: [
-                Image.asset(
+                /*Image.asset(
                   item.image,
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width,
                   height: 200.0,
-                ),
-                /*CachedNetworkImage(
+                ),*/
+                CachedNetworkImage(
                   imageUrl: item.image,
                   width: MediaQuery.of(context).size.width,
                   height: 200.0,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,)),
                   errorWidget: (context, url, error) => Icon(Icons.error),
-                ),*/
+                ),
                 Positioned(
                   bottom: 20.0,
                   left: 15.0,
