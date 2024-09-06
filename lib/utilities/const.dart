@@ -11,5 +11,5 @@ const List<SliderClass> ourWorkSpaceList = [
   SliderClass(name: "Accounts", image: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/accounts.jpg"),
   SliderClass(name: "Conference Room", image: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/conference_room.jpg"),
   SliderClass(name: "MD Cabin", image: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/md_cabin.jpg"),
-  SliderClass(name: "PM Office", image: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/pm_office.jpeg"),
+  SliderClass(name: "PM Office", image: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/pm_office.jpg"),
 ];

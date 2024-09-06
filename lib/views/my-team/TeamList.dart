@@ -69,10 +69,7 @@ class _TeamListState extends State<TeamList> {
                   padding: const EdgeInsets.all(10.0),
                   margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
                   // margin: const EdgeInsets.only(bottom: 8.0,),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: AppColors.white,
-                  ),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -82,92 +79,223 @@ class _TeamListState extends State<TeamList> {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Text(
-                              employeeList![index].name!,
-                              style: const TextStyle(fontSize: 16.0,),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: InkWell(
+                                    onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: employeeList![index].profileImg!),),
+                                    child: Container(
+                                      width: 70.0,
+                                      height: 70.0,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(Radius.circular(5.0),),
+                                        image: DecorationImage(
+                                          image: NetworkImage(employeeList![index].profileImg!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10.0,),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(employeeList![index].name!,style: const TextStyle(fontSize: 16.0,),),
+                                          Text(employeeList![index].role == "Business Partner" ? "Sr Business Partner" : employeeList![index].role!),
+                                          Text(
+                                            employeeList![index].mobile!,
+                                            style: const TextStyle(fontSize: 16.0,color: AppColors.colorPrimaryDark,fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(width: 10.0,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(employeeList![index].empId!,),
+                                          const SizedBox(height: 10.0,),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () => _makePhoneCall(employeeList![index].mobile!),
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(top: 5.0,),
+                                                  child: SvgPicture.asset('assets/icons/phone.svg',color: AppColors.green,height: 30.0,width: 30.0,),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10.0,),
+                                              InkWell(
+                                                onTap: () => sendMessage('+91${employeeList![index].mobile!}','Hi, How can i help you.'),
+                                                child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          // index == 0 ?
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 5.0,),
-                          //   child: Image.asset("assets/icons/verified.png"),
-                          // ) :
-                          // Container(),
-                          Text(employeeList![index].empId!,),
-                          // const Text("24 Jan 2024"),
                         ],
                       ),
                       const SizedBox(height: 5.0,),
+                      InkWell(
+                        onTap: () => navigateTo(context, ManageLead(userID: employeeList![index].userId!, role: employeeList![index].role!)),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(Utilities().DatefomatToOnlyDate2("yyyy-MM-dd HH:mm:ss",employeeList![index].registerDateTime!)),
+                            ),
+                            Row(
+                              children: [
+                                const Text(AppStrings.totalLeads,style: TextStyle(fontSize: 16.0,),),
+                                const SizedBox(width: 5.0,),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0,),
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.colorSecondary,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(5.0),
+                                      bottomLeft: Radius.circular(5.0),
+                                      bottomRight: Radius.circular(5.0),
+                                      topRight: Radius.circular(5.0),
+                                    ),
+                                  ),
+                                  child: Text(employeeList![index].totalLeads.toString(),style: const TextStyle(color: AppColors.white,fontSize: 16.0,),),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 5.0,),
+                    ],
+                  ),
+                );
+                return Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  padding: const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
+                  // margin: const EdgeInsets.only(bottom: 8.0,),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0),color: AppColors.white,),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Text(employeeList![index].role == "Business Partner" ? "Sr Business Partner" : employeeList![index].role!),
-                          ),
-                          Text(Utilities().DatefomatToDateAndTime("yyyy-MM-dd HH:mm:ss",employeeList![index].registerDateTime!)),
-                          // const Text("24 Jan 2024"),
-                        ],
-                      ),
-                      // const SizedBox(height: 5.0,),
-                      // const Row(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Text("IND01245"),
-                      //     ),
-                      //   ],
-                      // ),
-                      const SizedBox(height: 5.0,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                                employeeList![index].mobile!,
-                              style: const TextStyle(fontSize: 16.0,color: AppColors.colorPrimaryDark,fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              InkWell(
-                                onTap: () => _makePhoneCall(employeeList![index].mobile!),
-                                child: Container(
-                                  margin: const EdgeInsets.only(top: 5.0,),
-                                  child: SvgPicture.asset('assets/icons/phone.svg',color: AppColors.green,height: 30.0,width: 30.0,),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: InkWell(
+                                    onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: "https://propertymaster.co.in/propertymaster-admin/assets/our-space/accounts.jpg"),),
+                                    child: const CircleAvatar(
+                                      radius: 30.0,
+                                      backgroundImage:
+                                      NetworkImage("https://propertymaster.co.in/propertymaster-admin/assets/our-space/accounts.jpg"),
+                                      // NetworkImage(employeeList![index].profileImg!)),
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  sendMessage('+91${employeeList![index].mobile!}','Hi, How can i help you.');
-                                },
-                                child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
-                              ),
-                            ],
+                                const SizedBox(width: 10.0,),
+                                Expanded(
+                                  flex: 1,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(Utilities().DatefomatToOnlyDate2("yyyy-MM-dd HH:mm:ss",employeeList![index].registerDateTime!)),
+                                          const SizedBox(height: 10.0,),
+                                          Text(
+                                            employeeList![index].mobile!,
+                                            style: const TextStyle(fontSize: 16.0,color: AppColors.colorPrimaryDark,fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(width: 10.0,),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(employeeList![index].empId!,),
+                                          const SizedBox(height: 10.0,),
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: () => _makePhoneCall(employeeList![index].mobile!),
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(top: 5.0,),
+                                                  child: SvgPicture.asset('assets/icons/phone.svg',color: AppColors.green,height: 30.0,width: 30.0,),
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  sendMessage('+91${employeeList![index].mobile!}','Hi, How can i help you.');
+                                                },
+                                                child: SvgPicture.asset('assets/icons/whatsapp.svg',height: 30.0,width: 30.0,),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () {
-                          navigateTo(context, ManageLead(userID: employeeList![index].userId!, role: employeeList![index].role!));
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ManageLead()));
-                        },
+                        onTap: () => navigateTo(context, ManageLead(userID: employeeList![index].userId!, role: employeeList![index].role!)),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 1,
-                              child: Text(AppStrings.totalLeads,style: TextStyle(fontSize: 16.0,),),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    employeeList![index].name!,
+                                    style: const TextStyle(fontSize: 16.0,),
+                                  ),
+                                  Text(employeeList![index].role == "Business Partner" ? "Sr Business Partner" : employeeList![index].role!),
+                                ],
+                              ),
                             ),
+                            const Expanded(child: Text(AppStrings.totalLeads,style: TextStyle(fontSize: 16.0,),)),
                             Container(
-                              // height: 25.0,
                               padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0,),
                               decoration: const BoxDecoration(
                                 color: AppColors.colorSecondary,

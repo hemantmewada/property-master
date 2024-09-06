@@ -71,11 +71,12 @@ class _MyTeamState extends State<MyTeam> {
               child: Column(
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       MyTeamLeadBox(
                         count: employeeCount == null ? '0' : employeeCount!.totaluser.toString(),
                         pendingCount: "0",
-                        heading: AppStrings.totalUser,
+                        heading: "Total\nUser",
                         primaryColor: AppColors.colorSecondary,
                         secondaryColor: AppColors.colorSecondaryDashboard,
                         icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
@@ -85,22 +86,44 @@ class _MyTeamState extends State<MyTeam> {
                       MyTeamLeadBox(
                         count: employeeCount == null ? '0' : employeeCount!.todayuser.toString(),
                         pendingCount: "0",
-                        heading: AppStrings.todayUser,
+                        heading: "Today\nUser",
                         primaryColor: AppColors.colorPrimaryDark,
                         secondaryColor: AppColors.primaryColorLight,
                         icon: const Icon(FontAwesomeIcons.userClock,color: AppColors.white),
                         pageLink: TeamList(heading: AppStrings.todayUser,type: "today_user"),
                       ),
                       const SizedBox(width: 10.0,),
-                      MyTeamLeadBox(
-                        count: employeeCount == null ? '0' : employeeCount!.activeUser.toString(),
-                        pendingCount: "0",
-                        heading: AppStrings.activeUser,
-                        primaryColor: AppColors.orange,
-                        secondaryColor: AppColors.orangeLight,
-                        icon: const Icon(FontAwesomeIcons.userCheck,color: AppColors.white),
-                        pageLink: TeamList(heading: AppStrings.activeUser,type: "active_user"),
-                      ),
+                      widget.role == "Sr Business Manager" ?
+                          MyTeamLeadBox(
+                            count: employeeCount == null ? '0' : employeeCount!.businessManager.toString(),
+                            pendingCount: "0",
+                            heading: "Business\nManager",
+                            primaryColor: AppColors.voilet,
+                            secondaryColor: AppColors.voiletLight,
+                            icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
+                            pageLink: TeamList(heading: AppStrings.businessManager,type: "bm"),
+                          ) :
+                          widget.role == "Manager" ?
+                              MyTeamLeadBox(
+                                count: employeeCount == null ? '0' : employeeCount!.sBusinessPartner.toString(),
+                                pendingCount: "0",
+                                heading: "Sr. Business\nPartner",
+                                primaryColor: AppColors.green,
+                                secondaryColor: AppColors.greenLight,
+                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
+                                pageLink: TeamList(heading: AppStrings.srBP,type: "sbp"),
+                              ) :
+                              widget.role == "Business Partner" ?
+                                  MyTeamLeadBox(
+                                    count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
+                                    pendingCount: "0",
+                                    heading: "Full Time\nBP",
+                                    primaryColor: AppColors.orange,
+                                    secondaryColor: AppColors.orangeLight,
+                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
+                                    pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
+                                  ) :
+                                  Container(),
                     ],
                   ),
                   const SizedBox(height: 10.0,),
@@ -108,21 +131,12 @@ class _MyTeamState extends State<MyTeam> {
                       Column(
                         children: [
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.businessManager.toString(),
-                                pendingCount: "0",
-                                heading: AppStrings.businessManager,
-                                primaryColor: AppColors.parrotColorDark,
-                                secondaryColor: AppColors.parrotColorLight,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.businessManager,type: "bm"),
-                              ),
-                              const SizedBox(width: 10.0,),
                               MyTeamLeadBox(
                                 count: employeeCount == null ? '0' : employeeCount!.sBusinessPartner.toString(),
                                 pendingCount: "0",
-                                heading: AppStrings.srBP,
+                                heading: "Sr. Business\nPartner",
                                 primaryColor: AppColors.green,
                                 secondaryColor: AppColors.greenLight,
                                 icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
@@ -132,74 +146,21 @@ class _MyTeamState extends State<MyTeam> {
                               MyTeamLeadBox(
                                 count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
                                 pendingCount: "0",
-                                heading: AppStrings.fullTimeBP,
+                                heading: "Full Time\nBP",
                                 primaryColor: AppColors.orange,
                                 secondaryColor: AppColors.orangeLight,
                                 icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
                                 pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 10.0,),
-                          Row(
-                            children: [
+                              const SizedBox(width: 10.0,),
                               MyTeamLeadBox(
                                 count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
                                 pendingCount: "0",
-                                heading: AppStrings.partTimeBP,
+                                heading: "Part Time\nBP",
                                 primaryColor: AppColors.parrotColorDark,
                                 secondaryColor: AppColors.parrotColorLight,
                                 icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
                                 pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
-                              ),
-                              const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.completeKycUser.toString(),
-                                pendingCount: "0",
-                                heading: AppStrings.completeKYCUser,
-                                primaryColor: AppColors.dark_grey,
-                                secondaryColor: AppColors.light_grey,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.completeKYCUser,type: "complete_kyc"),
-                              ),
-                              const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.pendingKycUser.toString(),
-                                pendingCount: "0",
-                                heading: AppStrings.pendingKYCUser,
-                                primaryColor: AppColors.dark_part_time_BP,
-                                secondaryColor: AppColors.part_time_BP,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.pendingKYCUser,type: "pending_kyc"),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10.0,),
-                          Row(
-                            children: [
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.rejectUser.toString(),
-                                pendingCount: "0",
-                                heading: AppStrings.rejectUser,
-                                primaryColor: AppColors.voilet,
-                                secondaryColor: AppColors.voiletLight,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.rejectUser,type: "reject_user"),
-                              ),
-                              const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                // count: employeeCount == null ? '0' : employeeCount!.ourProjects.toString(),
-                                count: '0',
-                                pendingCount: "0",
-                                heading: AppStrings.ourProjects,
-                                primaryColor: AppColors.carrotColorDark,
-                                secondaryColor: AppColors.carrotColorLight,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.ourProjects,type: "project"),
-                              ),
-                              const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                isAvailable: false,
                               ),
                             ],
                           ),
@@ -207,171 +168,101 @@ class _MyTeamState extends State<MyTeam> {
                       ) :
                   widget.role == "Manager" ?
                       Column(
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.sBusinessPartner.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.srBP,
-                                    primaryColor: AppColors.green,
-                                    secondaryColor: AppColors.greenLight,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.totalUser,type: "total_user"),
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.fullTimeBP,
-                                    primaryColor: AppColors.orange,
-                                    secondaryColor: AppColors.orangeLight,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.partTimeBP,
-                                    primaryColor: AppColors.parrotColorDark,
-                                    secondaryColor: AppColors.parrotColorLight,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
-                                  ),
-                                ],
+                              MyTeamLeadBox(
+                                count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
+                                pendingCount: "0",
+                                heading: "Full Time\nBP",
+                                primaryColor: AppColors.orange,
+                                secondaryColor: AppColors.orangeLight,
+                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
+                                pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
                               ),
-                              const SizedBox(height: 10.0,),
-                              Row(
-                                children: [
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.completeKycUser.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.completeKYCUser,
-                                    primaryColor: AppColors.dark_grey,
-                                    secondaryColor: AppColors.light_grey,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.completeKYCUser,type: "complete_kyc"),
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.pendingKycUser.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.pendingKYCUser,
-                                    primaryColor: AppColors.dark_part_time_BP,
-                                    secondaryColor: AppColors.part_time_BP,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.pendingKYCUser,type: "pending_kyc"),
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    count: employeeCount == null ? '0' : employeeCount!.rejectUser.toString(),
-                                    pendingCount: "0",
-                                    heading: AppStrings.rejectUser,
-                                    primaryColor: AppColors.voilet,
-                                    secondaryColor: AppColors.voiletLight,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.rejectUser,type: "reject_user"),
-                                  ),
-                                ],
+                              const SizedBox(width: 10.0,),
+                              MyTeamLeadBox(
+                                count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
+                                pendingCount: "0",
+                                heading: "Part Time\nBP",
+                                primaryColor: AppColors.parrotColorDark,
+                                secondaryColor: AppColors.parrotColorLight,
+                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
+                                pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
                               ),
-                              const SizedBox(height: 10.0,),
-                              Row(
-                                children: [
-                                  MyTeamLeadBox(
-                                    count: '0',
-                                    pendingCount: "0",
-                                    heading: AppStrings.ourProjects,
-                                    primaryColor: AppColors.carrotColorDark,
-                                    secondaryColor: AppColors.carrotColorLight,
-                                    icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.ourProjects,type: "project"),
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    isAvailable: false,
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    isAvailable: false,
-                                  ),
-                                ],
+                              const SizedBox(width: 10.0,),
+                              MyTeamLeadBox(
+                                isAvailable: false,
                               ),
-                            ],
-                        ) :
+                        ],
+                      ),
+                    ],
+                  ) :
                   widget.role == "Business Partner" ?
                       Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      MyTeamLeadBox(
-                                        count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
-                                        pendingCount: "0",
-                                        heading: AppStrings.fullTimeBP,
-                                        primaryColor: AppColors.orange,
-                                        secondaryColor: AppColors.orangeLight,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
-                                      ),
-                                      const SizedBox(width: 10.0,),
-                                      MyTeamLeadBox(
+                                  MyTeamLeadBox(
                                         count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
                                         pendingCount: "0",
-                                        heading: AppStrings.partTimeBP,
+                                        heading: "Part Time\nBP",
                                         primaryColor: AppColors.parrotColorDark,
                                         secondaryColor: AppColors.parrotColorLight,
                                         icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
                                         pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
                                       ),
-                                      const SizedBox(width: 10.0,),
-                                      MyTeamLeadBox(
-                                        count: employeeCount == null ? '0' : employeeCount!.completeKycUser.toString(),
-                                        pendingCount: "0",
-                                        heading: AppStrings.completeKYCUser,
-                                        primaryColor: AppColors.dark_grey,
-                                        secondaryColor: AppColors.light_grey,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.completeKYCUser,type: "complete_kyc"),
-                                      ),
-                                    ],
+                                  const SizedBox(width: 10.0,),
+                                  MyTeamLeadBox(
+                                    isAvailable: false,
                                   ),
-                                  const SizedBox(height: 10.0,),
-                                  Row(
-                                    children: [
-                                      MyTeamLeadBox(
-                                        count: employeeCount == null ? '0' : employeeCount!.pendingKycUser.toString(),
-                                        pendingCount: "0",
-                                        heading: AppStrings.pendingKYCUser,
-                                        primaryColor: AppColors.dark_part_time_BP,
-                                        secondaryColor: AppColors.part_time_BP,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.pendingKYCUser,type: "pending_kyc"),
-                                      ),
-                                      const SizedBox(width: 10.0,),
-                                      MyTeamLeadBox(
-                                        count: employeeCount == null ? '0' : employeeCount!.rejectUser.toString(),
-                                        pendingCount: "0",
-                                        heading: AppStrings.rejectUser,
-                                        primaryColor: AppColors.voilet,
-                                        secondaryColor: AppColors.voiletLight,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.rejectUser,type: "reject_user"),
-                                      ),
-                                      const SizedBox(width: 10.0,),
-                                      MyTeamLeadBox(
-                                        count: '0',
-                                        pendingCount: "0",
-                                        heading: AppStrings.ourProjects,
-                                        primaryColor: AppColors.carrotColorDark,
-                                        secondaryColor: AppColors.carrotColorLight,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.ourProjects,type: "project"),
-                                      ),
-                                    ],
+                                  const SizedBox(width: 10.0,),
+                                  MyTeamLeadBox(
+                                    isAvailable: false,
                                   ),
                                 ],
-                            ) :
+                              ),
+                          ],
+                      ) :
                   Container(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Center(child: Text("KYC Verified Partner",style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w800,),)),
+                      const SizedBox(height: 10.0,),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MyTeamLeadBox(
+                            count: employeeCount == null ? '0' : employeeCount!.completeKycUser.toString(),
+                            pendingCount: "0",
+                            heading: "Complete KYC\nUser",
+                            primaryColor: AppColors.dark_grey,
+                            secondaryColor: AppColors.light_grey,
+                            icon: const Icon(Icons.verified_rounded,color: AppColors.white,),
+                            pageLink: TeamList(heading: AppStrings.completeKYCUser,type: "complete_kyc"),
+                          ),
+                          const SizedBox(width: 10.0,),
+                          MyTeamLeadBox(
+                            isAvailable: false,
+                          ),
+                          const SizedBox(width: 10.0,),
+                          MyTeamLeadBox(
+                            count: employeeCount == null ? '0' : employeeCount!.pendingKycUser.toString(),
+                            pendingCount: "0",
+                            heading: "Pending KYC\nUser",
+                            primaryColor: AppColors.colorPrimaryDark,
+                            secondaryColor: AppColors.primaryColorLight,
+                            icon: const Icon(Icons.verified_outlined,color: AppColors.white,),
+                            pageLink: TeamList(heading: AppStrings.pendingKYCUser,type: "pending_kyc"),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
             ),
       ),

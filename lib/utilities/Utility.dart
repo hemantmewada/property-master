@@ -64,6 +64,14 @@ class Utilities{
     // print("formated date is------------$createdDate");
     return createdDate;
   }
+  String DatefomatToOnlyDate2(String formatGiven, String bigTime) {
+    DateTime tempDate = DateFormat(formatGiven).parse(bigTime);
+    var dateFormat = DateFormat("d MMMM y"); // you can change the format here
+    var utcDate = dateFormat.format(tempDate); // pass the UTC time here
+    var localDate = dateFormat.parse(utcDate, false).toLocal().toString();
+    String createdDate = dateFormat.format(DateTime.parse(localDate));
+    return createdDate;
+  }
   String DatefomatToDateAndTime(String formatGiven, String bigTime) {
     // DateTime tempDate = DateFormat("yyyy-MM-dd' 'HH:mm:ss").parse(bigTime);
     DateTime tempDate = DateFormat(formatGiven).parse(bigTime);
@@ -293,7 +301,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -310,7 +318,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -553,7 +561,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
                   if(isMine){
                     showAlertDialogForMyProperty(context);
                   }else{
-                    _makePhoneCall("8819888835");
+                    _makePhoneCall(callNowPhoneNumber);
                   }
                 },
                 child: Container(
@@ -624,7 +632,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -641,7 +649,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : role == "Sr Business Manager" || role == "Manager" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -862,7 +870,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: () => _makePhoneCall("8819888835"),
+                onTap: () => _makePhoneCall(callNowPhoneNumber),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5.0,),
                   decoration: BoxDecoration(
@@ -1045,6 +1053,7 @@ const facebookUrl = "https://www.facebook.com/PropertyMasterIndore";
 const instagramUrl = "https://www.instagram.com/property_master_indore_";
 const linkedinUrl = "https://www.linkedin.com/company/property-master-official";
 const youtubeUrl = "https://www.youtube.com/@propertymaster6063/featured";
+const callNowPhoneNumber = "9644888813";
 
 class DropdownButtonExample extends StatefulWidget {
   String reason;
@@ -1078,6 +1087,26 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
           child: Text(value),
         );
       }).toList(),
+    );
+  }
+}
+
+class ImagePreviewScreen extends StatelessWidget {
+  final String imageUrl;
+
+  ImagePreviewScreen({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.colorSecondaryLight,
+        iconTheme: const IconThemeData(color: AppColors.white,),
+        title: const Text("Image Preview",style: TextStyle(color: AppColors.white,),),
+      ),
+      body: Center(
+        child: Image.network(imageUrl),
+      ),
     );
   }
 }

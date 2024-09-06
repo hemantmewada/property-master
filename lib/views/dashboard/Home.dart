@@ -1,16 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:propertymaster/models/HomePageDataModel.dart';
+import 'package:propertymaster/models/MobileNoExistModel.dart';
 import 'package:propertymaster/models/UpdateProfileImageModel.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/utilities/Loader.dart';
 import 'package:propertymaster/views/home/ContactUs.dart';
 import 'package:propertymaster/views/home/LayoutMap.dart';
+import 'package:propertymaster/views/home/PressAndNews.dart';
 import 'package:propertymaster/views/my-account/MyAccount.dart';
 import 'package:propertymaster/views/lead-management/AddLead.dart';
 import 'package:propertymaster/views/home/HomeDashboardPropertySlider.dart';
@@ -26,12 +31,18 @@ import 'package:blinking_text/blinking_text.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
+import "package:share_plus/share_plus.dart";
+import 'package:path_provider/path_provider.dart';
 // apis
 import 'dart:async';
 import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/utilities/Urls.dart' ;
 import 'package:dio/dio.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'package:video_player/video_player.dart';
+import 'package:mime/mime.dart'; // To detect file types
+
 // apis
 
 class Home extends StatefulWidget {
@@ -51,10 +62,10 @@ class _HomeState extends State<Home> {
   String type = "all";
   String profileImage = "";
   int todayWorkCount = 0;
-  int totalBP = 0;
+  int totalBPCount = 0;
   int hotListedCount = 0;
   int totalPropertyCount = 0;
-  List<ListingNew>? imgList = [];
+  List<HomeSlides>? imgList = [];
   List<String> jobTypeList1 = ['Select Job Type','Sr Business Partner','Full Time Business Partner','Part Time Business Partner'];
   List<String> jobTypeList2 = ['Select Job Type','Full Time Business Partner','Part Time Business Partner'];
   List<HotListedProperty>? postPropertyList = [];
@@ -66,6 +77,7 @@ class _HomeState extends State<Home> {
   final ImagePicker imagePicker = ImagePicker();
   XFile? photoController;
   var bytes;
+
 
   @override
   void initState() {
@@ -109,7 +121,7 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () => bottoms_Profileimage(context),
+                          onTap: () => bottomProfileSelection(context),
                           child: CircleAvatar(
                             radius: 40,
                             child: ClipRRect(
@@ -170,6 +182,11 @@ class _HomeState extends State<Home> {
                     title: const Text(AppStrings.searchLayoutMap),
                     onTap: () => navigateTo(context, const LayoutMap()),
                     // onTap: () => contactUsShowAlertDialog(context),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.newspaper_rounded),
+                    title: const Text(AppStrings.pressAndNews),
+                    onTap: () => navigateTo(context, const PressAndNews()),
                   ),
                   ListTile(
                     leading: const Icon(Icons.logout),
@@ -271,34 +288,33 @@ class _HomeState extends State<Home> {
                     child: SvgPicture.asset('assets/icons/menu.svg',color: AppColors.white,width: 25.0,height: 25.0,),
                   ),
                   const SizedBox(width: 10.0,),
-                  const Text(AppStrings.propertyMaster,style: TextStyle(fontSize: 22.0,color: AppColors.white,),),
-                  Expanded(
+                  const Expanded(
                     flex: 1,
-                    child: InkWell(
-                      highlightColor: AppColors.transparent,
-                      splashColor: AppColors.transparent,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeftWithFade,
-                              alignment: Alignment.topCenter,
-                              duration: const Duration(milliseconds: 750),
-                              isIos: true,
-                              child: const PostProperty(),
-                            )
-                        );
-                      },
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(50.0,),),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10.0,),
-                          child: const Text(AppStrings.postProperty,style: TextStyle(fontSize: 12.0,),),
-                        ),
+                    child: Text(AppStrings.propertyMaster,style: TextStyle(fontSize: 20.0,color: AppColors.white,overflow: TextOverflow.ellipsis),),
+                  ),
+                  const Icon(Icons.notifications_rounded,color: AppColors.white,),
+                  const SizedBox(width: 10.0,),
+                  InkWell(
+                    highlightColor: AppColors.transparent,
+                    splashColor: AppColors.transparent,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeftWithFade,
+                            alignment: Alignment.topCenter,
+                            duration: const Duration(milliseconds: 750),
+                            isIos: true,
+                            child: const PostProperty(),
+                          )
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        decoration: const BoxDecoration(color: AppColors.white,borderRadius: BorderRadius.all(Radius.circular(50.0,),),),
+                        padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 10.0,),
+                        child: const Text(AppStrings.postProperty,style: TextStyle(fontSize: 12.0,),),
                       ),
                     ),
                   ),
@@ -510,6 +526,45 @@ class _HomeState extends State<Home> {
                       ),
                       const SizedBox(width: 5.0,),
                       Expanded(
+                        child: role == "Sr Business Manager" || role == "Manager" || role == "Business Partner" ?
+                        InkWell(
+                          onTap: () => navigateTo(context, TeamList(heading: AppStrings.totalBP,type: "total_partner"),),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: MediaQuery.of(context).size.width * 1,
+                                padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,3.0,),
+                                decoration: const BoxDecoration(
+                                  color: Colors.indigo,
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0,),),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset('assets/icons/users-alt.png',width: 20.0,color: AppColors.white,),
+                                    const SizedBox(width: 5.0,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(AppStrings.totalBP2,
+                                          style: TextStyle(color: AppColors.white,fontSize: 11.0,),
+                                        ),
+                                        const SizedBox(height: 5.0,),
+                                        Text(totalBPCount.toString(),style: const TextStyle(color: AppColors.white,fontSize: 18.0,),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) :
+                        const Center(),
+                      ),
+                      const SizedBox(width: 5.0,),
+                      Expanded(
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -552,45 +607,6 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 5.0,),
-                      Expanded(
-                        child: totalBP > 0 ?
-                        InkWell(
-                          onTap: () => navigateTo(context, TeamList(heading: AppStrings.totalBP,type: "total_partner"),),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width * 1,
-                                padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,3.0,),
-                                decoration: const BoxDecoration(
-                                  color: Colors.indigo,
-                                  borderRadius: BorderRadius.all(Radius.circular(5.0,),),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.asset('assets/icons/users-alt.png',width: 20.0,color: AppColors.white,),
-                                    const SizedBox(width: 5.0,),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Text(AppStrings.totalBP2,
-                                          style: TextStyle(color: AppColors.white,fontSize: 11.0,),
-                                        ),
-                                        const SizedBox(height: 5.0,),
-                                        Text(totalBP.toString(),style: const TextStyle(color: AppColors.white,fontSize: 18.0,),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ) :
-                        const Center(),
                       ),
                     ],
                   ),
@@ -641,27 +657,31 @@ class _HomeState extends State<Home> {
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
         HomePageDataModel res = HomePageDataModel.fromJson(map);
         if (res.status == true) {
-          imgList = res.listingNew;
+          imgList = res.homeSlides;
           profileImage = res.userData!.profileImg!;
           todayWorkCount = res.todayWorkCount!;
-          totalBP = res.totalBusinessPartners!;
+          totalBPCount = res.totalBusinessPartners!;
           hotListedCount = res.hotListedCount!;
           totalPropertyCount = res.totalCount!;
           postPropertyList = res.hotListedProperty!;
           daysLeft = res.daysDifference!;
           daysLeftMessage = res.alertmassage!;
+
+          for (var element in res.homeBanner!) {
+            homeBanner(context, element);
+          }
+
+          Future.delayed(const Duration(seconds: 1),(){
+            if(res.daysDifference! > 0) {
+              homeAlertDialog(context);
+            }
+          });
           setState(() {});
         } else {
           Utilities().toast(res.message.toString());
           setState(() {});
         }
-        Future.delayed(const Duration(seconds: 1),(){
-          if(res.daysDifference! > 0) {
-            homeAlertDialog(context);
-          }
-        });
       }
-
       return;
     } catch (e) {
       print('error: $e');
@@ -694,7 +714,7 @@ class _HomeState extends State<Home> {
   }
   // property data api
   /// Image pick Bottom dialog.............
-  bottoms_Profileimage(BuildContext context){
+  bottomProfileSelection(BuildContext context){
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -854,6 +874,245 @@ class _HomeState extends State<Home> {
       mode: LaunchMode.externalApplication,
     )) {
       throw "error";
+    }
+  }
+  homeBanner(BuildContext context, HomeBanner? banner){
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => Dialog(banner: banner, userId: userID),
+    );
+  }
+}
+class Dialog extends StatefulWidget {
+  final HomeBanner? banner;
+  final String userId;
+  const Dialog({super.key, required this.banner, required this.userId});
+
+  @override
+  State<Dialog> createState() => _DialogState();
+}
+
+class _DialogState extends State<Dialog> {
+  late VideoPlayerController? _videoController;
+  late Future<void>? _initializeVideoPlayerFuture;
+  late String extension;
+  bool isShareLoading = false;
+  bool isSkipLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Get the file extension
+    extension = widget.banner!.image!.split(".").last.toLowerCase();
+
+    if (extension == "mp4") {
+      _videoController = VideoPlayerController.network(widget.banner!.image!);
+      _initializeVideoPlayerFuture = _videoController!.initialize().then((value) {
+        // Ensure the first frame is shown after the video is initialized
+        setState(() {});
+        // Start autoplay
+        _videoController!.play(); // This makes the video autoplay
+      });
+      _videoController!.setLooping(true);
+    } else {
+      _videoController = null;
+      _initializeVideoPlayerFuture = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose the video controller if it was used
+    _videoController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    extension = widget.banner!.image!.split(".").last;
+    print("extension-------$extension");
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+      child: AlertDialog(
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.black,
+        insetPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.6, // Adjust height as needed
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  extension == "jpeg" || extension == "jpg" || extension == "png" ?
+                  Expanded(
+                    flex: 4,
+                    child: CachedNetworkImage(
+                      imageUrl: widget.banner!.image!,
+                      width: MediaQuery.of(context).size.width,
+                      // height: double.infinity,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,),),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
+                  ) :
+                  extension == "mp4" ?
+                  Expanded(
+                    flex: 4,
+                    child: FutureBuilder(
+                      future: _initializeVideoPlayerFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return AspectRatio(
+                            aspectRatio: _videoController!.value.aspectRatio,
+                            child: VideoPlayer(_videoController!),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ) : Container(),
+                  const SizedBox(height: 10.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () => bannerSkipByUserAPI(context, widget.banner!.id!),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.red,width: 1.0,style: BorderStyle.solid,),
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: AppColors.red,
+                              ),
+                              child: Center(
+                                child: isSkipLoading ?
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/spinner.gif',width: 20.0,),
+                                    const Text("Skipping...",style: TextStyle(color: AppColors.white),),
+                                  ],
+                                ) :
+                                const Text("Skip",style: TextStyle(color: AppColors.white),),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10.0),
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () => shareFileFromUrl(widget.banner!.image!),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 5.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.green,width: 1.0,style: BorderStyle.solid,),
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: AppColors.green,
+                              ),
+                              child: Center(
+                                child: isShareLoading ?
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/spinner.gif',width: 20.0,),
+                                    const Text("Sharing...",style: TextStyle(color: AppColors.white),),
+                                  ],
+                                ) :
+                                const Text("Share",style: TextStyle(color: AppColors.white),),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10.0),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> shareFileFromUrl(String fileUrl) async {
+    setState(() => isShareLoading = true);
+    print(fileUrl);
+    try {
+      // Download the file
+      final response = await http.get(Uri.parse(fileUrl));
+      if (response.statusCode == 200) {
+        // Detect the file type
+        final mimeType = lookupMimeType(fileUrl);
+        if (mimeType == null) {
+          print('Unknown file type');
+          return;
+        }
+
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+
+        // Determine file extension based on MIME type
+        String extension = mimeType.split('/')[1];
+        String fileName = 'shared_file.$extension';
+
+        // Create a file in the temporary directory
+        final file = File('${tempDir.path}/$fileName');
+
+        // Write the bytes to the file
+        await file.writeAsBytes(response.bodyBytes);
+
+
+        setState(() => isShareLoading = false);
+        // Share the file
+        await Share.shareXFiles([XFile(file.path)]);
+      } else {
+        print('Failed to download file. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      setState(() => isShareLoading = false);
+      print('Error sharing file: $e');
+    }
+  }
+  Future<void> bannerSkipByUserAPI(BuildContext context, String bannerId) async {
+    setState(() => isSkipLoading = true);
+    const url = Urls.skipBannerByUserUrl;
+    try{
+      var formData = FormData.fromMap({
+        "user_id" :  widget.userId,
+        "banners" :  bannerId,
+      });
+      final responseDio = await Dio().post(url,data: formData,);
+      if (responseDio.statusCode == 200) {
+        print("bannerSkipByUserAPI ---- $url");
+        Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
+        MobileNoExistModel res = MobileNoExistModel.fromJson(map);
+        if (res.status == true) {
+          Navigator.of(context).pop();
+          setState(() {});
+        } else {
+          setState(() {});
+        }
+      }
+      setState(() => isSkipLoading = false);
+      return;
+    } catch (e) {
+      setState(() => isSkipLoading = false);
+      Utilities().toast('error: $e');
     }
   }
 }

@@ -122,6 +122,8 @@ class AppStrings{
   static const String date                            = 'Date';
   static const String time                            = 'Time';
   static const String plotNo                          = 'Plot No.';
+  static const String flatNo                          = 'Flat No.';
+  static const String officeNo                        = 'Office No.';
   static const String plotSize                        = 'Plot Size';
   static const String bookingAmount                   = 'Booking Amount';
   static const String townshipColonyName              = 'Township/Colony Name';
@@ -262,4 +264,5 @@ class AppStrings{
   static const String share                           = "Share";
   static const String areaSqFt                        = "Area (SqFt)";
   static const String searchLayoutMap                 = "Search Layout Map";
+  static const String pressAndNews                    = "Press & News";
 }

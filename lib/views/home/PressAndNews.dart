@@ -11,11 +11,15 @@ import "package:propertymaster/utilities/Loader.dart";
 import "package:propertymaster/utilities/Urls.dart";
 import "package:propertymaster/utilities/Utility.dart";
 import "package:propertymaster/views/dashboard/dashboard.dart";
+import "package:share_plus/share_plus.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import "package:url_launcher/url_launcher.dart";
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class PressAndNews extends StatefulWidget {
   const PressAndNews({super.key});
@@ -94,15 +98,47 @@ class _PressAndNewsState extends State<PressAndNews> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CachedNetworkImage(
-                          imageUrl: pressNewsList![index].map!,
-                          width: MediaQuery.of(context).size.width,
-                          height: 200.0,fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,),),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        InkWell(
+                          onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: pressNewsList![index].map!)),
+                          child: CachedNetworkImage(
+                            imageUrl: pressNewsList![index].map!,
+                            width: MediaQuery.of(context).size.width,
+                            height: 200.0,fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,),),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
                         ),
                         const SizedBox(height: 5.0,),
-                        Text(Utilities().DatefomatToOnlyDate("yyyy-MM-dd",pressNewsList![index].date!),style: const TextStyle(fontWeight: FontWeight.w700,fontSize: 18.0,),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(Utilities().DatefomatToOnlyDate("yyyy-MM-dd",pressNewsList![index].date!),style: const TextStyle(fontWeight: FontWeight.w700,fontSize: 18.0,),),
+                            const SizedBox(width: 10.0,),
+                            InkWell(
+                              onTap: () {
+                                shareImageFromUrl(pressNewsList![index].map!, Utilities().DatefomatToOnlyDate("yyyy-MM-dd",pressNewsList![index].date!));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid,),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  // color: AppColors.colorSecondary,
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(Icons.share, size: 16.0, color: AppColors.colorSecondary,),
+                                      SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                      const Text("Share",style: TextStyle(color: AppColors.colorSecondary,),),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   );
@@ -140,9 +176,26 @@ class _PressAndNewsState extends State<PressAndNews> {
 
     }
   }
-  // post property list API
-  Future<void> openPdf(String url) async {
-    final Uri _url = Uri.parse(url);
-    await launchUrl(_url,mode: LaunchMode.externalApplication);
+
+  Future<void> shareImageFromUrl(String imageUrl, String message) async {
+    print(imageUrl);
+    try {
+      // Download the image
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+        // Create a file in the temporary directory
+        final file = File('${tempDir.path}/shared_image.jpg');
+        // Write the image bytes to the file
+        await file.writeAsBytes(response.bodyBytes);
+        // Share the image
+        await Share.shareFiles([file.path], text: message);
+      } else {
+        print('Failed to download image. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sharing image: $e');
+    }
   }
 }

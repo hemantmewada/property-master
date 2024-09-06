@@ -32,6 +32,7 @@ class Data {
   String? name;
   String? empId;
   String? mobile;
+  String? profileImg;
   String? registerDateTime;
   String? role;
   int? totalLeads;
@@ -41,6 +42,7 @@ class Data {
         this.name,
         this.empId,
         this.mobile,
+        this.profileImg,
         this.registerDateTime,
         this.role,
         this.totalLeads});
@@ -50,6 +52,7 @@ class Data {
     name = json['name'];
     empId = json['emp_id'];
     mobile = json['mobile'];
+    profileImg = json['profile_img'];
     registerDateTime = json['register_date_time'];
     role = json['role'];
     totalLeads = json['total_leads'];
@@ -61,6 +64,7 @@ class Data {
     data['name'] = this.name;
     data['emp_id'] = this.empId;
     data['mobile'] = this.mobile;
+    data['profile_img'] = this.profileImg;
     data['register_date_time'] = this.registerDateTime;
     data['role'] = this.role;
     data['total_leads'] = this.totalLeads;

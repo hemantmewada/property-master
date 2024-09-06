@@ -1,6 +1,7 @@
 class HomePageDataModel {
   bool? status;
-  List<ListingNew>? listingNew;
+  List<HomeBanner>? homeBanner;
+  List<HomeSlides>? homeSlides;
   UserData? userData;
   int? todayWorkCount;
   int? hotListedCount;
@@ -13,7 +14,8 @@ class HomePageDataModel {
 
   HomePageDataModel(
       {this.status,
-        this.listingNew,
+        this.homeBanner,
+        this.homeSlides,
         this.userData,
         this.todayWorkCount,
         this.hotListedCount,
@@ -26,10 +28,16 @@ class HomePageDataModel {
 
   HomePageDataModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['listing_new'] != null) {
-      listingNew = <ListingNew>[];
-      json['listing_new'].forEach((v) {
-        listingNew!.add(new ListingNew.fromJson(v));
+    if (json['home_banner'] != null) {
+      homeBanner = <HomeBanner>[];
+      json['home_banner'].forEach((v) {
+        homeBanner!.add(new HomeBanner.fromJson(v));
+      });
+    }
+    if (json['home_slides'] != null) {
+      homeSlides = <HomeSlides>[];
+      json['home_slides'].forEach((v) {
+        homeSlides!.add(new HomeSlides.fromJson(v));
       });
     }
     userData = json['user_data'] != null
@@ -53,8 +61,11 @@ class HomePageDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
-    if (this.listingNew != null) {
-      data['listing_new'] = this.listingNew!.map((v) => v.toJson()).toList();
+    if (this.homeBanner != null) {
+      data['home_banner'] = this.homeBanner!.map((v) => v.toJson()).toList();
+    }
+    if (this.homeSlides != null) {
+      data['home_slides'] = this.homeSlides!.map((v) => v.toJson()).toList();
     }
     if (this.userData != null) {
       data['user_data'] = this.userData!.toJson();
@@ -74,7 +85,29 @@ class HomePageDataModel {
   }
 }
 
-class ListingNew {
+class HomeBanner {
+  String? image;
+  String? startDate;
+  String? id;
+
+  HomeBanner({this.image, this.startDate, this.id});
+
+  HomeBanner.fromJson(Map<String, dynamic> json) {
+    image = json['image'];
+    startDate = json['start_date'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['image'] = this.image;
+    data['start_date'] = this.startDate;
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+class HomeSlides {
   String? id;
   String? heading;
   String? userId;
@@ -96,7 +129,7 @@ class ListingNew {
   String? username;
   List<LoanProvider>? loanProvider;
 
-  ListingNew(
+  HomeSlides(
       {this.id,
         this.heading,
         this.userId,
@@ -118,7 +151,7 @@ class ListingNew {
         this.username,
         this.loanProvider});
 
-  ListingNew.fromJson(Map<String, dynamic> json) {
+  HomeSlides.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     heading = json['heading'];
     userId = json['user_id'];

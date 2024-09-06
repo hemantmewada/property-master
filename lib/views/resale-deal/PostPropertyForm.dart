@@ -1049,7 +1049,7 @@ class _PostPropertyFormState extends State<PostPropertyForm> {
                             textCapitalization: TextCapitalization.characters,
                             style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                             cursorColor: AppColors.textColorGrey,
-                            decoration: inputDecoration(AppStrings.plotNo),
+                            decoration: inputDecoration(commercialTypeProperty == "Office Space" && widget.type == AppStrings.commercialSpace ? AppStrings.officeNo : flatHouseTypeProperty == "Flat" && widget.type == AppStrings.flatHouseVilla ? AppStrings.flatNo : AppStrings.plotNo),
                           ),
                         ),
                       ),

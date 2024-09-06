@@ -3,7 +3,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:propertymaster/models/GetProfileModel.dart';
 import 'package:propertymaster/models/HomePageDataModel.dart';
 import 'package:propertymaster/models/MobileNoExistModel.dart';
@@ -1288,7 +1287,8 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
   }
   Widget networkImage(String path) => ClipRRect(
       borderRadius: BorderRadius.circular(10.0),
-      child: InstaImageViewer(
+      child: InkWell(
+        onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: path)),
         child: Image.network(
           path,
           width: MediaQuery.of(context).size.width,
@@ -1299,7 +1299,8 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
     );
   Widget fileImage(String path) => ClipRRect(
     borderRadius: BorderRadius.circular(10.0),
-    child: InstaImageViewer(
+    child: InkWell(
+      onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: path)),
       child: Image.file(
         File(path),
         width: MediaQuery.of(context).size.width,

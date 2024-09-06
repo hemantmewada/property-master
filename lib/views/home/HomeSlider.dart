@@ -11,7 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:propertymaster/views/home/SliderDetail.dart';
 
 class HomeSlider extends StatefulWidget {
-  List<ListingNew>? imgList;
+  List<HomeSlides>? imgList;
 
   HomeSlider({required this.imgList});
 

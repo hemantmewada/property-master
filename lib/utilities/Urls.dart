@@ -32,4 +32,6 @@ class Urls {
   static const getProfiledUrl = "${baseUrl}edit_user";
   static const updateProfileUrl = "${baseUrl}update_user";
   static const layoutMapUrl = "${baseUrl}layout_map";
+  static const pressAndNewsUrl = "${baseUrl}get_upload_press";
+  static const skipBannerByUserUrl = "${baseUrl}banner_skip_by_user";
 }

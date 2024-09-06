@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:propertymaster/utilities/AppColors.dart';
+import 'package:propertymaster/utilities/Utility.dart';
 import 'package:propertymaster/utilities/const.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -28,13 +29,19 @@ class _OurWorkspaceState extends State<OurWorkspace> {
                   width: MediaQuery.of(context).size.width,
                   height: 200.0,
                 ),*/
-                CachedNetworkImage(
-                  imageUrl: item.image,
-                  width: MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,)),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                InkWell(
+                  onTap: () => navigateTo(context, ImagePreviewScreen(imageUrl: item.image)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0),),
+                    child: CachedNetworkImage(
+                      imageUrl: item.image,
+                      width: MediaQuery.of(context).size.width,
+                      height: 200.0,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(child: Image.asset('assets/icons/spinner.gif',width: 64.0,),),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
                 ),
                 Positioned(
                   bottom: 20.0,

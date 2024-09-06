@@ -28,7 +28,7 @@ const List<KeyValueClass> amenitiesList = [
 ];
 
 class SliderDetail extends StatefulWidget {
-  ListingNew? propertyData;
+  HomeSlides? propertyData;
   SliderDetail({super.key,required this.propertyData});
 
   @override
