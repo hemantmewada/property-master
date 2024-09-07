@@ -301,7 +301,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.propertyType == "Plots" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -318,7 +318,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.propertyType == "Plots" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -632,7 +632,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.propertyType == "Plots" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message1);
@@ -649,7 +649,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
       "*Transaction Type:* ${property.transactionType!}\n"
       "*Facing:* ${property.facing!}\n"
       "*Possession Status:* ${property.possessionStatus!}\n"
-      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : "*Plot No.:* ${property.numberId!}\n"}"
+      "${property.numberId == "" ? "" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Flat" ? "*Flat No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.typeOfProperty == "Office Space" ? "*Office No.:* ${property.numberId!}\n" : (role == "Sr Business Manager" || role == "Manager") && property.propertyType == "Plots" ? "*Plot No.:* ${property.numberId!}\n" : ""}"
       "*Price/SqFt:* ${property.pricePerSquare!}\n"
       "*Open Side:* ${property.openSide!}";
   // print(message2);
@@ -897,6 +897,7 @@ Container propertyContainerHotListed(BuildContext context, HotListedProperty pro
 }
 
 Future<void> sendMessage(String message) async {
+  print(message);
   // await launch("https://wa.me/${phoneNumber}?text=Hello");
   String appUrl;
   if (Platform.isAndroid) {
