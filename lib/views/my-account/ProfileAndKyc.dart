@@ -87,6 +87,8 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
   String profileImage = "";
   bool isLoading = true;
 
+  Data? userData;
+
   DateTime selectedDOB = DateTime.now();
   Future<void> _selectDOB(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -235,6 +237,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: fullNameController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.name,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -251,6 +254,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: fatherNameController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       textCapitalization: TextCapitalization.words,
                       keyboardType: TextInputType.name,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -271,6 +275,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: contact1Controller,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                       cursorColor: AppColors.textColorGrey,
@@ -286,6 +291,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: contact2Controller,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                       cursorColor: AppColors.textColorGrey,
@@ -305,7 +311,13 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       readOnly: true,
-                      onTap: () => _selectDOB(context),
+                      onTap: () {
+                        if(userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)){
+                          null;
+                        }else{
+                          _selectDOB(context);
+                        }
+                      },
                       controller: dobController,
                       keyboardType: TextInputType.datetime,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -322,7 +334,13 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       readOnly: true,
-                      onTap: () => _selectDOA(context),
+                      onTap: () {
+                        if(userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)){
+                          null;
+                        }else{
+                          _selectDOA(context);
+                        }
+                      },
                       controller: doaController,
                       keyboardType: TextInputType.datetime,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -339,7 +357,13 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       readOnly: true,
-                      onTap: () => _selectDOJ(context),
+                      onTap: () {
+                        if(userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)){
+                          null;
+                        }else{
+                          _selectDOJ(context);
+                        }
+                      },
                       controller: dojController,
                       keyboardType: TextInputType.datetime,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -395,6 +419,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0,),
                     decoration: boxDecoration,
                     child: TextFormField(
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       controller: currentResidenceController,
                       keyboardType: TextInputType.streetAddress,
                       textCapitalization: TextCapitalization.words,
@@ -417,6 +442,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: emailController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                       cursorColor: AppColors.textColorGrey,
@@ -436,6 +462,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: panCardNoController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.characters,
                       maxLength: 10,
@@ -453,6 +480,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: aadharCardNoController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       maxLength: 14,
                       onChanged: (value)=> setState(()=> aadharCardNoController.text = _formatAadharNumber(value)),
                       keyboardType: TextInputType.number,
@@ -480,6 +508,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: companyNameController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -496,6 +525,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: companyDesignationController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -516,6 +546,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: totalExperienceInYearsController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.number,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                       cursorColor: AppColors.textColorGrey,
@@ -531,6 +562,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: natureOfWorkController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -557,6 +589,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: bankNameController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -573,6 +606,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: accountNoController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.number,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
                       cursorColor: AppColors.textColorGrey,
@@ -592,6 +626,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: branchNameController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.words,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -608,6 +643,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                     decoration: boxDecoration,
                     child: TextFormField(
                       controller: ifscCodeController,
+                      readOnly: (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? true : false,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.characters,
                       style: const TextStyle(fontSize: 14.0, color: AppColors.black,),
@@ -637,7 +673,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Expanded(child: Text("1. Aadhar Front"),),
-                          InkWell(
+                          (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? Container() : InkWell(
                             onTap: () => bottomImageSelector(context, "aadharFront"),
                             child: const Icon(Icons.file_upload_outlined,color: AppColors.colorSecondary,),
                           ),
@@ -673,7 +709,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Expanded(child: Text("2. Aadhar Back"),),
-                          InkWell(
+                          (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? Container() : InkWell(
                             onTap: () => bottomImageSelector(context, "aadharBack"),
                             child: const Icon(Icons.file_upload_outlined,color: AppColors.colorSecondary,),
                           ),
@@ -713,7 +749,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Expanded(child: Text("3. Pan Card"),),
-                          InkWell(
+                          (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? Container() : InkWell(
                             onTap: () => bottomImageSelector(context, "panCard"),
                             child: const Icon(Icons.file_upload_outlined,color: AppColors.colorSecondary,),
                           ),
@@ -749,7 +785,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Expanded(child: Text("4. Bank Passbook"),),
-                          InkWell(
+                          (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? Container() : InkWell(
                             onTap: () => bottomImageSelector(context, "bankPassbook"),
                             child: const Icon(Icons.file_upload_outlined,color: AppColors.colorSecondary,),
                           ),
@@ -789,7 +825,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Expanded(child: Text("5. Cancel Cheque"),),
-                          InkWell(
+                          (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? Container() : InkWell(
                             onTap: () => bottomImageSelector(context, "cancelCheque"),
                             child: const Icon(Icons.file_upload_outlined,color: AppColors.colorSecondary,),
                           ),
@@ -983,6 +1019,9 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
           bankPassbookImageUrl = res.data!.passbookImg!;
           cancelChequeImageUrl = res.data!.cancelCheque!;
 
+          // set user data
+          userData = res.data!;
+
           setState(() {});
         } else {
           Utilities().toast(res.message.toString());
@@ -1055,6 +1094,11 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
         }
       }
       return;
+    } on DioError catch (error) {
+      Loader.ProgressloadingDialog(context, false);
+      String errorMessage = error.response?.data['message'] ?? 'An error occurred';
+      Utilities().toast(errorMessage);
+      // print("error.message-------${error.response}");
     } catch (e) {
       Loader.ProgressloadingDialog(context, false);
       print('error: $e');

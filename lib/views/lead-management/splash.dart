@@ -25,6 +25,8 @@ class _SplashState extends State<Splash> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     if(prefs.getBool('isLogin') == true){
+      prefs.setBool("banner1", true);
+      prefs.setBool("banner2", true);
       goToScreen(Dashboard(bottomIndex: 0));
     }else{
       goToScreen(const Onboarding());

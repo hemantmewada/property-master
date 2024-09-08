@@ -450,6 +450,8 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
           prefs.setString("name", response.data!.name!);
           prefs.setString("empId", response.data!.empId!);
           prefs.setString("email", response.data!.email!);
+          prefs.setBool("banner1", true);
+          prefs.setBool("banner2", true);
           Navigator.pushAndRemoveUntil(
             context,
             PageTransition(

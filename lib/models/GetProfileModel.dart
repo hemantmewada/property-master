@@ -49,6 +49,7 @@ class Data {
   String? pancardImg;
   String? passbookImg;
   String? cancelCheque;
+  String? kycUpdatedStatus;
 
   Data(
       {this.name,
@@ -76,7 +77,8 @@ class Data {
         this.aadharcardBack,
         this.pancardImg,
         this.passbookImg,
-        this.cancelCheque});
+        this.cancelCheque,
+        this.kycUpdatedStatus});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -105,6 +107,7 @@ class Data {
     pancardImg = json['pancard_img'];
     passbookImg = json['passbook_img'];
     cancelCheque = json['cancel_cheque'];
+    kycUpdatedStatus = json['kyc_updated_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -135,6 +138,7 @@ class Data {
     data['pancard_img'] = this.pancardImg;
     data['passbook_img'] = this.passbookImg;
     data['cancel_cheque'] = this.cancelCheque;
+    data['kyc_updated_status'] = this.kycUpdatedStatus;
     return data;
   }
 }
