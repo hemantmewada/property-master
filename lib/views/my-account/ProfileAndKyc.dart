@@ -681,7 +681,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => bottomImageSelector(context, "aadharFront"),
+                        onTap: () => (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? null : bottomImageSelector(context, "aadharFront"),
                         child: Container(
                           height: 100.0,
                           decoration: const BoxDecoration(
@@ -717,7 +717,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => bottomImageSelector(context, "aadharBack"),
+                        onTap: () => (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? null : bottomImageSelector(context, "aadharBack"),
                         child: Container(
                           height: 100.0,
                           decoration: const BoxDecoration(
@@ -757,7 +757,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => bottomImageSelector(context, "panCard"),
+                        onTap: () => (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? null : bottomImageSelector(context, "panCard"),
                         child: Container(
                           height: 100.0,
                           decoration: const BoxDecoration(
@@ -793,7 +793,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => bottomImageSelector(context, "bankPassbook"),
+                        onTap: () => (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? null : bottomImageSelector(context, "bankPassbook"),
                         child: Container(
                           height: 100.0,
                           decoration: const BoxDecoration(
@@ -833,7 +833,7 @@ class _ProfileAndKycState extends State<ProfileAndKyc> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => bottomImageSelector(context, "cancelCheque"),
+                        onTap: () => (userData != null && (userData!.kycUpdatedStatus == "1" || userData!.kycUpdatedStatus == 1)) ? null : bottomImageSelector(context, "cancelCheque"),
                         child: Container(
                           height: 150.0,
                           decoration: const BoxDecoration(
