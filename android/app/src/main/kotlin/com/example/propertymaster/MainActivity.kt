@@ -1,4 +1,4 @@
-package com.example.propertymaster
+package com.propertymaster.propertymaster
 
 import io.flutter.embedding.android.FlutterActivity
 
