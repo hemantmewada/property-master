@@ -57,7 +57,7 @@ class Utilities{
     // DateTime tempDate = DateFormat("yyyy-MM-dd' 'HH:mm:ss").parse(bigTime);
     DateTime tempDate = DateFormat(formatGiven).parse(bigTime);
     // var dateFormat = DateFormat("MM-dd-yyyy"); // you can change the format here
-    var dateFormat = DateFormat("MMMM d, y"); // you can change the format here
+    var dateFormat = DateFormat("MMM d, y"); // you can change the format here
     var utcDate = dateFormat.format(tempDate); // pass the UTC time here
     var localDate = dateFormat.parse(utcDate, false).toLocal().toString();
     String createdDate = dateFormat.format(DateTime.parse(localDate));

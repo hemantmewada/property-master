@@ -130,7 +130,7 @@ class _HomeDashboardPropertySliderState extends State<HomeDashboardPropertySlide
           pauseAutoPlayInFiniteScroll: true,
           viewportFraction: 1.0,
           enlargeCenterPage: false,
-          aspectRatio: 1.9,
+          aspectRatio: 2.15,
           onPageChanged: (index, reason) => setState(() => _current = index)),
     );
   }

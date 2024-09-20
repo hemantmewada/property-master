@@ -92,7 +92,7 @@ class _HomeSliderState extends State<HomeSlider> {
               pauseAutoPlayInFiniteScroll: true,
               viewportFraction: 1.0,
               enlargeCenterPage: false,
-              aspectRatio: 1.9,
+              aspectRatio: 2.0,
               onPageChanged: (index, reason) {
                 setState(() {
                   _current = index;
