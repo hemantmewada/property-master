@@ -14,7 +14,9 @@ import "package:shared_preferences/shared_preferences.dart";
 import 'dart:async';
 
 class MyProperty extends StatefulWidget {
-  const MyProperty({super.key});
+  String? userIdParameter;
+  String? roleParameter;
+  MyProperty({super.key, this.userIdParameter, this.roleParameter});
 
   @override
   State<MyProperty> createState() => _MyPropertyState();
@@ -52,6 +54,7 @@ class _MyPropertyState extends State<MyProperty> {
   }
 
   Future<void> allProcess() async {
+    print("userIdParameter---------${widget.userIdParameter}");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString("userID") ?? '';
     role = prefs.getString("role") ?? '';
@@ -95,7 +98,7 @@ class _MyPropertyState extends State<MyProperty> {
         //     },
         //   ),
         // ),
-        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value)),
+        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value),true),
         backgroundColor: AppColors.whitish,
         body: Column(
           children: [
@@ -116,6 +119,8 @@ class _MyPropertyState extends State<MyProperty> {
       ),
       onWillPop: () async {
         print("back by navigation back button");
+        widget.userIdParameter != null ?
+        Navigator.of(context).pop() :
         Navigator.pushAndRemoveUntil(
           context,
           PageTransition(
@@ -139,13 +144,14 @@ class _MyPropertyState extends State<MyProperty> {
     const url = Urls.postPropertyListUrl;
     try {
       var formData = FormData.fromMap({
-        "user_id" :  userID,
-        "role" :  role,
+        "user_id" :  widget.userIdParameter ?? userID,
+        "role" :  widget.roleParameter ?? role,
         "page" :  "mypost",
         "length" :  _limit.toString(),
         "start" :  _page.toString(),
         "searchproperty": searchController.text,
       });
+      print(formData.fields);
       final responseDio = await Dio().post(url,data: formData,);
       if(isLoad){
         Loader.ProgressloadingDialog(context, false);

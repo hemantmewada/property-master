@@ -16,6 +16,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import "package:url_launcher/url_launcher.dart";
+import 'package:http/http.dart' as http;
+import "package:share_plus/share_plus.dart";
 
 class LayoutMap extends StatefulWidget {
   const LayoutMap({super.key});
@@ -166,26 +168,52 @@ class _LayoutMapState extends State<LayoutMap> {
                               children: [
                                 const Icon(Icons.picture_as_pdf,color: Colors.red,size: 30.0,),
                                 const SizedBox(width: 10.0,),
-                                InkWell(
-                                  onTap: () => openPdf(layoutMapList![index].image!),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 5.0,),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid,),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      // color: AppColors.colorSecondary,
-                                    ),
-                                    child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.open_in_new_outlined, size: 16.0, color: AppColors.colorSecondary,),
-                                          SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-                                          const Text("Open",style: TextStyle(color: AppColors.colorSecondary,),),
-                                        ],
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () => sharePdf(layoutMapList![index].image!),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 5.0,),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid,),
+                                          borderRadius: BorderRadius.circular(5.0),
+                                          // color: AppColors.colorSecondary,
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(Icons.share, size: 16.0, color: AppColors.colorSecondary,),
+                                              SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                              const Text("Share",style: TextStyle(color: AppColors.colorSecondary,),),
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 10.0,),
+                                    InkWell(
+                                      onTap: () => openPdf(layoutMapList![index].image!),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 5.0,),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: AppColors.colorSecondary,width: 1.0,style: BorderStyle.solid,),
+                                          borderRadius: BorderRadius.circular(5.0),
+                                          // color: AppColors.colorSecondary,
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(Icons.open_in_new_outlined, size: 16.0, color: AppColors.colorSecondary,),
+                                              SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                              const Text("Open",style: TextStyle(color: AppColors.colorSecondary,),),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ) :
@@ -241,8 +269,44 @@ class _LayoutMapState extends State<LayoutMap> {
     }
   }
   // post property list API
+  Future<void> sharePdf(String pdfUrl) async {
+    print(pdfUrl);
+    try {
+      shareLoading(context);
+      // Download the PDF
+      final response = await http.get(Uri.parse(pdfUrl));
+      if (response.statusCode == 200) {
+        // Get the temporary directory
+        final tempDir = await getTemporaryDirectory();
+        // Create a file in the temporary directory
+        final file = File('${tempDir.path}/shared_document.pdf');
+        // Write the PDF bytes to the file
+        await file.writeAsBytes(response.bodyBytes);
+        // Share the PDF
+        await Share.shareFiles([file.path], text: "Check out this PDF!");
+      } else {
+        print('Failed to download PDF. Status code: ${response.statusCode}');
+      }
+      Navigator.of(context).pop();
+    } catch (e) {
+      Navigator.of(context).pop();
+      print('Error sharing PDF: $e');
+    }
+  }
   Future<void> openPdf(String url) async {
     final Uri _url = Uri.parse(url);
     await launchUrl(_url,mode: LaunchMode.externalApplication);
+  }
+  shareLoading(BuildContext context){
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Wrap(children: [
+            ListTile(
+              leading: Image.asset('assets/icons/spinner.gif',width: 40.0,),
+              title: const Text('Sharing, Please wait...'),
+            ),
+          ]);
+        });
   }
 }

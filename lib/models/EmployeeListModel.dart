@@ -35,7 +35,7 @@ class Data {
   String? profileImg;
   String? registerDateTime;
   String? role;
-  int? totalLeads;
+  int? totalProperty;
 
   Data(
       {this.userId,
@@ -45,7 +45,7 @@ class Data {
         this.profileImg,
         this.registerDateTime,
         this.role,
-        this.totalLeads});
+        this.totalProperty});
 
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -55,7 +55,7 @@ class Data {
     profileImg = json['profile_img'];
     registerDateTime = json['register_date_time'];
     role = json['role'];
-    totalLeads = json['total_leads'];
+    totalProperty = json['total_property'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,7 +67,7 @@ class Data {
     data['profile_img'] = this.profileImg;
     data['register_date_time'] = this.registerDateTime;
     data['role'] = this.role;
-    data['total_leads'] = this.totalLeads;
+    data['total_property'] = this.totalProperty;
     return data;
   }
 }

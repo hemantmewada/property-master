@@ -57,9 +57,8 @@ class AppStrings{
   static const String totalBP2                        = 'Total BP';
   static const String todayUser                       = 'Today User';
   static const String activeUser                      = 'Active User';
-  static const String partTimeBP                      = 'Part Time BP';
-  static const String fullTimeBP                      = 'Full Time BP';
   static const String srBP                            = 'Sr. Business Partner';
+  static const String bp                              = 'Business Partner';
   static const String completeKYCUser                 = 'Complete KYC User';
   static const String pendingKYCUser                  = 'Pending KYC User';
   static const String rejectUser                      = 'Reject User';
@@ -198,7 +197,7 @@ class AppStrings{
   static const String jobTypeToast                    = 'Please Select Job Type';
   static const String pincodeValidToast               = 'Please Enter Valid Pincode';
   static const String pincodeToast                    = 'Please Enter Pincode';
-  static const String serviceNotAvailable             = 'This service is not available for Full time and Part time business partners';
+  static const String serviceNotAvailable             = 'This service is not available for Business Partners';
   static const String businessManager                 = 'Business Manager';
   static const String allProperty                     = 'All Property';
   static const String myProperty                      = 'My Property';

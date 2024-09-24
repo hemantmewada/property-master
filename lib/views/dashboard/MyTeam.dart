@@ -59,7 +59,7 @@ class _MyTeamState extends State<MyTeam> {
           style: TextStyle(color: AppColors.white,),
         ),
       ),
-      body: widget.role == null ? const Center() : widget.role == "Full Time Business Partner" || widget.role == "Part Time Business Partner"
+      body: widget.role == null ? const Center() : widget.role == "Jr Business Partner"
           ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
@@ -117,11 +117,11 @@ class _MyTeamState extends State<MyTeam> {
                                   MyTeamLeadBox(
                                     count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
                                     pendingCount: "0",
-                                    heading: "Full Time\nBP",
+                                    heading: "Business\nPartner",
                                     primaryColor: AppColors.orange,
                                     secondaryColor: AppColors.orangeLight,
                                     icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                    pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
+                                    pageLink: TeamList(heading: AppStrings.bp,type: "bp"),
                                   ) :
                                   Container(),
                     ],
@@ -146,22 +146,14 @@ class _MyTeamState extends State<MyTeam> {
                               MyTeamLeadBox(
                                 count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
                                 pendingCount: "0",
-                                heading: "Full Time\nBP",
+                                heading: "Business\nPartner",
                                 primaryColor: AppColors.orange,
                                 secondaryColor: AppColors.orangeLight,
                                 icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
+                                pageLink: TeamList(heading: AppStrings.bp,type: "bp"),
                               ),
                               const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
-                                pendingCount: "0",
-                                heading: "Part Time\nBP",
-                                primaryColor: AppColors.parrotColorDark,
-                                secondaryColor: AppColors.parrotColorLight,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
-                              ),
+                              MyTeamLeadBox(isAvailable: false),
                             ],
                           ),
                         ],
@@ -175,22 +167,14 @@ class _MyTeamState extends State<MyTeam> {
                               MyTeamLeadBox(
                                 count: employeeCount == null ? '0' : employeeCount!.ftBusinessPartner.toString(),
                                 pendingCount: "0",
-                                heading: "Full Time\nBP",
+                                heading: "Business\nPartner",
                                 primaryColor: AppColors.orange,
                                 secondaryColor: AppColors.orangeLight,
                                 icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.fullTimeBP,type: "ftbp"),
+                                pageLink: TeamList(heading: AppStrings.bp,type: "bp"),
                               ),
                               const SizedBox(width: 10.0,),
-                              MyTeamLeadBox(
-                                count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
-                                pendingCount: "0",
-                                heading: "Part Time\nBP",
-                                primaryColor: AppColors.parrotColorDark,
-                                secondaryColor: AppColors.parrotColorLight,
-                                icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
-                              ),
+                              MyTeamLeadBox(isAvailable: false,),
                               const SizedBox(width: 10.0,),
                               MyTeamLeadBox(
                                 isAvailable: false,
@@ -199,33 +183,6 @@ class _MyTeamState extends State<MyTeam> {
                       ),
                     ],
                   ) :
-                  widget.role == "Business Partner" ?
-                      Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MyTeamLeadBox(
-                                        count: employeeCount == null ? '0' : employeeCount!.ptBusinessPartner.toString(),
-                                        pendingCount: "0",
-                                        heading: "Part Time\nBP",
-                                        primaryColor: AppColors.parrotColorDark,
-                                        secondaryColor: AppColors.parrotColorLight,
-                                        icon: const Icon(FontAwesomeIcons.user,color: AppColors.white),
-                                        pageLink: TeamList(heading: AppStrings.partTimeBP,type: "ptbp"),
-                                      ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    isAvailable: false,
-                                  ),
-                                  const SizedBox(width: 10.0,),
-                                  MyTeamLeadBox(
-                                    isAvailable: false,
-                                  ),
-                                ],
-                              ),
-                          ],
-                      ) :
                   Container(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.2,),
                   Column(

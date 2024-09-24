@@ -16,7 +16,7 @@ class ResaleDealDashboard extends StatefulWidget {
 }
 var widgetOptions = [
   const AllProperty(),
-  const MyProperty(),
+  MyProperty(),
   const HotProperty(),
   const SoldProperty(),
 ];

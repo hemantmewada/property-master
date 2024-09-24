@@ -66,8 +66,8 @@ class _HomeState extends State<Home> {
   int hotListedCount = 0;
   int totalPropertyCount = 0;
   List<HomeSlides>? imgList = [];
-  List<String> jobTypeList1 = ['Select Job Type','Sr Business Partner','Full Time Business Partner','Part Time Business Partner'];
-  List<String> jobTypeList2 = ['Select Job Type','Full Time Business Partner','Part Time Business Partner'];
+  List<String> jobTypeList1 = ['Select Job Type','Sr Business Partner','Business Partner'];
+  List<String> jobTypeList2 = ['Select Job Type','Business Partner'];
   List<HotListedProperty>? postPropertyList = [];
 
   int daysLeft = 0;
@@ -152,44 +152,58 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.home_outlined),
+                    leading: const Icon(Icons.home_outlined,color: AppColors.colorSecondaryDark,),
                     title: const Text("Home"),
                     onTap: () {},
                   ),
                   ListTile(
-                    leading: const Icon(Icons.account_circle_outlined),
+                    leading: const Icon(Icons.account_circle_outlined,color: AppColors.colorSecondaryDark,),
                     title: const Text("My Profile"),
                     onTap: () => navigateTo(context, const MyAccount()),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.video_settings_sharp),
+                    leading: const Icon(Icons.video_settings_sharp,color: AppColors.colorSecondaryDark,),
                     title: const Text("Videos"),
                     onTap: () => openPage(videoUrl),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.info_outline),
+                    leading: const Icon(Icons.info_outline,color: AppColors.colorSecondaryDark,),
                     title: const Text("About Us"),
                     onTap: () => openPage(aboutUsUrl),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.phone),
+                    leading: const Icon(Icons.phone,color: AppColors.colorSecondaryDark,),
                     title: const Text("Contact Us"),
                     onTap: () => navigateTo(context, const ContactUs()),
                     // onTap: () => contactUsShowAlertDialog(context),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.image_search),
+                    leading: const Icon(Icons.image_search,color: AppColors.colorSecondaryDark,),
                     title: const Text(AppStrings.searchLayoutMap),
                     onTap: () => navigateTo(context, const LayoutMap()),
                     // onTap: () => contactUsShowAlertDialog(context),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.newspaper_rounded),
+                    leading: const Icon(Icons.newspaper_rounded,color: AppColors.colorSecondaryDark,),
                     title: const Text(AppStrings.pressAndNews),
                     onTap: () => navigateTo(context, const PressAndNews()),
                   ),
+                  role == "Sr Business Manager" || role == "Manager" ?
                   ListTile(
-                    leading: const Icon(Icons.logout),
+                    leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
+                    title: const Text("Register Link For Sr BP"),
+                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Business Partner'),
+                  ) :
+                  Container(),
+                  role == "Sr Business Manager" || role == "Manager" ?
+                  ListTile(
+                    leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
+                    title: const Text("Register Link For BP"),
+                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Jr Business Partner'),
+                  ) :
+                  Container(),
+                  ListTile(
+                    leading: const Icon(Icons.logout,color: AppColors.colorSecondaryDark,),
                     title: const Text('Logout'),
                     onTap: () async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();

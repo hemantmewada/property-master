@@ -924,7 +924,7 @@ String formatNumber(int number) {
     return number.toString();
   }
 }
-PreferredSizeWidget appBarPostPropertyList(BuildContext context, int totalPropertyCount, TextEditingController searchController, final Function(String) onChange){
+PreferredSizeWidget appBarPostPropertyList(BuildContext context, int totalPropertyCount, TextEditingController searchController, final Function(String) onChange, [bool isNormatBack = false]){
   return AppBar(
     toolbarHeight: 140.0,
     flexibleSpace: Padding(
@@ -934,7 +934,7 @@ PreferredSizeWidget appBarPostPropertyList(BuildContext context, int totalProper
           Row(
             children: [
               InkWell(
-                onTap: () => navigateTo(context, Dashboard(bottomIndex: 0),),
+                onTap: () => isNormatBack ? Navigator.of(context).pop() : navigateTo(context, Dashboard(bottomIndex: 0),),
                 child: const Icon(Icons.arrow_back,color: AppColors.white,),
               ),
               const SizedBox(width: 10.0,),
