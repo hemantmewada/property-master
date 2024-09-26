@@ -14,9 +14,7 @@ import "package:shared_preferences/shared_preferences.dart";
 import 'dart:async';
 
 class MyProperty extends StatefulWidget {
-  String? userIdParameter;
-  String? roleParameter;
-  MyProperty({super.key, this.userIdParameter, this.roleParameter});
+  const MyProperty({super.key});
 
   @override
   State<MyProperty> createState() => _MyPropertyState();
@@ -54,7 +52,6 @@ class _MyPropertyState extends State<MyProperty> {
   }
 
   Future<void> allProcess() async {
-    print("userIdParameter---------${widget.userIdParameter}");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     userID = prefs.getString("userID") ?? '';
     role = prefs.getString("role") ?? '';
@@ -119,8 +116,6 @@ class _MyPropertyState extends State<MyProperty> {
       ),
       onWillPop: () async {
         print("back by navigation back button");
-        widget.userIdParameter != null ?
-        Navigator.of(context).pop() :
         Navigator.pushAndRemoveUntil(
           context,
           PageTransition(
@@ -144,8 +139,8 @@ class _MyPropertyState extends State<MyProperty> {
     const url = Urls.postPropertyListUrl;
     try {
       var formData = FormData.fromMap({
-        "user_id" :  widget.userIdParameter ?? userID,
-        "role" :  widget.roleParameter ?? role,
+        "user_id" :  userID,
+        "role" :  role,
         "page" :  "mypost",
         "length" :  _limit.toString(),
         "start" :  _page.toString(),

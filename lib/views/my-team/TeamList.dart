@@ -8,6 +8,7 @@ import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/views/dashboard/ManageLead.dart';
 import 'package:propertymaster/views/resale-deal/MyProperty.dart';
+import 'package:propertymaster/views/resale-deal/UsersProperty.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:propertymaster/models/EmployeeListModel.dart';
 // apis
@@ -164,7 +165,7 @@ class _TeamListState extends State<TeamList> {
                       ),
                       const SizedBox(height: 5.0,),
                       InkWell(
-                        onTap: () => navigateTo(context, MyProperty(userIdParameter: employeeList![index].userId!, roleParameter: employeeList![index].role!)),
+                        onTap: () => navigateTo(context, UsersProperty(userId: employeeList![index].userId!, role: employeeList![index].role!,)),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
