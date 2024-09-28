@@ -632,7 +632,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             // create a business partner button
-            if(role == "Sr Business Manager" || role == "Manager" || role == "Business Partner") InkWell(
+            if(role == "Sr Business Manager" || role == "Manager") InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
