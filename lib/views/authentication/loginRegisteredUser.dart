@@ -271,30 +271,30 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0,),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType.rightToLeftWithFade,
-                        alignment: Alignment.topCenter,
-                        duration: const Duration(milliseconds: 750),
-                        isIos: true,
-                        child: const Register(),
-                      )
-                  );
-                },
-                highlightColor: AppColors.transparent,
-                splashColor: AppColors.transparent,
-                child: const Text(
-                  AppStrings.doNotHaveAccount,
-                  style: TextStyle(
-                      color: AppColors.colorPrimaryDark,
-                      fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+              // const SizedBox(height: 20.0,),
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.push(
+              //         context,
+              //         PageTransition(
+              //           type: PageTransitionType.rightToLeftWithFade,
+              //           alignment: Alignment.topCenter,
+              //           duration: const Duration(milliseconds: 750),
+              //           isIos: true,
+              //           child: const Register(),
+              //         )
+              //     );
+              //   },
+              //   highlightColor: AppColors.transparent,
+              //   splashColor: AppColors.transparent,
+              //   child: const Text(
+              //     AppStrings.doNotHaveAccount,
+              //     style: TextStyle(
+              //         color: AppColors.colorPrimaryDark,
+              //         fontWeight: FontWeight.w500
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

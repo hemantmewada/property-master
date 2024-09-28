@@ -244,6 +244,7 @@ class AppStrings{
   static const String searchProperty                  = 'Search Property';
   static const String propertyType                    = "Property Type";
   static const String contactUs                       = "Contact Us";
+  static const String birthdays                       = "Birthdays";
   static const String myAccount                       = "My Account";
   static const String profileAndKyc                   = "Profile & KYC";
   static const String dobShort                        = "DOB";

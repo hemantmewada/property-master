@@ -94,6 +94,17 @@ class Utilities{
     // print("formated date is------------$createdDate");
     return createdDate;
   }
+  String DatefomatForBirthday(String formatGiven, String bigTime) {
+    // DateTime tempDate = DateFormat("yyyy-MM-dd' 'HH:mm:ss").parse(bigTime);
+    DateTime tempDate = DateFormat(formatGiven).parse(bigTime);
+    // var dateFormat = DateFormat("MM-dd-yyyy"); // you can change the format here
+    var dateFormat = DateFormat("d MMMM"); // you can change the format here
+    var utcDate = dateFormat.format(tempDate); // pass the UTC time here
+    var localDate = dateFormat.parse(utcDate, false).toLocal().toString();
+    String createdDate = dateFormat.format(DateTime.parse(localDate));
+    // print("formated date is------------$createdDate");
+    return createdDate;
+  }
   // String DatefomatToYmd(String formatGiven, String bigTime) {
   //   // DateTime tempDate = DateFormat("yyyy-MM-dd' 'HH:mm:ss").parse(bigTime);
   //   DateTime tempDate = DateFormat(formatGiven).parse(bigTime);
@@ -1049,7 +1060,7 @@ class PropertyType {
   const PropertyType({required this.value, required this.name,required this.icon,});
 }
 const videoUrl = "http://m.propertymaster.co.in/video/";
-const aboutUsUrl = "https://m.propertymaster.co.in/about-us/";
+const aboutUsUrl = "http://m.propertymaster.co.in/";
 const facebookUrl = "https://www.facebook.com/PropertyMasterIndore";
 const instagramUrl = "https://www.instagram.com/property_master_indore_";
 const linkedinUrl = "https://www.linkedin.com/company/property-master-official";

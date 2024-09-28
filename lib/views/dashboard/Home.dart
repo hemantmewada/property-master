@@ -14,6 +14,7 @@ import 'package:propertymaster/utilities/AppColors.dart';
 import 'package:propertymaster/utilities/AppStrings.dart';
 import 'package:propertymaster/utilities/Loader.dart';
 import 'package:propertymaster/views/home/ContactUs.dart';
+import 'package:propertymaster/views/home/NotificationScreen.dart';
 import 'package:propertymaster/views/home/LayoutMap.dart';
 import 'package:propertymaster/views/home/PressAndNews.dart';
 import 'package:propertymaster/views/my-account/MyAccount.dart';
@@ -154,7 +155,7 @@ class _HomeState extends State<Home> {
                   ListTile(
                     leading: const Icon(Icons.home_outlined,color: AppColors.colorSecondaryDark,),
                     title: const Text("Home"),
-                    onTap: () {},
+                    onTap: () => _scaffoldkey.currentState!.closeDrawer(),
                   ),
                   ListTile(
                     leading: const Icon(Icons.account_circle_outlined,color: AppColors.colorSecondaryDark,),
@@ -192,14 +193,14 @@ class _HomeState extends State<Home> {
                   ListTile(
                     leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
                     title: const Text("Register Link For Sr BP"),
-                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Business Partner'),
+                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Business%20Partner'),
                   ) :
                   Container(),
                   role == "Sr Business Manager" || role == "Manager" ?
                   ListTile(
                     leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
                     title: const Text("Register Link For BP"),
-                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Jr Business Partner'),
+                    onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Jr%20Business%20Partner'),
                   ) :
                   Container(),
                   ListTile(
@@ -306,7 +307,10 @@ class _HomeState extends State<Home> {
                     flex: 1,
                     child: Text(AppStrings.propertyMaster,style: TextStyle(fontSize: 20.0,color: AppColors.white,overflow: TextOverflow.ellipsis),),
                   ),
-                  const Icon(Icons.notifications_rounded,color: AppColors.white,),
+                  InkWell(
+                    onTap: () => navigateTo(context, NotificationScreen()),
+                    child: const Icon(Icons.notifications_rounded,color: AppColors.white,),
+                  ),
                   const SizedBox(width: 10.0,),
                   InkWell(
                     highlightColor: AppColors.transparent,

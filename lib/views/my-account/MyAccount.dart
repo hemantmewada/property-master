@@ -143,108 +143,108 @@ class _MyAccountState extends State<MyAccount> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
-            InkWell(
-              onTap: () {
-
-              },
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Container(
-                height: 58.0,
-                margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
-                decoration: myBoxDecoration(),
-                child: const Row(
-                  children: [
-                    Icon(Icons.newspaper_rounded, size: 30.0, color: AppColors.white,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: VerticalDivider(
-                        color: AppColors.white,
-                        thickness: 1,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'ID Card',
-                        style: TextStyle(color: AppColors.white),
-                      ),
-                    ),
-                    Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            InkWell(
-              onTap: () {
-
-              },
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Container(
-                height: 58.0,
-                margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
-                decoration: myBoxDecoration(),
-                child: const Row(
-                  children: [
-                    Icon(Icons.payment, size: 30.0, color: AppColors.white,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: VerticalDivider(
-                        color: AppColors.white,
-                        thickness: 1,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Payment',
-                        style: TextStyle(color: AppColors.white),
-                      ),
-                    ),
-                    Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            InkWell(
-              onTap: () {
-
-              },
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              child: Container(
-                height: 58.0,
-                margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
-                decoration: myBoxDecoration(),
-                child: const Row(
-                  children: [
-                    Icon(Icons.lock, size: 30.0, color: AppColors.white,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: VerticalDivider(
-                        color: AppColors.white,
-                        thickness: 1,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        'Change Password',
-                        style: TextStyle(color: AppColors.white),
-                      ),
-                    ),
-                    Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
-                  ],
-                ),
-              ),
-            ),
+            // const SizedBox(height: 10.0),
+            // InkWell(
+            //   onTap: () {
+            //
+            //   },
+            //   splashColor: Colors.transparent,
+            //   highlightColor: Colors.transparent,
+            //   child: Container(
+            //     height: 58.0,
+            //     margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
+            //     padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
+            //     decoration: myBoxDecoration(),
+            //     child: const Row(
+            //       children: [
+            //         Icon(Icons.newspaper_rounded, size: 30.0, color: AppColors.white,),
+            //         Padding(
+            //           padding: EdgeInsets.symmetric(vertical: 8.0),
+            //           child: VerticalDivider(
+            //             color: AppColors.white,
+            //             thickness: 1,
+            //           ),
+            //         ),
+            //         Expanded(
+            //           flex: 1,
+            //           child: Text(
+            //             'ID Card',
+            //             style: TextStyle(color: AppColors.white),
+            //           ),
+            //         ),
+            //         Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 10.0),
+            // InkWell(
+            //   onTap: () {
+            //
+            //   },
+            //   splashColor: Colors.transparent,
+            //   highlightColor: Colors.transparent,
+            //   child: Container(
+            //     height: 58.0,
+            //     margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
+            //     padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
+            //     decoration: myBoxDecoration(),
+            //     child: const Row(
+            //       children: [
+            //         Icon(Icons.payment, size: 30.0, color: AppColors.white,),
+            //         Padding(
+            //           padding: EdgeInsets.symmetric(vertical: 8.0),
+            //           child: VerticalDivider(
+            //             color: AppColors.white,
+            //             thickness: 1,
+            //           ),
+            //         ),
+            //         Expanded(
+            //           flex: 1,
+            //           child: Text(
+            //             'Payment',
+            //             style: TextStyle(color: AppColors.white),
+            //           ),
+            //         ),
+            //         Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 10.0),
+            // InkWell(
+            //   onTap: () {
+            //
+            //   },
+            //   splashColor: Colors.transparent,
+            //   highlightColor: Colors.transparent,
+            //   child: Container(
+            //     height: 58.0,
+            //     margin: const EdgeInsets.only(top: 10.0,left: 10.0, right: 10.0,),
+            //     padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 5.0),
+            //     decoration: myBoxDecoration(),
+            //     child: const Row(
+            //       children: [
+            //         Icon(Icons.lock, size: 30.0, color: AppColors.white,),
+            //         Padding(
+            //           padding: EdgeInsets.symmetric(vertical: 8.0),
+            //           child: VerticalDivider(
+            //             color: AppColors.white,
+            //             thickness: 1,
+            //           ),
+            //         ),
+            //         Expanded(
+            //           flex: 1,
+            //           child: Text(
+            //             'Change Password',
+            //             style: TextStyle(color: AppColors.white),
+            //           ),
+            //         ),
+            //         Icon(Icons.arrow_forward_ios_sharp,color: AppColors.white,),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 10.0),
             InkWell(
               onTap: () async {

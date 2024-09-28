@@ -1,5 +1,6 @@
 class HomePageDataModel {
   bool? status;
+  int? birthday;
   List<HomeBanner>? homeBanner;
   List<HomeSlides>? homeSlides;
   UserData? userData;
@@ -14,6 +15,7 @@ class HomePageDataModel {
 
   HomePageDataModel(
       {this.status,
+        this.birthday,
         this.homeBanner,
         this.homeSlides,
         this.userData,
@@ -28,6 +30,7 @@ class HomePageDataModel {
 
   HomePageDataModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
+    birthday = json['birthday'];
     if (json['home_banner'] != null) {
       homeBanner = <HomeBanner>[];
       json['home_banner'].forEach((v) {
@@ -61,6 +64,7 @@ class HomePageDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = this.status;
+    data['birthday'] = this.birthday;
     if (this.homeBanner != null) {
       data['home_banner'] = this.homeBanner!.map((v) => v.toJson()).toList();
     }
@@ -88,21 +92,18 @@ class HomePageDataModel {
 class HomeBanner {
   String? image;
   String? startDate;
-  String? id;
 
-  HomeBanner({this.image, this.startDate, this.id});
+  HomeBanner({this.image, this.startDate});
 
   HomeBanner.fromJson(Map<String, dynamic> json) {
     image = json['image'];
     startDate = json['start_date'];
-    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['image'] = this.image;
     data['start_date'] = this.startDate;
-    data['id'] = this.id;
     return data;
   }
 }
