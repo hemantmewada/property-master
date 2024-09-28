@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
                         const SizedBox(height: 5.0,),
                         Text(name,style: const TextStyle(color: AppColors.white)),
                         Text(empId,style: const TextStyle(color: AppColors.white)),
-                        Text(role == "Business Partner" ? "Sr Business Partner" : role,style: const TextStyle(color: AppColors.white)),
+                        Text(role == "Business Partner" ? "Sr Business Partner" : role == "Jr Business Partner" ? "Business Partner" : role,style: const TextStyle(color: AppColors.white)),
                       ],
                     ),
                   ),
@@ -544,7 +544,7 @@ class _HomeState extends State<Home> {
                       ),
                       const SizedBox(width: 5.0,),
                       Expanded(
-                        child: role == "Sr Business Manager" || role == "Manager" || role == "Business Partner" ?
+                        child: role == "Sr Business Manager" || role == "Manager" ?
                         InkWell(
                           onTap: () => navigateTo(context, TeamList(heading: AppStrings.totalBP,type: "total_partner"),),
                           child: Column(

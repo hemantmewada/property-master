@@ -95,7 +95,7 @@ class _MyPropertyState extends State<MyProperty> {
         //     },
         //   ),
         // ),
-        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value),true),
+        appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value)),
         backgroundColor: AppColors.whitish,
         body: Column(
           children: [
