@@ -1059,8 +1059,8 @@ class PropertyType {
   final String icon;
   const PropertyType({required this.value, required this.name,required this.icon,});
 }
-const videoUrl = "http://m.propertymaster.co.in/video/";
-const aboutUsUrl = "http://m.propertymaster.co.in/";
+const videoUrl = "https://propertymaster.co.in/videos/";
+const aboutUsUrl = "https://propertymaster.co.in/";
 const facebookUrl = "https://www.facebook.com/PropertyMasterIndore";
 const instagramUrl = "https://www.instagram.com/property_master_indore_";
 const linkedinUrl = "https://www.linkedin.com/company/property-master-official";
