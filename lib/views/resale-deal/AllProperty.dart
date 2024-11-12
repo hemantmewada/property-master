@@ -71,30 +71,6 @@ class _AllPropertyState extends State<AllProperty> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: AppColors.colorSecondaryLight,
-        //   iconTheme: const IconThemeData(color: AppColors.white,),
-        //   title: const Text(
-        //     AppStrings.resaleDeal,
-        //     style: TextStyle(color: AppColors.white,),
-        //   ),
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.arrow_back),
-        //     onPressed: (){
-        //       Navigator.pushAndRemoveUntil(
-        //         context,
-        //         PageTransition(
-        //           type: PageTransitionType.rightToLeftWithFade,
-        //           alignment: Alignment.topCenter,
-        //           duration: const Duration(milliseconds: 500),
-        //           isIos: true,
-        //           child: Dashboard(bottomIndex: 0),
-        //         ),
-        //         (route) => false,
-        //       );
-        //     },
-        //   ),
-        // ),
         appBar: appBarPostPropertyList(context, totalPropertyCount, searchController, (value) => _onSearchChanged(context, value)),
         backgroundColor: AppColors.whitish,
         body: Column(
@@ -146,6 +122,7 @@ class _AllPropertyState extends State<AllProperty> {
         "start" :  _page.toString(),
         "searchproperty": searchController.text,
       });
+      print(formData.fields);
       final responseDio = await Dio().post(url,data: formData,);
       if(isLoad){
         Loader.ProgressloadingDialog(context, false);
