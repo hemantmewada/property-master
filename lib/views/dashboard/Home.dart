@@ -17,6 +17,7 @@ import 'package:propertymaster/views/home/ContactUs.dart';
 import 'package:propertymaster/views/home/NotificationScreen.dart';
 import 'package:propertymaster/views/home/LayoutMap.dart';
 import 'package:propertymaster/views/home/PressAndNews.dart';
+import 'package:propertymaster/views/home/sidebar/SaudaChitthiAndGuideline.dart';
 import 'package:propertymaster/views/my-account/MyAccount.dart';
 import 'package:propertymaster/views/lead-management/AddLead.dart';
 import 'package:propertymaster/views/home/HomeDashboardPropertySlider.dart';
@@ -154,58 +155,61 @@ class _HomeState extends State<Home> {
                   ),
                   ListTile(
                     leading: const Icon(Icons.home_outlined,color: AppColors.colorSecondaryDark,),
-                    title: const Text("Home"),
+                    title: const Text("Home",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => _scaffoldkey.currentState!.closeDrawer(),
                   ),
                   ListTile(
                     leading: const Icon(Icons.account_circle_outlined,color: AppColors.colorSecondaryDark,),
-                    title: const Text("My Profile"),
+                    title: const Text("My Profile",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => navigateTo(context, const MyAccount()),
                   ),
                   ListTile(
                     leading: const Icon(Icons.video_settings_sharp,color: AppColors.colorSecondaryDark,),
-                    title: const Text("Videos"),
+                    title: const Text("Videos",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => openPage(videoUrl),
                   ),
                   ListTile(
                     leading: const Icon(Icons.info_outline,color: AppColors.colorSecondaryDark,),
-                    title: const Text("About Us"),
+                    title: const Text("About Us",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => openPage(aboutUsUrl),
                   ),
                   ListTile(
                     leading: const Icon(Icons.phone,color: AppColors.colorSecondaryDark,),
-                    title: const Text("Contact Us"),
+                    title: const Text("Contact Us",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => navigateTo(context, const ContactUs()),
-                    // onTap: () => contactUsShowAlertDialog(context),
                   ),
                   ListTile(
                     leading: const Icon(Icons.image_search,color: AppColors.colorSecondaryDark,),
-                    title: const Text(AppStrings.searchLayoutMap),
+                    title: const Text(AppStrings.searchLayoutMap,style: TextStyle(fontSize: 14.0,),),
                     onTap: () => navigateTo(context, const LayoutMap()),
-                    // onTap: () => contactUsShowAlertDialog(context),
                   ),
                   ListTile(
                     leading: const Icon(Icons.newspaper_rounded,color: AppColors.colorSecondaryDark,),
-                    title: const Text(AppStrings.pressAndNews),
+                    title: const Text(AppStrings.pressAndNews,style: TextStyle(fontSize: 14.0,),),
                     onTap: () => navigateTo(context, const PressAndNews()),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.file_open_rounded,color: AppColors.colorSecondaryDark,),
+                    title: const Text(AppStrings.saudaChitthiAndGuideline,style: TextStyle(fontSize: 14.0,),),
+                    onTap: () => navigateTo(context, const SaudaChitthiAndGuideline()),
                   ),
                   role == "Sr Business Manager" || role == "Manager" ?
                   ListTile(
                     leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
-                    title: const Text("Register Link For Sr BP"),
+                    title: const Text("Register Link For Sr BP",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Business%20Partner'),
                   ) :
                   Container(),
                   role == "Sr Business Manager" || role == "Manager" ?
                   ListTile(
                     leading: const Icon(Icons.share,color: AppColors.colorSecondaryDark,),
-                    title: const Text("Register Link For BP"),
+                    title: const Text("Register Link For BP",style: TextStyle(fontSize: 14.0,),),
                     onTap: () => Share.share('https://propertymaster.co.in/propertymaster-admin/employee/usersadd?user_id=${userID}&job_type=Jr%20Business%20Partner'),
                   ) :
                   Container(),
                   ListTile(
                     leading: const Icon(Icons.logout,color: AppColors.colorSecondaryDark,),
-                    title: const Text('Logout'),
+                    title: const Text('Logout',style: TextStyle(fontSize: 14.0,),),
                     onTap: () async {
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       prefs.setBool("isLogin", false);

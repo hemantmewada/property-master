@@ -70,12 +70,13 @@ class Listing {
   String? plotNo;
   String? plotSize;
   String? bookingAmt;
-  String? priceInSqft;
+  String? nameOfBooking;
   String? bookingDate;
   String? remark;
   String? registeredName;
   String? registeredNumber;
   String? dateOfRegistration;
+  String? leadAddedBy;
 
   Listing(
       {this.no,
@@ -96,12 +97,13 @@ class Listing {
         this.plotNo,
         this.plotSize,
         this.bookingAmt,
-        this.priceInSqft,
+        this.nameOfBooking,
         this.bookingDate,
         this.remark,
         this.registeredName,
         this.registeredNumber,
-        this.dateOfRegistration});
+        this.dateOfRegistration,
+        this.leadAddedBy});
 
   Listing.fromJson(Map<String, dynamic> json) {
     no = json['no'];
@@ -124,12 +126,13 @@ class Listing {
     plotNo = json['plot_no'];
     plotSize = json['plot_size'];
     bookingAmt = json['booking_amt'];
-    priceInSqft = json['price_in_sqft'];
+    nameOfBooking = json['name_of_booking'];
     bookingDate = json['booking_date'];
     remark = json['remark'];
     registeredName = json['registered_name'];
     registeredNumber = json['registered_number'];
     dateOfRegistration = json['date_of_registration'];
+    leadAddedBy = json['lead_added_by'];
   }
 
   Map<String, dynamic> toJson() {
@@ -154,12 +157,13 @@ class Listing {
     data['plot_no'] = this.plotNo;
     data['plot_size'] = this.plotSize;
     data['booking_amt'] = this.bookingAmt;
-    data['price_in_sqft'] = this.priceInSqft;
+    data['name_of_booking'] = this.nameOfBooking;
     data['booking_date'] = this.bookingDate;
     data['remark'] = this.remark;
     data['registered_name'] = this.registeredName;
     data['registered_number'] = this.registeredNumber;
     data['date_of_registration'] = this.dateOfRegistration;
+    data['lead_added_by'] = this.leadAddedBy;
     return data;
   }
 }
@@ -199,6 +203,10 @@ class LastFollowup {
   String? panCard;
   String? registryDate;
   String? residentailAddress;
+  String? ragisteredName;
+  String? ragistrationDate;
+  String? sellerName;
+  String? sellerContact;
 
   LastFollowup(
       {this.id,
@@ -234,7 +242,11 @@ class LastFollowup {
         this.aadharCard,
         this.panCard,
         this.registryDate,
-        this.residentailAddress});
+        this.residentailAddress,
+        this.ragisteredName,
+        this.ragistrationDate,
+        this.sellerName,
+        this.sellerContact});
 
   LastFollowup.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -271,6 +283,10 @@ class LastFollowup {
     panCard = json['pan_card'];
     registryDate = json['registry_date'];
     residentailAddress = json['residentail_address'];
+    ragisteredName = json['ragistered_name'];
+    ragistrationDate = json['ragistration_date'];
+    sellerName = json['seller_name'];
+    sellerContact = json['seller_contact'];
   }
 
   Map<String, dynamic> toJson() {
@@ -309,6 +325,10 @@ class LastFollowup {
     data['pan_card'] = this.panCard;
     data['registry_date'] = this.registryDate;
     data['residentail_address'] = this.residentailAddress;
+    data['ragistered_name'] = this.ragisteredName;
+    data['ragistration_date'] = this.ragistrationDate;
+    data['seller_name'] = this.sellerName;
+    data['seller_contact'] = this.sellerContact;
     return data;
   }
 }

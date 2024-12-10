@@ -131,6 +131,7 @@ class _MyTeamLeadBoxState extends State<MyTeamLeadBox> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 1,
+              height: 100.0,
               padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,3.0,),
               decoration: BoxDecoration(
                 color: widget.primaryColor,

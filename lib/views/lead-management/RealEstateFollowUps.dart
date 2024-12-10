@@ -35,7 +35,8 @@ class RealEstateFollowUps extends StatefulWidget {
   String? location;
   String? id;
   String? lastFollowup;
-  RealEstateFollowUps({super.key,required this.userID,required this.leadId,required this.name,required this.date,required this.budget, required this.locationName, required this.contact,required this.leadSource,required this.page, required this.leadSources,required this.contact2, required this.location, required this.id,this.lastFollowup});
+  String? leadAddedBy;
+  RealEstateFollowUps({super.key,required this.userID,required this.leadId,required this.name,required this.date,required this.budget, required this.locationName, required this.contact,required this.leadSource,required this.page, required this.leadSources,required this.contact2, required this.location, required this.id,this.lastFollowup,this.leadAddedBy});
 
   @override
   State<RealEstateFollowUps> createState() => _RealEstateFollowUpsState();
@@ -44,6 +45,7 @@ List<String> list = [];
 
 class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
   String loggedInUserId = '';
+  String role = "";
   var reasonController = TextEditingController();
   var remarkController = TextEditingController();
   var plotNoController = TextEditingController();
@@ -130,6 +132,8 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
   Future<void> allProcess() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     loggedInUserId = prefs.getString("userID") ?? '';
+    role = prefs.getString("role") ?? '';
+    print('my role is >>>>> {$role}');
     print("loggedInUserId --------$loggedInUserId");
     print("widget.userID --------${widget.userID}");
     print("widget.page --------${widget.page}");
@@ -322,9 +326,7 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Text(
-                          widget.budget == null ? "" : widget.budget!,
-                        ),
+                        child: Text(widget.budget == null ? "" : widget.budget!,),
                       ),
                       Expanded(
                         flex: 2,
@@ -341,6 +343,14 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 5.0,),
+                  if(role == ApiVarConsts.admin) Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      widget.leadAddedBy!,
+                      style: TextStyle(fontSize: 16.0,color: AppColors.colorSecondaryDark,fontWeight: FontWeight.w900,),
+                    ),
                   ),
                   const SizedBox(height: 5.0,),
                 ],
@@ -447,6 +457,24 @@ class _RealEstateFollowUpsState extends State<RealEstateFollowUps> {
                                 ),
                               ),
                             ],
+                          ),
+                        ) else Container(),
+                        if(followupList![index].userId == "802") Align(
+                          alignment: Alignment.centerRight, // Align to the right
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade100, // Background color
+                              borderRadius: BorderRadius.circular(5.0), // Rounded corners
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0), // Padding
+                            child: Text(
+                              "Admin",
+                              style: TextStyle(
+                                fontSize: 13.0,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold, // Optional bold
+                              ),
+                            ),
                           ),
                         ) else Container(),
                         const SizedBox(height: 5.0,),

@@ -51,6 +51,7 @@ class Data {
 class Listing {
   String? id;
   String? propertyId;
+  String? parentId;
   String? associativeType;
   String? associativeName;
   String? associativeContact;
@@ -105,10 +106,13 @@ class Listing {
   String? statusDate;
   String? updatedAt;
   String? statusComplete;
+  String? reason;
+  String? addedByRole;
 
   Listing(
       {this.id,
         this.propertyId,
+        this.parentId,
         this.associativeType,
         this.associativeName,
         this.associativeContact,
@@ -162,11 +166,14 @@ class Listing {
         this.statusDescription,
         this.statusDate,
         this.updatedAt,
-        this.statusComplete});
+        this.statusComplete,
+        this.reason,
+        this.addedByRole});
 
   Listing.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     propertyId = json['property_id'];
+    parentId = json['parent_id'];
     associativeType = json['associative_type'];
     associativeName = json['associative_name'];
     associativeContact = json['associative_contact'];
@@ -221,12 +228,15 @@ class Listing {
     statusDate = json['status_date'];
     updatedAt = json['updated_at'];
     statusComplete = json['status_complete'];
+    reason = json['reason'];
+    addedByRole = json['added_by_role'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['property_id'] = this.propertyId;
+    data['parent_id'] = this.parentId;
     data['associative_type'] = this.associativeType;
     data['associative_name'] = this.associativeName;
     data['associative_contact'] = this.associativeContact;
@@ -281,6 +291,8 @@ class Listing {
     data['status_date'] = this.statusDate;
     data['updated_at'] = this.updatedAt;
     data['status_complete'] = this.statusComplete;
+    data['reason'] = this.reason;
+    data['added_by_role'] = this.addedByRole;
     return data;
   }
 }

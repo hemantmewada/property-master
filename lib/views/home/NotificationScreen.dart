@@ -45,7 +45,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     userID = prefs.getString("userID") ?? '';
     role = prefs.getString("role") ?? '';
     print("userID ----------$userID");
-    print("userID ----------$role");
+    print("role ----------$role");
     birthdaysAPI();
     setState(() {});
   }
@@ -56,10 +56,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.colorSecondaryLight,
         iconTheme: const IconThemeData(color: AppColors.white,),
-        title: Text(AppStrings.birthdays,style: const TextStyle(color: AppColors.white,),),
+        title: Text(AppStrings.notifications,style: const TextStyle(color: AppColors.white,),),
       ),
-      body: Column(
+      body: birthdaysList == null || birthdaysList!.isEmpty ? Center(
+        child: Text(
+          "No data found.",
+          style: TextStyle(fontSize: 16.0,),
+        ),
+      ) : Column(
         children: [
+          // Text("Birthdays",style: TextStyle(fontSize: 22.0,),),
           Expanded(
             child: ListView.builder(
               itemCount: birthdaysList?.length ?? 0,
@@ -108,15 +114,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("${birthdaysList![index].name!}'s birthday today.",style: const TextStyle(fontSize: 16.0,),),
-                                          Text(Utilities().DatefomatForBirthday("yyyy-MM-dd", birthdaysList![index].dob!)),
-                                        ],
+                                      Flexible( // Ensure the text can wrap within available space
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              child: Text(
+                                                "${birthdaysList![index].name!}'s ${birthdaysList![index].type == "birthday" ? "birthday" : "anniversary"} today.",
+                                                style: const TextStyle(fontSize: 16.0),
+                                                maxLines: 2, // Limits to two lines, adjust as needed
+                                                overflow: TextOverflow.ellipsis, // Adds ellipsis if text exceeds max lines
+                                              ),
+                                            ),
+                                            Text(
+                                              Utilities().DatefomatForBirthday("yyyy-MM-dd", birthdaysList![index].date!),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const SizedBox(width: 10.0,),
+                                      const SizedBox(width: 10.0),
                                     ],
                                   ),
                                 ),
@@ -173,11 +190,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
         NotificationBirthdayModel response = NotificationBirthdayModel.fromJson(map);
         birthdaysList!.clear();
-        birthdaysList = response.data;
+        birthdaysList = response.data!;
         setState(() {});
-        if(birthdaysList!.isEmpty){
-          Utilities().toast(response.message);
-        }
+        // if(birthdaysList!.isEmpty){
+        //   Utilities().toast(response.message);
+        // }
       }
     } on DioError catch (error) {
       Loader.ProgressloadingDialog(context, false);

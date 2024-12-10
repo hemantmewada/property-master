@@ -244,6 +244,7 @@ class _TeamListState extends State<TeamList> {
       Loader.ProgressloadingDialog(context, false);
       if (responseDio.statusCode == 200) {
         print("employeeListAPI---------${url}");
+        print(formData.fields);
         Map<String, dynamic> map = (responseDio.data as Map).cast<String, dynamic>();
         EmployeeListModel response = EmployeeListModel.fromJson(map);
         employeeList!.clear();

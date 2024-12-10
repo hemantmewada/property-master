@@ -33,6 +33,8 @@ class _ManageLeadState extends State<ManageLead> {
   String type = "all";
   Data? realEstateCounts;
   var searchController = TextEditingController();
+  String role = '';
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,9 +47,11 @@ class _ManageLeadState extends State<ManageLead> {
   Future<void> allProcess() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     loggedInUserId = prefs.getString("userID") ?? '';
+    role = prefs.getString("role") ?? '';
     print("loggedInUserId --------$loggedInUserId");
     print('widget.userID---------- {${widget.userID}}');
     print('widget.role--------- {${widget.role}}');
+    print('my role is >>>>> {$role}');
     realEstateAPI(context);
     setState(() {});
   }
@@ -216,7 +220,7 @@ class _ManageLeadState extends State<ManageLead> {
                   pendingCount: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.pending.toString(),
                   heading: AppStrings.totalLeads,
                   primaryColor: AppColors.colorSecondary,
-                  secondaryColor: AppColors.colorSecondaryDashboard,
+                  secondaryColor: AppColors.colorSecondaryLight2,
                   isAvailable: true,
                   icon: const Icon(FontAwesomeIcons.house,color: AppColors.white),
                   pageLink: ManageLeadList(title: AppStrings.totalLeads,page: 'totalleads',userID: widget.userID,role: widget.role,),
@@ -238,7 +242,7 @@ class _ManageLeadState extends State<ManageLead> {
                   pendingCount: "0",
                   heading: AppStrings.todayWork,
                   primaryColor: AppColors.colorSecondary,
-                  secondaryColor: AppColors.colorSecondaryDashboard,
+                  secondaryColor: AppColors.colorSecondaryLight2,
                   isAvailable: true,
                   icon: const Icon(Icons.work_history_outlined,color: AppColors.white,),
                   pageLink: ManageLeadList(title: AppStrings.todayWork,page: 'totaltodaywork',userID: widget.userID,role: widget.role,),
@@ -253,7 +257,7 @@ class _ManageLeadState extends State<ManageLead> {
                   pendingCount: "0",
                   heading: AppStrings.hotListed,
                   primaryColor: AppColors.colorSecondaryDark,
-                  secondaryColor: AppColors.colorSecondaryLight,
+                  secondaryColor: AppColors.colorSecondaryDashboard,
                   isAvailable: true,
                   icon: const Icon(FontAwesomeIcons.fireFlameCurved,color: AppColors.white),
                   pageLink: ManageLeadList(title: AppStrings.hotListed,page: 'totalhotlisted',userID: widget.userID,role: widget.role,),
@@ -264,7 +268,7 @@ class _ManageLeadState extends State<ManageLead> {
                   pendingCount: "0",
                   heading: AppStrings.upcomingVisits,
                   primaryColor: AppColors.colorSecondary,
-                  secondaryColor: AppColors.colorSecondaryDashboard,
+                  secondaryColor: AppColors.colorSecondaryLight2,
                   isAvailable: true,
                   icon: const Icon(Icons.data_thresholding_outlined,color: AppColors.white,),
                   pageLink: ManageLeadList(title: AppStrings.upcomingVisits,page: 'totalupcomingvisits',userID: widget.userID,role: widget.role,),
@@ -356,6 +360,40 @@ class _ManageLeadState extends State<ManageLead> {
                 ),
               ],
             ),
+            if(role == ApiVarConsts.admin || role == ApiVarConsts.subAdmin)
+              Column(
+                children: [
+                  const SizedBox(height: 10.0,),
+                  Row(
+                    children: [
+                      MyTeamLeadBox(
+                        count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.monthlyvisit.toString(),
+                        pendingCount: "0",
+                        heading: AppStrings.monthlyVisitDone,
+                        primaryColor: AppColors.orange,
+                        secondaryColor: AppColors.orangeLight,
+                        isAvailable: true,
+                        icon: const Icon(FontAwesomeIcons.calendarDays,color: AppColors.white,),
+                        pageLink: ManageLeadList(title: AppStrings.monthlyVisitDone,page: 'totalmonthlyvisit',userID: widget.userID,role: widget.role,),
+                      ),
+                      const SizedBox(width: 10.0,),
+                      MyTeamLeadBox(
+                        count: realEstateCounts == null ? '0' : realEstateCounts!.otherlead!.skippedfollowup.toString(),
+                        pendingCount: "0",
+                        heading: AppStrings.skippedFollowup,
+                        primaryColor: AppColors.carrotColorDark,
+                        secondaryColor: AppColors.carrotColorLight,
+                        isAvailable: true,
+                        icon: const Icon(FontAwesomeIcons.diamondTurnRight,color: AppColors.white,),
+                        pageLink: ManageLeadList(title: AppStrings.skippedFollowup,page: 'totalskippedfollowup',userID: widget.userID,role: widget.role,),
+                      ),
+                      const SizedBox(width: 10.0,),
+                      MyTeamLeadBox(isAvailable: false,),
+                    ],
+                  ),
+                ],
+              ),
+            const SizedBox(height: 10.0,),
           ],
         ),
       ),
@@ -364,10 +402,11 @@ class _ManageLeadState extends State<ManageLead> {
   // real estate api
   Future<void> realEstateAPI(BuildContext context) async {
     Loader.ProgressloadingDialog(context, true);
+    const url = Urls.realEstateUrl;
     try {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse(Urls.realEstateUrl),
+        Uri.parse(url),
       );
       Map<String, String> header = {
         "content-type": "application/json",
@@ -378,10 +417,11 @@ class _ManageLeadState extends State<ManageLead> {
       request.fields['user_id'] =  widget.userID;
       request.fields['role'] =  widget.role;
       request.fields['type'] =  type;
+      print(request.fields);
       var response = await request.send();
       Loader.ProgressloadingDialog(context, false);
       response.stream.transform(convert.utf8.decoder).listen((event) async {
-        print(Urls.leadsListUrl);
+        print(url);
         Map<String, dynamic> map = convert.jsonDecode(event);
         RealEstateModel response = await RealEstateModel.fromJson(map);
         // Utilities().toast(response.message);

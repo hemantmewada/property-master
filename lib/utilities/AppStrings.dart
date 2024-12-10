@@ -78,7 +78,9 @@ class AppStrings{
   static const String visitDone                       = 'Visit Done';
   static const String booked                          = 'Booked';
   static const String holdAfterVisit                  = 'Hold After Visit';
+  static const String monthlyVisitDone                = 'Monthly Visit Done';
   static const String reject                          = 'Reject After Visit';
+  static const String skippedFollowup                 = 'Skipped Followup';
   static const String registered                      = 'Registered';
   static const String registeredNumber                = 'Registered Number';
   static const String registeredName                  = 'Registered Name';
@@ -265,4 +267,16 @@ class AppStrings{
   static const String areaSqFt                        = "Area (SqFt)";
   static const String searchLayoutMap                 = "Search Layout Map";
   static const String pressAndNews                    = "Press & News";
+  static const String saudaChitthiAndGuideline        = "Sauda Chitthi And Guideline";
+  static const String notifications                   = "Notifications";
+}
+
+class ApiVarConsts {
+  static const String soldProperty                    = "sold-property";
+  static const String hotProperty                     = "hot-property";
+  static const String myProperty                      = "my-property";
+  static const String admin                           = "Admin";
+  static const String subAdmin                        = "Sub Admin";
+  static const String srBusinessManager               = "Sr Business Manager";
+  static const String manager                         = "Manager";
 }

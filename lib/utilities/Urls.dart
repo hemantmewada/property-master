@@ -35,4 +35,5 @@ class Urls {
   static const pressAndNewsUrl = "${baseUrl}get_upload_press";
   static const birthdaysUrl = "${baseUrl}birthday_details";
   static const freeUserRegisterUrl = "${baseUrl}create_customerlead";
+  static const saudaChitthiAndGuidelineUrl = "${baseUrl}guidline-and-sauda-chitthi";
 }

@@ -65,7 +65,7 @@ class _MyTeamState extends State<MyTeam> {
       ),
       body: widget.role == null
           ? const Center()
-          : widget.role == "Sr Business Manager" || widget.role == "Manager"
+          : widget.role == ApiVarConsts.admin || widget.role == ApiVarConsts.srBusinessManager || widget.role == ApiVarConsts.manager
               ? SingleChildScrollView(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -107,7 +107,7 @@ class _MyTeamState extends State<MyTeam> {
                           const SizedBox(
                             width: 10.0,
                           ),
-                          widget.role == "Sr Business Manager"
+                          widget.role == ApiVarConsts.srBusinessManager || widget.role == ApiVarConsts.admin
                               ? MyTeamLeadBox(
                                   count: employeeCount == null
                                       ? '0'
@@ -162,7 +162,7 @@ class _MyTeamState extends State<MyTeam> {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      widget.role == "Sr Business Manager"
+                      widget.role == ApiVarConsts.srBusinessManager || widget.role == ApiVarConsts.admin
                           ? Column(
                               children: [
                                 Row(
@@ -339,6 +339,7 @@ class _MyTeamState extends State<MyTeam> {
       Loader.ProgressloadingDialog(context, false);
       if (responseDio.statusCode == 200) {
         print(url);
+        print(formData.fields);
         Map<String, dynamic> map =
             (responseDio.data as Map).cast<String, dynamic>();
         EmployeeCountModel res = EmployeeCountModel.fromJson(map);

@@ -33,6 +33,8 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
   var userIDController = TextEditingController();
   var phoneNumberController = TextEditingController();
   var passwordController = TextEditingController();
+  bool _isHidden = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -173,13 +175,13 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
                             child: TextFormField(
                               autofillHints: const [AutofillHints.password],
                               controller: passwordController,
-                              obscureText: true,
+                              obscureText: _isHidden == true ? false : true,
                               keyboardType: TextInputType.visiblePassword,
                               style: const TextStyle(
                                 fontSize: 14.0, color: AppColors.black,
                               ),
                               cursorColor: AppColors.textColorGrey,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: AppStrings.password,
                                 hintStyle: TextStyle(
                                   fontSize: 14.0,
@@ -187,6 +189,17 @@ class _LoginRegisteredUserState extends State<LoginRegisteredUser> {
                                   fontWeight: FontWeight.w500,
                                 ),
                                 border: InputBorder.none,
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    _isHidden = !_isHidden;
+                                    setState(() {});
+                                  },
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  child: _isHidden == false
+                                      ? Image.asset('assets/icons/hide.png',color: AppColors.colorSecondary)
+                                      : Image.asset('assets/icons/show.png',color: AppColors.colorSecondary),
+                                ),
                               ),
                             ),
                           ),

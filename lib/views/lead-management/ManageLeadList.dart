@@ -374,7 +374,8 @@ class _ManageLeadListState extends State<ManageLeadList> {
                                   contact2: leadList![index].contact2,
                                   location: leadList![index].location,
                                   id: leadList![index].id,
-                                  lastFollowup: leadList![index].type
+                                  lastFollowup: leadList![index].type,
+                                  leadAddedBy: leadList![index].leadAddedBy,
                                 ),
                               ),
                             );
@@ -592,6 +593,7 @@ class _ManageLeadListState extends State<ManageLeadList> {
         "start" :  _page.toString(),
         "searchParameter" : searchParameter,
       });
+      print(formData.fields);
       final responseDio = await Dio().post(url,data: formData,);
       if(isLoad){
         Loader.ProgressloadingDialog(context, false);

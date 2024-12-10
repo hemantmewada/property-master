@@ -30,21 +30,24 @@ class NotificationBirthdayModel {
 class Data {
   String? name;
   String? profileImg;
-  String? dob;
+  String? date;
+  String? type;
 
-  Data({this.name, this.profileImg, this.dob});
+  Data({this.name, this.profileImg, this.date, this.type});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     profileImg = json['profile_img'];
-    dob = json['dob'];
+    date = json['date'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['profile_img'] = this.profileImg;
-    data['dob'] = this.dob;
+    data['date'] = this.date;
+    data['type'] = this.type;
     return data;
   }
 }

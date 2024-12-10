@@ -339,13 +339,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
     margin: const EdgeInsets.only(top: 8.0,right: 8.0,left: 8.0,),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(5.0),
-      color: propertyType == "sold-property" ? Colors.red[400] : propertyType == "my-property" ? Colors.green[600] : AppColors.white,
-      // image: property.propertyStatus == "Complete Post" ? const DecorationImage(
-      //   scale: 5.0,
-      //   image: AssetImage("assets/images/verified-bg.png"),
-      //   alignment: Alignment.center,
-      //   opacity: 0.5,
-      // ) : null,
+      color: propertyType == ApiVarConsts.hotProperty ? Colors.red[400] : propertyType == ApiVarConsts.soldProperty ? AppColors.cyan : propertyType == ApiVarConsts.myProperty ? Colors.green[600] : (property.addedByRole == ApiVarConsts.admin || property.addedByRole == ApiVarConsts.subAdmin || property.addedByRole == ApiVarConsts.srBusinessManager || property.addedByRole == ApiVarConsts.manager) ? AppColors.semiTransparentWhite : AppColors.white,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -356,20 +350,13 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           children: [
             Expanded(
               flex: 1,
-              // child: Wrap(
-              //   children: [
-              //     Text(property.calonyName!,style: const TextStyle(fontWeight: FontWeight.w600,),),
-              //     if(property.propertyStatus == "Complete Post")
-              //       Padding(padding: const EdgeInsets.only(left: 5.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),
-              //   ],
-              // ),
               child:
               property.statusComplete == "1" ?
-              Text(property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),) :
+              Text(property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),) :
               RichText(
                 text: TextSpan(
                     children: [
-                      TextSpan(text: property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black,fontFamily: "Poppins"),),
+                      TextSpan(text: property.calonyName!,style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black,fontFamily: "Poppins"),),
                       WidgetSpan(child: Padding(padding: const EdgeInsets.only(left: 2.0,),child: Image.asset("assets/icons/verified.png",width: 20.0,),),),
                     ]
                 ),
@@ -379,7 +366,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.propertyId!,
-                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -387,7 +374,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 Utilities().DatefomatToOnlyDate("yyyy-MM-dd",property.insertDate!),
-                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(fontWeight: FontWeight.w600,color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -400,14 +387,14 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
           children: [
             Expanded(
               flex: 1,
-              child: Text(property.location!, style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),),
+              child: Text(property.location!, style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),),
             ),
             Expanded(
               flex: 1,
               child: Text(
                 "₹ ${formatNumber(property.expectedPrice!)}",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
               ),
             ),
             Expanded(
@@ -415,7 +402,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               child: Text(
                 "${property.pricePerSquare!}/SqFt",
                 textAlign: TextAlign.end,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
               ),
             ),
           ],
@@ -429,7 +416,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.numberId == "" ? "NA" : role == "Sr Business Manager" || role == "Manager" ? property.numberId! : "NA",
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -437,8 +424,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.propertyType == "Plots" ? "${property.width} X ${property.length}" : property.typeOfProperty == "Flat" ? property.flatSize! : property.furnishedStatus!,
-                // property.totalarea == "" ? "" : "${property.width} X ${property.length}",
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -446,8 +432,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.propertyType == "Plots" ? "${property.totalarea!} Sqft" : "${property.buildupArea!} Sqft",
-                // property.totalarea == "" ? property.buildupArea! : "${property.totalarea!} Sqft",
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -462,7 +447,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.transactionType!,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -470,7 +455,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.facing!,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -478,7 +463,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.openSide!,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),
@@ -493,7 +478,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.typeOfProperty!,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -501,7 +486,7 @@ Container propertyContainer(BuildContext context, PostPropertyList.Listing prope
               flex: 1,
               child: Text(
                 property.possessionStatus!,
-                style: TextStyle(color: propertyType == "sold-property" || propertyType == "my-property" ? AppColors.white : AppColors.black),
+                style: TextStyle(color: propertyType == ApiVarConsts.soldProperty || propertyType == ApiVarConsts.myProperty || propertyType == ApiVarConsts.hotProperty ? AppColors.white : AppColors.black),
                 textAlign: TextAlign.end,
               ),
             ),

@@ -71,6 +71,20 @@ class _PressAndNewsState extends State<PressAndNews> {
     super.dispose();
   }
 
+  void scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients && pressNewsList != null && pressNewsList!.isNotEmpty) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +178,7 @@ class _PressAndNewsState extends State<PressAndNews> {
         pressNewsList!.clear();
         pressNewsList = response.data!;
         setState(() {});
+        scrollToBottom(); // Scroll to the bottom after setting the state
       }
     } on DioError catch (error) {
       if(error.response?.data['status'] == false){
